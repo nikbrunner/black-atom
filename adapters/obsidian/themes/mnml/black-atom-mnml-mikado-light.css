@@ -95,8 +95,8 @@
   --code-normal: #1c2b34;
   --code-comment: #576975;
   --code-function: #cc8f00;
-  --code-important: #457ea1;
-  --code-keyword: #457ea1;
+  --code-important: #cc8f00;
+  --code-keyword: #cc8f00;
   --code-operator: #0f212d;
   --code-property: #4c5d67;
   --code-punctuation: #2d404b;

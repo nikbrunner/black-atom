@@ -15,35 +15,41 @@ import createFeedback from "./create-feedback-dark.ts";
 const meta = themeKeyMetaMap["black-atom-mnml-47-dark"];
 
 const primaries: ThemePrimaryColors = {
-    d10: oklch(0.20, 0.010, 125),
-    d20: oklch(0.25, 0.015, 125),
-    d30: oklch(0.35, 0.025, 125),
-    d40: oklch(0.40, 0.035, 125),
+    d10: oklch(0.30, 0.045, 170),
+    d20: oklch(0.34, 0.050, 170),
+    d30: oklch(0.38, 0.055, 170),
+    d40: oklch(0.42, 0.065, 170),
 
-    m10: oklch(0.50, 0.045, 125),
-    m20: oklch(0.55, 0.045, 125),
-    m30: oklch(0.60, 0.045, 125),
-    m40: oklch(0.70, 0.045, 125),
+    m10: oklch(0.55, 0.080, 170),
+    m20: oklch(0.64, 0.080, 170),
+    m30: oklch(0.72, 0.080, 170),
+    m40: oklch(0.80, 0.080, 170),
 
-    l10: oklch(0.86, 0.050, 75.0),
-    l20: oklch(0.90, 0.050, 75.0),
-    l30: oklch(0.94, 0.050, 75.0),
-    l40: oklch(0.96, 0.030, 75.0),
+    l10: oklch(0.84, 0.0450, 170),
+    l20: oklch(0.88, 0.0350, 170),
+    l30: oklch(0.94, 0.0250, 170),
+    l40: oklch(0.98, 0.0125, 170),
 };
 
 const accents: ThemeAccentColors = {
-    a10: oklch(0.75, 0.125, 175.0),
-    a20: oklch(0.75, 0.160, 54.00),
+    a10: oklch(0.75, 0.125, 50),
+    a20: oklch(0.75, 0.125, 150),
+    a30: oklch(0.75, 0.125, 70),
+    a40: oklch(0.75, 0.125, 170),
 };
 
 const palette = createPalette(primaries, {
     debug: false,
     override: (palette) => ({
         ...palette,
-        green: accents.a10,
-        darkGreen: accents.a10,
-        yellow: accents.a20,
-        darkYellow: accents.a20,
+        green: accents.a20,
+        darkGreen: accents.a20,
+        yellow: accents.a30!,
+        darkYellow: accents.a30!,
+        darkCyan: accents.a40!,
+        cyan: accents.a40!,
+        magenta: oklch(0.85, 0.05, 365),
+        darkMagenta: oklch(0.75, 0.05, 365),
     }),
 });
 

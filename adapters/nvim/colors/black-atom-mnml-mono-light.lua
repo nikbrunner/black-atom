@@ -125,9 +125,9 @@ local theme = {
                 default = "#2e2e2e",
             },
             keyword = {
-                default = "#4d4d4d",
+                default = "#2e2e2e",
                 import = "#4d4d4d",
-                export = "#4d4d4d",
+                export = "#2b2826",
             },
             operator = {
                 default = "#181614",

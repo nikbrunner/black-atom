@@ -8,7 +8,7 @@ export default function (
             default: primaries.l20,
             builtin: primaries.l10,
             member: accents.a20,
-            parameter: accents.a20,
+            parameter: accents.a30 ?? accents.a20,
         },
         property: {
             default: accents.a20,

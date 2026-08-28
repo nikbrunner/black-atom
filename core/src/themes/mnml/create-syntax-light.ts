@@ -49,9 +49,9 @@ export default function (
             default: accents.a10,
         },
         keyword: {
-            default: accents.a20 ?? primaries.d20,
+            default: accents.a10 ?? primaries.d20,
             import: accents.a20 ?? primaries.d30,
-            export: accents.a20 ?? primaries.d30,
+            export: accents.a30 ?? primaries.d30,
         },
         operator: {
             default: primaries.d20,
