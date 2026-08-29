@@ -44,10 +44,10 @@ flowchart TD
 
 At the repo root:
 
-| Task                     | Purpose                                  |
-| ------------------------ | ---------------------------------------- |
-| `deno task generate`     | Regenerate every adapter once            |
-| `deno task dev:adapters` | Watch core and every adapter's templates |
+| Task                     | Purpose                                                           |
+| ------------------------ | ----------------------------------------------------------------- |
+| `deno task generate`     | Regenerate every adapter once                                     |
+| `deno task dev:adapters` | Watch core and every adapter's templates, regenerate, and reapply |
 
 Inside a single adapter directory (`adapters/<name>/`):
 

@@ -405,4 +405,8 @@ fn help_lists_every_subcommand() {
     ] {
         assert!(help.contains(command), "--help omits {command}:\n{help}");
     }
+    assert!(
+        !help.contains("reapply"),
+        "--help exposes internal reapply command:\n{help}"
+    );
 }

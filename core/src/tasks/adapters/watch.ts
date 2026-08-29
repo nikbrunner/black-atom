@@ -7,6 +7,24 @@ import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";
 import { generateAllAdapters, generateSingleAdapter } from "./generate.ts";
+import { createChangeBatcher } from "./change-batcher.ts";
+import { runCommand } from "./utils.ts";
+
+async function reapplyActiveTheme(): Promise<void> {
+    try {
+        const output = await runCommand(
+            ["cargo", "run", "-q", "-p", "livery-cli", "--", "reapply"],
+            { cwd: join(config.dir.core, "..") },
+        );
+        if (output.trim()) log.info(output.trimEnd());
+    } catch (error) {
+        log.warn(
+            `⚠️ Active Theme reapply failed: ${
+                error instanceof Error ? error.message : String(error)
+            }`,
+        );
+    }
+}
 
 /**
  * Multi-directory file watcher that handles both core theme changes and adapter template changes.
@@ -99,6 +117,7 @@ export async function watch() {
             log.error(`${failedAdapters.length}/${results.length} adapters failed`);
         } else {
             log.success("Initial generation completed successfully");
+            await reapplyActiveTheme();
         }
     } catch (error) {
         log.error(
@@ -147,11 +166,9 @@ export async function watch() {
         return false;
     };
 
-    // Debouncing
-    const pendingChanges = new Map<string, ReturnType<typeof setTimeout>>();
     const debounceMs = 300;
 
-    const processFileChange = async (changedPath: string) => {
+    const processFileChange = async (changedPath: string): Promise<boolean> => {
         const changedFile = changedPath.split("/").pop() || "unknown";
 
         // Determine if this is a core change or adapter change
@@ -179,6 +196,7 @@ export async function watch() {
                     );
                 } else {
                     log.success(`✅ ${results.length} adapters updated successfully`);
+                    return true;
                 }
             } catch (error) {
                 log.error(
@@ -187,6 +205,7 @@ export async function watch() {
                     }`,
                 );
             }
+            return false;
         } else {
             // Find which adapter this template belongs to
             // Check that the changed path is within the adapter's directory
@@ -223,6 +242,7 @@ export async function watch() {
                                 colors.magenta(adapterInfo.adapterName.toUpperCase())
                             } updated successfully`,
                         );
+                        return true;
                     }
                 } catch (error) {
                     log.error(
@@ -233,26 +253,36 @@ export async function watch() {
                 }
             }
         }
+        return false;
     };
 
+    const processFileChanges = async (changedPaths: string[]) => {
+        const coreChange = changedPaths.find((path) => path.includes(coreThemesDir));
+        const pathsToProcess = coreChange ? [coreChange] : (() => {
+            const adapterChanges = new Map<string, string>();
+            for (const path of changedPaths) {
+                const adapter = watchDirs.find((dir) =>
+                    dir.type === "adapter" && path.startsWith(dir.path + "/")
+                );
+                if (adapter?.adapterName && !adapterChanges.has(adapter.adapterName)) {
+                    adapterChanges.set(adapter.adapterName, path);
+                }
+            }
+            return [...adapterChanges.values()];
+        })();
+
+        let shouldReapply = false;
+        for (const path of pathsToProcess) {
+            shouldReapply = await processFileChange(path) || shouldReapply;
+        }
+        if (shouldReapply) await reapplyActiveTheme();
+    };
+
+    const changeBatcher = createChangeBatcher(processFileChanges, debounceMs);
+
     const handleFileChange = (changedPath: string) => {
-        if (shouldIgnoreFile(changedPath) || !isRelevantFile(changedPath)) {
-            return;
-        }
-
-        // Clear existing timer
-        const existingTimer = pendingChanges.get(changedPath);
-        if (existingTimer) {
-            clearTimeout(existingTimer);
-        }
-
-        // Set new timer
-        const timer = setTimeout(async () => {
-            pendingChanges.delete(changedPath);
-            await processFileChange(changedPath);
-        }, debounceMs);
-
-        pendingChanges.set(changedPath, timer);
+        if (shouldIgnoreFile(changedPath) || !isRelevantFile(changedPath)) return;
+        changeBatcher.schedule(changedPath);
     };
 
     // Set up graceful shutdown
@@ -261,11 +291,7 @@ export async function watch() {
     Deno.addSignalListener("SIGINT", () => {
         log.info("\n🛑 Shutting down...");
 
-        // Clear all pending timers
-        for (const timer of pendingChanges.values()) {
-            clearTimeout(timer);
-        }
-        pendingChanges.clear();
+        changeBatcher.cancel();
 
         abortController.abort();
         Deno.exit(0);

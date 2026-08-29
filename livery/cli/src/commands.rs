@@ -127,6 +127,14 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
     Ok(())
 }
 
+pub fn reapply() -> Result<(), String> {
+    let Some(theme_key) = livery_core::state::get_active_theme() else {
+        println!("No active theme recorded — skipping reapply.");
+        return Ok(());
+    };
+    apply(&theme_key)
+}
+
 pub fn status() -> Result<(), String> {
     unpacked()?;
 

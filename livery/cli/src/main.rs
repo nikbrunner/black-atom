@@ -24,6 +24,9 @@ enum Command {
         /// Theme key, for example black-atom-jpn-koyo-yoru
         theme: Option<String>,
     },
+    /// Reapply the recorded active theme to every enabled app
+    #[command(hide = true)]
+    Reapply,
     /// List every available theme, grouped by collection
     List,
     /// Show each app's enabled, provisioning, linked and config state
@@ -78,6 +81,7 @@ fn main() -> std::process::ExitCode {
     let result = match cli.command {
         Some(Command::Apply { theme: Some(theme) }) => commands::apply(&theme),
         Some(Command::Apply { theme: None }) | None => commands::pick_and_apply(),
+        Some(Command::Reapply) => commands::reapply(),
         Some(Command::List) => commands::list(),
         Some(Command::Status) => commands::status(),
         Some(Command::Setup { yes }) => commands::setup(yes),
@@ -98,6 +102,13 @@ fn main() -> std::process::ExitCode {
 mod tests {
     use super::*;
     use clap::CommandFactory;
+
+    #[test]
+    fn reapply_has_a_cli_subcommand() {
+        assert!(Cli::command()
+            .get_subcommands()
+            .any(|subcommand| subcommand.get_name() == "reapply"));
+    }
 
     #[test]
     fn every_capability_has_a_subcommand() {

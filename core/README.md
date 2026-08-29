@@ -37,7 +37,7 @@ From the repo root:
 # Regenerate every adapter
 deno task generate
 
-# Watch core and every adapter's templates, regenerate on change
+# Watch core and every adapter's templates, regenerate and reapply the active theme on change
 deno task dev:adapters
 ```
 
