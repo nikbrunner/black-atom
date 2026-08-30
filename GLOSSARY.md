@@ -110,14 +110,13 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 | **Setup Precondition** | A one-time manual prerequisite livery cannot automate — the Obsidian configuration folders to manage                                                                    | Requirement, dependency        |
 | **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                       | Theme line, theme setting      |
 
-## Applied State
+## Theme Application
 
-| Term               | Definition                                                                                                                                         | Aliases to avoid                     |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| **Active Theme**   | The theme livery last applied, recorded in `$XDG_DATA_HOME/black-atom/state.json`. A record of what livery did, not a reading of the app configs   | Current theme, applied theme, record |
-| **State**          | Livery's own record of what it last did — `state.json`, written by livery and never hand-edited. Distinct from **Config**, which the user owns     | Settings, cache                      |
-| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                      | Current theme, selected theme        |
-| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater returned `done`. A run that only skipped or errored leaves the record standing | Success check                        |
+| Term               | Definition                                                                                                                                                                                                     | Aliases to avoid                     |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did, not a reading of the app configs                                   | Current theme, applied theme, record |
+| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                                  | Current theme, selected theme        |
+| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater wrote its config, including a degraded result that reports `Config patched`. A run that only skipped or errored leaves the record standing | Success check                        |
 
 ## Updater Pipeline
 
@@ -247,8 +246,7 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
   update" and sometimes "livery itself". Use **AppName** or "target app" for tools livery manages,
   **Livery** for the desktop application.
 - **"config"** covers both livery's own **Config** and the target apps' configuration files
-  (**ConfigPath**). Livery's own _record_ is **State**, a third thing again: the user owns Config,
-  livery owns State.
+  (**ConfigPath**). The user owns Livery's **Config** and the target apps' configuration files.
 - **"context"** appears as both **ThemeContext** (frontend → backend IPC payload) and
   **UpdateContext** (backend-internal, enriched with per-app paths).
 - **"template"** — core uses **Template** for Eta adapter templates; livery uses

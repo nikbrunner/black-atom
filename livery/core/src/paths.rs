@@ -1,4 +1,4 @@
-//! XDG base directory resolution for livery's own state.
+//! XDG base directory resolution for livery's config and managed themes.
 //!
 //! `dirs::config_dir()` resolves to `~/Library/Application Support` on macOS,
 //! which is not where livery's config lives on any platform. These functions
@@ -26,17 +26,12 @@ pub fn themes_root() -> PathBuf {
     data_home().join("black-atom").join("themes")
 }
 
-/// `<data_home>/black-atom/state.json` — livery's record of what it last did.
-pub fn state_path() -> PathBuf {
-    data_home().join("black-atom").join("state.json")
-}
-
 fn resolve(var: Option<std::ffi::OsString>, fallback: &str) -> PathBuf {
     resolve_with(var, dirs::home_dir().as_deref(), fallback)
 }
 
 /// An empty or relative `XDG_*` value is ignored — the spec requires absolute
-/// paths, and a relative one would put livery's state wherever the app was
+/// paths, and a relative one would put livery's config wherever the app was
 /// launched from.
 fn resolve_with(var: Option<std::ffi::OsString>, home: Option<&Path>, fallback: &str) -> PathBuf {
     if let Some(value) = var {

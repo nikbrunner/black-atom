@@ -199,6 +199,8 @@ pub struct Config {
     #[serde(default = "legacy_version")]
     pub version: u32,
     pub system_appearance: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active_theme: Option<String>,
     #[serde(default)]
     pub keymappings: Keymappings,
     pub apps: BTreeMap<AppName, AppConfig>,
@@ -236,5 +238,19 @@ mod tests {
             .map(|app| json.find(&format!("\"{}\"", app.as_str())).unwrap())
             .collect();
         assert!(positions.windows(2).all(|w| w[0] < w[1]), "{json}");
+    }
+
+    #[test]
+    fn config_round_trips_an_optional_active_theme() {
+        let mut value = serde_json::to_value(Config::default()).unwrap();
+        value["active_theme"] = serde_json::json!("black-atom-jpn-koyo-yoru");
+
+        let restored: Config = serde_json::from_value(value).unwrap();
+        let serialized = serde_json::to_value(restored).unwrap();
+
+        assert_eq!(
+            serialized["active_theme"],
+            serde_json::json!("black-atom-jpn-koyo-yoru")
+        );
     }
 }

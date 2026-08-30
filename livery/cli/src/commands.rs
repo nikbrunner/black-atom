@@ -1,7 +1,7 @@
 use livery_core::config::types::{AppName, Config};
 use livery_core::themes::registry::ThemeProvisioning;
 use livery_core::themes::{catalog, commands as themes, detect, unpack};
-use livery_core::updaters::{self, ThemeContext, UpdateStatus};
+use livery_core::updaters::{self, ThemeContext, UpdateResult, UpdateStatus};
 
 /// Every core entry point the CLI reaches for is `async` while awaiting
 /// nothing, so a current-thread runtime is sufficient at every call site.
@@ -98,7 +98,8 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
             };
             if result.status == UpdateStatus::Error {
                 failed += 1;
-            } else if result.status == UpdateStatus::Done {
+            }
+            if theme_was_applied(&result) {
                 applied += 1;
             }
             println!(
@@ -114,21 +115,26 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
 
     // One updater landing is enough to change what the user is looking at,
     // so the record follows the machine rather than the exit code. A run that
-    // only skipped or errored wrote nothing, and leaves the record standing.
-    if applied > 0 {
-        if let Err(message) = livery_core::state::set_active_theme(&theme.key) {
-            eprintln!("warning: could not record the active theme — {message}");
-        }
-    }
+    // only skipped or errored without patching a config leaves the record standing.
+    let persistence_error = if applied > 0 {
+        livery_core::config::commands::set_active_theme(&theme.key)
+            .err()
+            .map(|message| format!("could not record the active theme — {message}"))
+    } else {
+        None
+    };
 
-    if failed > 0 {
-        return Err(format!("{failed} update(s) failed"));
+    match persistence_error {
+        Some(message) if failed > 0 => Err(format!("{failed} update(s) failed; {message}")),
+        Some(message) => Err(message),
+        None if failed > 0 => Err(format!("{failed} update(s) failed")),
+        None => Ok(()),
     }
-    Ok(())
 }
 
 pub fn reapply() -> Result<(), String> {
-    let Some(theme_key) = livery_core::state::get_active_theme() else {
+    let config = livery_core::config::commands::get_config();
+    let Some(theme_key) = config.active_theme else {
         println!("No active theme recorded — skipping reapply.");
         return Ok(());
     };
@@ -324,7 +330,7 @@ pub fn pick_and_apply() -> Result<(), String> {
 /// a first run lands on the theme setup would otherwise have applied.
 fn pick_theme(prompt: &str) -> Result<String, String> {
     let themes = catalog::themes();
-    let active = livery_core::state::get_active_theme();
+    let active = livery_core::config::commands::get_active_theme();
     let width = themes
         .iter()
         .map(|theme| theme.key.len())
@@ -367,13 +373,22 @@ fn pick_theme(prompt: &str) -> Result<String, String> {
 /// The Active Theme as `status` prints it. A record whose key no longer
 /// resolves is shown rather than swallowed — a stale key is worth seeing.
 fn active_theme_label() -> String {
-    let Some(key) = livery_core::state::get_active_theme() else {
+    let Some(key) = livery_core::config::commands::get_active_theme() else {
         return "none (run `livery setup`)".to_string();
     };
     match catalog::find(&key) {
         Some(theme) => format!("{key}  ({})", theme.appearance),
         None => format!("{key}  (unknown theme)"),
     }
+}
+
+fn theme_was_applied(result: &UpdateResult) -> bool {
+    result.status == UpdateStatus::Done
+        || (result.status == UpdateStatus::Skipped
+            && result
+                .message
+                .as_deref()
+                .is_some_and(|message| message.starts_with("Config patched;")))
 }
 
 fn enabled_apps(config: &Config) -> Vec<AppName> {
@@ -441,6 +456,24 @@ fn print_verification_folders(verification: &updaters::AppPathVerification) {
                 folder.path,
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn theme_was_applied_counts_patched_reload_skips_but_not_noop_skips() {
+        assert!(theme_was_applied(&UpdateResult::done("ghostty")));
+        assert!(theme_was_applied(&UpdateResult::skipped(
+            "ghostty",
+            "Config patched; live reload failed"
+        )));
+        assert!(!theme_was_applied(&UpdateResult::skipped(
+            "ghostty",
+            "App is disabled"
+        )));
     }
 }
 

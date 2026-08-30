@@ -226,6 +226,24 @@ fn cli_end_to_end() {
         "appearance result missing:\n{}",
         stdout(&apply)
     );
+    let config_path = sandbox.config_home().join("black-atom/livery/config.json");
+    let mut stored: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&config_path).unwrap()).unwrap();
+    assert_eq!(stored["active_theme"], serde_json::json!(THEME));
+
+    stored["active_theme"] = serde_json::json!(DEFAULT_THEME);
+    write(
+        &config_path,
+        &serde_json::to_string_pretty(&stored).unwrap(),
+    );
+    let reapply = sandbox.run(&["reapply"]);
+    assert!(reapply.status.success(), "reapply failed: {reapply:?}");
+    assert!(
+        std::fs::read_to_string(&tmux_config)
+            .unwrap()
+            .contains(DEFAULT_THEME),
+        "reapply must read active_theme from config"
+    );
     #[cfg(any(target_os = "linux", target_os = "macos"))]
     {
         sandbox.remove_concurrency_barrier_stubs();

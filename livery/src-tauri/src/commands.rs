@@ -19,20 +19,18 @@ pub fn save_config(config: Config) -> Result<(), String> {
 }
 
 /// The theme livery last applied, as a theme key. `None` on a machine that
-/// has never run setup. The key is stored rather than resolved, so a caller
-/// resolves it against the catalogue and treats a miss like an absence.
+/// has never run setup.
 #[tauri::command]
 #[specta::specta]
 pub fn get_active_theme() -> Option<String> {
-    livery_core::state::get_active_theme()
+    livery_core::config::commands::get_active_theme()
 }
 
-/// Record the theme livery just applied. Called once per apply, after the
-/// updater loop, never per app.
+/// Record the theme livery just applied in the tracked livery config.
 #[tauri::command]
 #[specta::specta]
 pub fn set_active_theme(key: String) -> Result<(), String> {
-    livery_core::state::set_active_theme(&key)
+    livery_core::config::commands::set_active_theme(&key)
 }
 
 /// Per-adapter setup state: provisioning class, the config fields its

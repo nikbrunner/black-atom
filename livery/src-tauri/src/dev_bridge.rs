@@ -121,6 +121,10 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
             Ok(Value::Null)
         }
         "get_active_theme" => to_value(crate::commands::get_active_theme()),
+        "set_active_theme" => {
+            crate::commands::set_active_theme(argument(&args, "key")?)?;
+            Ok(Value::Null)
+        }
         "get_app_status" => to_value(tauri::async_runtime::block_on(
             crate::commands::get_app_status(),
         )?),
@@ -296,6 +300,35 @@ mod tests {
         let result = dispatch("plugin:path|resolve_directory", json!({ "directory": 21 })).unwrap();
 
         assert_eq!(result, json!(dirs::home_dir().unwrap().to_string_lossy()));
+    }
+
+    #[test]
+    fn dispatches_set_active_theme_to_the_command() {
+        let config_home =
+            std::env::temp_dir().join(format!("livery-dev-bridge-test-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&config_home);
+        std::fs::create_dir_all(&config_home).unwrap();
+        let previous_config_home = std::env::var_os("XDG_CONFIG_HOME");
+        std::env::set_var("XDG_CONFIG_HOME", &config_home);
+
+        let result = dispatch(
+            "set_active_theme",
+            json!({ "key": "black-atom-jpn-koyo-yoru" }),
+        )
+        .unwrap();
+
+        match previous_config_home {
+            Some(value) => std::env::set_var("XDG_CONFIG_HOME", value),
+            None => std::env::remove_var("XDG_CONFIG_HOME"),
+        }
+        assert_eq!(result, Value::Null);
+        let config =
+            std::fs::read_to_string(config_home.join("black-atom/livery/config.json")).unwrap();
+        assert_eq!(
+            serde_json::from_str::<serde_json::Value>(&config).unwrap()["active_theme"],
+            "black-atom-jpn-koyo-yoru"
+        );
+        std::fs::remove_dir_all(config_home).unwrap();
     }
 
     #[test]

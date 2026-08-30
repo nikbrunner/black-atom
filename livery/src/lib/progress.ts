@@ -1,5 +1,34 @@
 import type { UpdateResult } from "./updaters.ts";
 
+export const ACTIVE_THEME_PERSISTENCE_APP = "config";
+export const SYSTEM_APPEARANCE_APP = "system_appearance";
+
+export function commandErrorResult(app: string, error: unknown): UpdateResult {
+    const detail = error instanceof Error ? error.message : String(error);
+    return {
+        app,
+        status: "error",
+        message: detail,
+        duration_ms: null,
+    };
+}
+
+export function activeThemePersistenceError(error: unknown): UpdateResult {
+    const detail = error instanceof Error ? error.message : String(error);
+    return {
+        app: ACTIVE_THEME_PERSISTENCE_APP,
+        status: "error",
+        message: `Could not persist active theme: ${detail}`,
+        duration_ms: null,
+    };
+}
+
+/** A done result or a config patch that only failed to reload live. */
+export function themeWasApplied(result: UpdateResult): boolean {
+    return result.status === "done" ||
+        (result.status === "skipped" && result.message?.startsWith("Config patched;") === true);
+}
+
 export type ProgressStatus = "idle" | "running" | "done" | "error";
 
 export interface ProgressState {

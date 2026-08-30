@@ -4,6 +4,13 @@ import { useHotkey, useHotkeySequence } from "@tanstack/react-hotkeys";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useStore } from "@tanstack/react-store";
 import { collectionOrder, type ThemeCollectionKey, themeMap } from "@black-atom/core";
+import {
+    ACTIVE_THEME_PERSISTENCE_APP,
+    activeThemePersistenceError,
+    commandErrorResult,
+    SYSTEM_APPEARANCE_APP,
+    themeWasApplied,
+} from "../../lib/progress.ts";
 import { appStore } from "../../store/app.ts";
 import { commands } from "../../bindings.ts";
 import { applyTheme, createUpdaters, getEnabledApps } from "../../lib/updaters.ts";
@@ -220,17 +227,17 @@ function Component() {
             const results = await applyTheme(updaters, (partial) => {
                 appStore.setState((s) => ({ ...s, updaterResults: partial }));
             });
-            let applied = results.filter((result) => result.status === "done").length;
+            let applied = results.filter(themeWasApplied).length;
 
             if (config.query.data.system_appearance) {
-                try {
-                    const result = await commands.updateSystemAppearance(
-                        pickedEntry.meta.appearance,
-                    );
-                    if (result.status === "done") applied += 1;
-                } catch (error) {
-                    console.warn("[system appearance]", error);
-                }
+                const result = await commands.updateSystemAppearance(
+                    pickedEntry.meta.appearance,
+                ).catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
+                appStore.setState((s) => ({
+                    ...s,
+                    updaterResults: [...s.updaterResults, result],
+                }));
+                if (themeWasApplied(result)) applied += 1;
             }
 
             // One updater landing is enough to change what the user is looking
@@ -240,7 +247,15 @@ function Component() {
                 try {
                     await activeTheme.set.mutateAsync(pickedEntry.meta.key);
                 } catch (error) {
-                    console.warn("[active theme]", error);
+                    appStore.setState((s) => ({
+                        ...s,
+                        updaterResults: [
+                            ...s.updaterResults.filter((result) =>
+                                result.app !== ACTIVE_THEME_PERSISTENCE_APP
+                            ),
+                            activeThemePersistenceError(error),
+                        ],
+                    }));
                 }
             }
         } finally {

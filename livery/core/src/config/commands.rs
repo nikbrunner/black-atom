@@ -14,3 +14,13 @@ pub fn save_config(mut config: Config) -> Result<(), String> {
     io::write_config_to_disk(&config)?;
     Ok(())
 }
+
+pub fn get_active_theme() -> Option<String> {
+    get_config().active_theme
+}
+
+pub fn set_active_theme(key: &str) -> Result<(), String> {
+    let mut config = get_config();
+    config.active_theme = Some(key.to_string());
+    save_config(config)
+}

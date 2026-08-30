@@ -1,11 +1,51 @@
 import { assertEquals } from "@std/assert";
 import {
+    activeThemePersistenceError,
     getFailedUpdaters,
     getProgressState,
     mergeUpdateResults,
     summarizeApply,
+    themeWasApplied,
 } from "./progress.ts";
 import type { UpdateResult } from "./updaters.ts";
+
+Deno.test("active theme persistence failures become visible error rows", () => {
+    assertEquals(activeThemePersistenceError(new Error("disk full")), {
+        app: "config",
+        status: "error",
+        message: "Could not persist active theme: disk full",
+        duration_ms: null,
+    });
+});
+
+Deno.test("themeWasApplied counts patched reload skips but not no-op skips", () => {
+    assertEquals(
+        themeWasApplied({
+            app: "ghostty",
+            status: "done",
+            duration_ms: null,
+        }),
+        true,
+    );
+    assertEquals(
+        themeWasApplied({
+            app: "ghostty",
+            status: "skipped",
+            message: "Config patched; live reload failed",
+            duration_ms: null,
+        }),
+        true,
+    );
+    assertEquals(
+        themeWasApplied({
+            app: "ghostty",
+            status: "skipped",
+            message: "App is disabled",
+            duration_ms: null,
+        }),
+        false,
+    );
+});
 
 Deno.test("getProgressState returns zero progress for empty results", () => {
     const state = getProgressState([]);

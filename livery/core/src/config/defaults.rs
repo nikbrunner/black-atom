@@ -142,6 +142,7 @@ impl Default for Config {
         Config {
             version: 2,
             system_appearance: true,
+            active_theme: None,
             keymappings: Keymappings::default(),
             apps,
         }

@@ -81,15 +81,13 @@ async writeNvimSettings(settings: NvimSettings) : Promise<UpdateResult> {
 },
 /**
  * The theme livery last applied, as a theme key. `None` on a machine that
- * has never run setup. The key is stored rather than resolved, so a caller
- * resolves it against the catalogue and treats a miss like an absence.
+ * has never run setup.
  */
 async getActiveTheme() : Promise<string | null> {
     return await TAURI_INVOKE("get_active_theme");
 },
 /**
- * Record the theme livery just applied. Called once per apply, after the
- * updater loop, never per app.
+ * Record the theme livery just applied in the tracked livery config.
  */
 async setActiveTheme(key: string) : Promise<Result<null, string>> {
     try {
@@ -193,7 +191,7 @@ export type Config = {
 /**
  * Versioned configuration schema. Missing on disk means legacy v1.
  */
-version?: number; system_appearance: boolean; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
+version?: number; system_appearance: boolean; active_theme?: string | null; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
 export type ConfigFolderLinkOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; linked: number; pruned: number }
 export type ConfigFolderOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; reload_warning?: string | null }
 export type ConfigFolderPathVerification = { 

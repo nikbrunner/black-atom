@@ -56,6 +56,7 @@
         "singleQuote": false,
         "proseWrap": "preserve",
         "exclude": [
+            "PLAN.md",
             "**/CHANGELOG.md",
             "core/monitor/src/routeTree.gen.ts",
             "livery/src/routeTree.gen.ts",

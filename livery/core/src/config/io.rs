@@ -44,12 +44,23 @@ fn migrate_legacy_config() {
     }
 }
 
+/// Resolve an existing destination so atomic writes update a symlink target
+/// instead of replacing the symlink itself.
+fn atomic_destination(path: &Path) -> std::io::Result<PathBuf> {
+    match path.canonicalize() {
+        Ok(destination) => Ok(destination),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(path.to_path_buf()),
+        Err(error) => Err(error),
+    }
+}
+
 /// Copy `source` onto `target` through a temp file in the same directory, so
 /// a reader never observes a half-written config. The name is unpredictable
 /// and created exclusively, so nothing can be squatting on it; the temp file
 /// is removed on any failure.
 fn copy_atomic(source: &Path, target: &Path) -> std::io::Result<()> {
-    let parent = target.parent().ok_or_else(|| {
+    let destination = atomic_destination(target)?;
+    let parent = destination.parent().ok_or_else(|| {
         std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             format!("{} has no parent directory", target.display()),
@@ -59,7 +70,7 @@ fn copy_atomic(source: &Path, target: &Path) -> std::io::Result<()> {
     let bytes = fs::read(source)?;
     let mut tmp = tempfile::NamedTempFile::new_in(parent)?;
     tmp.write_all(&bytes)?;
-    tmp.persist(target).map_err(|e| e.error)?;
+    tmp.persist(destination).map_err(|e| e.error)?;
     Ok(())
 }
 
@@ -292,7 +303,8 @@ pub fn write_config_to_disk(config: &Config) -> Result<(), String> {
 fn write_config_atomic(path: &Path, config: &Config) -> std::io::Result<()> {
     let json = serde_json::to_string_pretty(config)
         .map_err(|e| std::io::Error::other(format!("Failed to serialize: {e}")))?;
-    let parent = path.parent().ok_or_else(|| {
+    let destination = atomic_destination(path)?;
+    let parent = destination.parent().ok_or_else(|| {
         std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             "config path has no parent",
@@ -300,7 +312,7 @@ fn write_config_atomic(path: &Path, config: &Config) -> std::io::Result<()> {
     })?;
     let mut tmp = tempfile::NamedTempFile::new_in(parent)?;
     tmp.write_all(json.as_bytes())?;
-    tmp.persist(path).map_err(|error| error.error)?;
+    tmp.persist(destination).map_err(|error| error.error)?;
     Ok(())
 }
 
@@ -391,6 +403,28 @@ mod tests {
             .filter(|name| name.contains(".tmp"))
             .collect();
         assert!(leftovers.is_empty(), "tmp files left behind: {leftovers:?}");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn write_config_atomic_updates_a_symlink_target_without_replacing_the_link() {
+        use std::os::unix::fs::symlink;
+
+        let dir = tempfile::TempDir::new().unwrap();
+        let tracked_dir = dir.path().join("tracked");
+        fs::create_dir(&tracked_dir).unwrap();
+        let target = tracked_dir.join("config.json");
+        let link = dir.path().join("config.json");
+        fs::write(&target, serde_json::to_vec(&Config::default()).unwrap()).unwrap();
+        symlink(&target, &link).unwrap();
+
+        write_config_atomic(&link, &Config::default()).unwrap();
+
+        assert!(fs::symlink_metadata(&link)
+            .unwrap()
+            .file_type()
+            .is_symlink());
+        assert!(serde_json::from_str::<Config>(&fs::read_to_string(&link).unwrap()).is_ok());
     }
 
     #[test]
