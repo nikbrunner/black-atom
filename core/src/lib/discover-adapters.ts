@@ -3,7 +3,7 @@
  */
 
 import { dirname, join } from "@std/path";
-import { themeKeys } from "../types/theme.ts";
+import { themeKeys } from "../themes/catalog.ts";
 import { createAdapterConfigSchema } from "./validate-adapter.ts";
 
 /**

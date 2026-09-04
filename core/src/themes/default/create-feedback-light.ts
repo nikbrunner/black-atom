@@ -1,7 +1,7 @@
-import type { ThemeFeedbackColors } from "../../types/theme.ts";
+import type * as Theme from "../../types/theme.ts";
 import { oklch } from "../../utils/color.ts";
 
-export default function (): ThemeFeedbackColors {
+export default function (): Theme.Feedback {
     return {
         negative: oklch(0.75, 0.25, 0),
         success: oklch(0.62, 0.25, 145),

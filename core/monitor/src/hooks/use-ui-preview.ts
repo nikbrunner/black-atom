@@ -1,6 +1,6 @@
 import { useTheme } from "../queries/themes";
 import { themeContrast } from "@core/lib/stats.ts";
-import type { ThemeDefinition, ThemeKey } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 export interface ContrastData {
     ratio: number;
@@ -8,7 +8,7 @@ export interface ContrastData {
 }
 
 export interface UiPreviewData {
-    theme: ThemeDefinition;
+    theme: Theme.Definition;
     contrast: ContrastData;
     paletteColors: string[];
     darkestPrimary: string;
@@ -16,7 +16,7 @@ export interface UiPreviewData {
     notificationColors: { success: string; warning: string; error: string; info: string };
 }
 
-export function useUiPreview(themeKey: ThemeKey): {
+export function useUiPreview(themeKey: Theme.Key): {
     data: UiPreviewData | null;
     isLoading: boolean;
 } {

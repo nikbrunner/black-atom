@@ -1,9 +1,9 @@
-import type { ThemeCreatorOptions, ThemeUiColors } from "../../types/theme.ts";
+import type * as Theme from "../../types/theme.ts";
 import { tint } from "../../utils/color.ts";
 
 export default function (
-    { primaries, palette, feedback, accents }: ThemeCreatorOptions,
-): ThemeUiColors {
+    { primaries, palette, feedback, accents }: Theme.CreatorContext,
+): Theme.Ui {
     function t(color: string) {
         return tint({ color, with: primaries.d20, amount: 0.40 });
     }

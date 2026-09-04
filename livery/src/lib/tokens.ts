@@ -1,4 +1,4 @@
-import type { ThemeDefinition } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 
 /**
  * Maps a theme's UI palette onto the --ba-* chrome tokens, so the whole
@@ -20,7 +20,7 @@ import type { ThemeDefinition } from "@black-atom/core";
  * emitted: the static token layer derives them from fg-default and
  * fg-positive via color-mix, so they re-tint automatically.
  */
-export function themeToCustomProperties(theme: ThemeDefinition): Record<string, string> {
+export function themeToCustomProperties(theme: Theme.Definition): Record<string, string> {
     return {
         // Backgrounds — tonal tiers: recessed < default < subtle < hint
         "--ba-color-bg-recessed": theme.ui.bg.float,
@@ -50,7 +50,7 @@ export function themeToCustomProperties(theme: ThemeDefinition): Record<string, 
  * color-scheme from the theme's appearance, so non-overridden tokens
  * (which use light-dark()) resolve on the matching side.
  */
-export function themeToStyleSheet(theme: ThemeDefinition): string {
+export function themeToStyleSheet(theme: Theme.Definition): string {
     const properties = themeToCustomProperties(theme);
     const declarations = Object.entries(properties)
         .map(([prop, value]) => `    ${prop}: ${value};`)

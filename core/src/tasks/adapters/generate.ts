@@ -4,7 +4,7 @@ import { config } from "../../config.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";
 import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
-import { themeKeys } from "../../types/theme.ts";
+import { themeKeys } from "../../themes/catalog.ts";
 import { runCommand } from "./utils.ts";
 
 async function runPostGenerate(adapterDir: string, adapter: string): Promise<void> {

@@ -3,7 +3,7 @@ import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useStore } from "@tanstack/react-store";
 import { useMutationState } from "@tanstack/react-query";
-import { collectionOrder, themeMap } from "@black-atom/core";
+import { collectionOrder, themeCatalog } from "@black-atom/core";
 import { commands } from "../../bindings.ts";
 import denoConfig from "../../../deno.json" with { type: "json" };
 import { AppHeader } from "../../components/app-header/index.ts";
@@ -73,7 +73,7 @@ function AppLayout() {
     const isSaving = latestSaveStatus === "pending";
     const justSaved = latestSaveStatus === "success";
 
-    const themeCount = useMemo(() => Object.keys(themeMap).length, []);
+    const themeCount = useMemo(() => Object.keys(themeCatalog).length, []);
     const collectionCount = collectionOrder.length;
     const env = displayedTheme.meta.appearance.toUpperCase();
 

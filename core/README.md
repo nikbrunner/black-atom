@@ -116,7 +116,7 @@ deno task publish
 tests across every workspace member, core included.
 
 > **Note on `--allow-slow-types`**: The publish task uses `--allow-slow-types` because the theme
-> registry in `src/types/themes.ts` relies on `as const satisfies` patterns to preserve literal
+> catalog in `src/themes/catalog.ts` relies on `as const satisfies` patterns to preserve literal
 > type narrowing (e.g., knowing a theme's appearance is `"dark"` not `"dark" | "light"`). JSR's
 > fast check cannot resolve these inferred types. Tracked in
 > [DEV-292](https://linear.app/black-atom-industries/issue/DEV-292).

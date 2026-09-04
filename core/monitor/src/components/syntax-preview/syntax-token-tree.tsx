@@ -1,8 +1,8 @@
-import type { ThemeSyntaxColors } from "@core/types/theme";
+import type * as Theme from "@core/types/theme.ts";
 import styles from "./syntax-token-tree.module.css";
 
 type Props = {
-    syntax: ThemeSyntaxColors;
+    syntax: Theme.Syntax;
 };
 
 type SyntaxGroup = Record<string, string | Record<string, string | Record<string, string>>>;

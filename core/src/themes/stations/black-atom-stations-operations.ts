@@ -1,5 +1,5 @@
-import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
-import { themeKeyMetaMap } from "../../types/themes.ts";
+import type * as Theme from "../../types/theme.ts";
+import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
 import createFeedback from "./create-feedback-dark.ts";
@@ -7,9 +7,7 @@ import createPalette from "./create-palette-dark.ts";
 import createSyntax from "./create-syntax-dark.ts";
 import createUi from "./create-ui-dark.ts";
 
-const meta = themeKeyMetaMap["black-atom-stations-operations"];
-
-const primaries: ThemePrimaryColors = {
+const primaries: Theme.Primaries = {
     d10: oklch(0.247, 0.014, 196.27),
     d20: oklch(0.295, 0.021, 181.1),
     d30: oklch(0.338, 0.027, 173.11),
@@ -46,7 +44,7 @@ const palette = createPalette(primaries, {
     cyan: oklch(0.802, 0.123, 156.83),
 });
 
-const accents: ThemeAccentColors = {
+const accents: Theme.Accents = {
     a10: palette.yellow,
     a20: palette.darkYellow,
 };
@@ -57,14 +55,13 @@ const options = { primaries, palette, feedback, accents };
 const ui = createUi(options);
 const syntax = createSyntax(options);
 
-const theme: ThemeDefinition = {
-    meta,
+const colors = defineThemeColors({
     primaries,
     palette,
     accents,
     feedback,
     ui,
     syntax,
-};
+});
 
-export default theme;
+export default colors;

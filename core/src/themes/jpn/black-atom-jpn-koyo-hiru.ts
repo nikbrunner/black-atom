@@ -1,5 +1,5 @@
-import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
-import { themeKeyMetaMap } from "../../types/themes.ts";
+import type * as Theme from "../../types/theme.ts";
+import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
 import createFeedback from "./create-feedback-light.ts";
@@ -7,9 +7,7 @@ import createPalette from "./create-palette-light.ts";
 import createSyntax from "./create-syntax-light.ts";
 import createUi from "./create-ui-light.ts";
 
-const meta = themeKeyMetaMap["black-atom-jpn-koyo-hiru"];
-
-const primaries: ThemePrimaryColors = {
+const primaries: Theme.Primaries = {
     d10: oklch(0.26, 0.021, 325),
     d20: oklch(0.32, 0.027, 325),
     d30: oklch(0.38, 0.043, 325),
@@ -46,7 +44,7 @@ const palette = createPalette(primaries, {
     cyan: oklch(0.65, 0.15, 180),
 });
 
-const accents: ThemeAccentColors = {
+const accents: Theme.Accents = {
     a10: palette.yellow,
     a20: palette.darkYellow,
 };
@@ -58,14 +56,13 @@ const ui = createUi(options);
 
 const syntax = createSyntax(options);
 
-const theme: ThemeDefinition = {
-    meta,
+const colors = defineThemeColors({
     primaries,
     palette,
     accents,
     feedback,
     ui,
     syntax,
-};
+});
 
-export default theme;
+export default colors;

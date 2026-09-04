@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 import { assertEquals, assertGreater, assertLessOrEqual, assertThrows } from "@std/assert";
 import { analyzeThemeContrast, INTENDED_PAIRINGS } from "./contrast-analysis.ts";
-import type { ThemeDefinition } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 Deno.test("INTENDED_PAIRINGS has all expected categories", () => {
     const names = INTENDED_PAIRINGS.map((c) => c.name);
@@ -63,7 +63,7 @@ const testTheme = {
             modify: "#8080d0",
         },
     },
-} as unknown as ThemeDefinition;
+} as unknown as Theme.Definition;
 
 Deno.test("analyzeThemeContrast returns correct structure", () => {
     const result = analyzeThemeContrast(testTheme);
@@ -110,7 +110,7 @@ Deno.test("analyzeThemeContrast throws on missing token", () => {
             bg: { default: "#1a1d23" },
             fg: { default: "#c5cad0" },
         },
-    } as unknown as ThemeDefinition;
+    } as unknown as Theme.Definition;
 
     assertThrows(
         () => analyzeThemeContrast(incompleteTheme),

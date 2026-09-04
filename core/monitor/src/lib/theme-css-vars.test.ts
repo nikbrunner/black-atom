@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 import { assertEquals } from "@std/assert";
 import { themeToCssVars } from "./theme-css-vars.ts";
-import type { ThemeDefinition } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 const minimalTheme = {
     meta: {
@@ -45,7 +45,7 @@ const minimalTheme = {
     },
     ui: { bg: { default: "#111", panel: "#222" }, fg: { default: "#eee", subtle: "#999" } },
     syntax: { variable: { default: "#abc", builtin: "#def" } },
-} as unknown as ThemeDefinition;
+} as unknown as Theme.Definition;
 
 Deno.test("themeToCssVars generates primaries vars", () => {
     const vars = themeToCssVars(minimalTheme);

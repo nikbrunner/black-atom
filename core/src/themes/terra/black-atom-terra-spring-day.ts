@@ -1,5 +1,5 @@
-import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
-import { themeKeyMetaMap } from "../../types/themes.ts";
+import type * as Theme from "../../types/theme.ts";
+import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
 import createFeedback from "./create-feedback-light.ts";
@@ -7,9 +7,7 @@ import createPalette from "./create-palette-light.ts";
 import createSyntax from "./create-syntax-light.ts";
 import createUi from "./create-ui-light.ts";
 
-const meta = themeKeyMetaMap["black-atom-terra-spring-day"];
-
-const primaries: ThemePrimaryColors = {
+const primaries: Theme.Primaries = {
     d10: oklch(0.384, 0.037, 166.2),
     d20: oklch(0.422, 0.042, 163.02),
     d30: oklch(0.468, 0.047, 163.55),
@@ -46,7 +44,7 @@ const palette = createPalette(primaries, {
     cyan: oklch(0.654, 0.152, 157.29),
 });
 
-const accents: ThemeAccentColors = {
+const accents: Theme.Accents = {
     a10: palette.yellow,
     a20: palette.darkYellow,
 };
@@ -57,14 +55,13 @@ const options = { primaries, palette, feedback, accents };
 const ui = createUi(options);
 const syntax = createSyntax(options);
 
-const theme: ThemeDefinition = {
-    meta,
+const colors = defineThemeColors({
     primaries,
     palette,
     accents,
     feedback,
     ui,
     syntax,
-};
+});
 
-export default theme;
+export default colors;

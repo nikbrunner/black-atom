@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { themeMap } from "@black-atom/core";
+import { themeCatalog } from "@black-atom/core";
 import { AppHeader } from "../../components/app-header/index.ts";
 import { AppFooter } from "../../components/app-footer/index.ts";
 import { ApplyRail } from "../../components/apply-rail/index.ts";
@@ -128,7 +128,7 @@ export const Route = createFileRoute("/dev/components")({
     component: Page,
 });
 
-const groups = getGroupedThemes(themeMap);
+const groups = getGroupedThemes(themeCatalog);
 const themes = groups.flatMap((g) => g.themes);
 
 const PROGRESS_FIXTURES: Record<string, UpdateResult[]> = {

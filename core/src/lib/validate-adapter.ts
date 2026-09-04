@@ -1,5 +1,5 @@
 import * as z from "zod";
-import type { ThemeCollectionKey } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 /**
  * Factory function that creates the adapter config schema
@@ -14,7 +14,7 @@ export function createAdapterConfigSchema(themeKeys: readonly string[]) {
     });
 
     // Create a type-safe collections schema that requires all CollectionKey values
-    const collectionEntries: Record<ThemeCollectionKey, typeof collectionConfigSchema> = {
+    const collectionEntries: Record<Theme.CollectionKey, typeof collectionConfigSchema> = {
         default: collectionConfigSchema,
         jpn: collectionConfigSchema,
         stations: collectionConfigSchema,

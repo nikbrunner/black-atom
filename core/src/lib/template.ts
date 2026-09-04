@@ -1,6 +1,6 @@
 import { Eta } from "@eta";
 import { basename, dirname, join } from "@std/path";
-import type { ThemeDefinition, ThemeKey, ThemeMeta } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 import type { AdapterConfig } from "./validate-adapter.ts";
 
@@ -20,7 +20,7 @@ const eta = new Eta({
  */
 export async function processTemplates(
     adapterConfig: AdapterConfig,
-    themeMap: Record<ThemeMeta["key"], ThemeDefinition | null>,
+    themeMap: Theme.DefinitionMap,
 ): Promise<string[]> {
     // Process collection templates
     if (adapterConfig.collections) {
@@ -37,7 +37,7 @@ export async function processTemplates(
  */
 async function processCollectionTemplates(
     collections: NonNullable<AdapterConfig["collections"]>,
-    themeMap: Record<ThemeKey, ThemeDefinition | null>,
+    themeMap: Theme.DefinitionMap,
 ): Promise<string[]> {
     const allErrors: string[] = [];
 
@@ -56,7 +56,7 @@ async function processCollectionTemplates(
 
             // Process each theme in the collection
             for (const themeKey of themes) {
-                const theme = themeMap[themeKey as ThemeKey];
+                const theme = themeMap[themeKey as Theme.Key];
 
                 if (!theme) {
                     errors.push(`Theme "${themeKey}" not found`);

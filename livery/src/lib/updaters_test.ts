@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { applyTheme, createUpdaters, getEnabledApps } from "./updaters.ts";
 import type { AppConfig, AppName } from "../bindings.ts";
-import type { ThemeMeta } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import type { UpdaterEntry, UpdateResult } from "./updaters.ts";
 
 // --- getEnabledApps ---
@@ -65,7 +65,7 @@ Deno.test("createUpdaters creates an entry per enabled app", () => {
         appearance: "dark",
         status: "release",
         collection: { key: "terra", label: "Terra" },
-    } as unknown as ThemeMeta;
+    } as unknown as Theme.Meta;
 
     const result = createUpdaters(enabledApps, themeMeta);
 
@@ -83,7 +83,7 @@ Deno.test("createUpdaters returns empty for empty input", () => {
         appearance: "dark",
         status: "release",
         collection: { key: "default", label: "Default" },
-    } as unknown as ThemeMeta;
+    } as unknown as Theme.Meta;
 
     const result = createUpdaters([], themeMeta);
 

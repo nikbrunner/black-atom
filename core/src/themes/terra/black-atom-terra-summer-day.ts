@@ -1,5 +1,5 @@
-import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
-import { themeKeyMetaMap } from "../../types/themes.ts";
+import type * as Theme from "../../types/theme.ts";
+import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
 import createFeedback from "./create-feedback-light.ts";
@@ -7,9 +7,7 @@ import createPalette from "./create-palette-light.ts";
 import createSyntax from "./create-syntax-light.ts";
 import createUi from "./create-ui-light.ts";
 
-const meta = themeKeyMetaMap["black-atom-terra-summer-day"];
-
-const primaries: ThemePrimaryColors = {
+const primaries: Theme.Primaries = {
     // Dark range — deep jungle canopy
     d10: oklch(0.18, 0.06, 160),
     d20: oklch(0.24, 0.07, 155),
@@ -50,7 +48,7 @@ const palette = createPalette(primaries, {
     cyan:        oklch(0.60, 0.085, 170),
 });
 
-const accents: ThemeAccentColors = {
+const accents: Theme.Accents = {
     a10: palette.darkYellow,
     a20: palette.darkGreen,
 };
@@ -62,14 +60,13 @@ const options = { primaries, palette, feedback, accents };
 const ui = createUi(options);
 const syntax = createSyntax(options);
 
-const theme: ThemeDefinition = {
-    meta,
+const colors = defineThemeColors({
     primaries,
     palette,
     accents,
     feedback,
     ui,
     syntax,
-};
+});
 
-export default theme;
+export default colors;

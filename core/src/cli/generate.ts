@@ -2,12 +2,12 @@ import * as z from "zod";
 import * as colors from "@std/fmt/colors";
 
 import { config } from "../config.ts";
-import { themeKeys } from "../types/theme.ts";
+import { themeKeys } from "../themes/catalog.ts";
 
 import { type AdapterConfig, createAdapterConfigSchema } from "../lib/validate-adapter.ts";
 import log from "../lib/log.ts";
 import { processTemplates } from "../lib/template.ts";
-import { themeMap } from "../themes/map.ts";
+import { themeCatalog } from "../themes/catalog.ts";
 
 async function getAdapterConfig(): Promise<AdapterConfig> {
     try {
@@ -85,7 +85,7 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
                 // Reload adapter config if it changed
                 const updatedAdapterConfig = await getAdapterConfig();
                 // Process templates
-                await processTemplates(updatedAdapterConfig, themeMap);
+                await processTemplates(updatedAdapterConfig, themeCatalog);
             } catch (error) {
                 log.error(
                     `Error processing changes: ${
@@ -129,7 +129,7 @@ export default async function (options: string[] = []) {
     const adapterConfig = await getAdapterConfig();
 
     // Process templates
-    const templateErrors = await processTemplates(adapterConfig, themeMap);
+    const templateErrors = await processTemplates(adapterConfig, themeCatalog);
 
     // If there are template errors, throw them so they can be caught by the caller
     if (templateErrors.length > 0) {

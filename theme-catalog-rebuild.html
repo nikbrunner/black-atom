@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Theme Catalog Rebuild · End-state Plan</title>
+        <style>
+        :root {
+            --bg: oklch(.97 .005 260);
+            --fg: oklch(.18 .02 260);
+            --card: oklch(1 0 0);
+            --primary: oklch(.5 .25 280);
+            --muted: oklch(.92 .01 260);
+            --muted-fg: oklch(.42 .025 260);
+            --border: oklch(.87 .012 260);
+            --code: oklch(.925 .012 260);
+            --success: oklch(.47 .18 150);
+            --warning: oklch(.57 .17 80);
+            --danger: oklch(.52 .22 25);
+            --sans: Inter,system-ui,-apple-system,sans-serif;
+            --mono: "JetBrains Mono","Fira Code",ui-monospace,monospace;
+            --display: ui-serif,Georgia,serif;
+            --radius: .65rem;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font: 15px/1.62 var(--sans);
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 24px 96px;
+        }
+        h1,
+        h2,
+        h3 {
+            font-family: var(--display);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        h1 {
+            font-size: 2.25rem;
+            margin: .25rem 0 1.3rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        h3 {
+            font-size: 1.05rem;
+            margin: 0 0 .45rem;
+        }
+        p {
+            max-width: 76ch;
+        }
+        .eyebrow,
+        .label,
+        .tag,
+        .phase,
+        th {
+            font: 600 .7rem var(--mono);
+            text-transform: uppercase;
+            letter-spacing: .055em;
+            color: var(--muted-fg);
+        }
+        .hero,
+        .card,
+        .callout,
+        .code,
+        .table-wrap,
+        .diagram,
+        details,
+        .risk {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .hero {
+            padding: 20px 24px;
+        }
+        .hero p {
+            margin: .3rem 0 0;
+            color: var(--muted-fg);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .stat {
+            padding: 14px;
+            text-align: center;
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .stat b {
+            display: block;
+            font: 500 1.75rem var(--display);
+        }
+        .stat span {
+            font: 600 .66rem var(--mono);
+            text-transform: uppercase;
+            color: var(--muted-fg);
+        }
+        section {
+            margin-top: 66px;
+        }
+        .section-head {
+            display: flex;
+            gap: 13px;
+            align-items: baseline;
+            border-bottom: 1.5px solid var(--border);
+            padding-bottom: 9px;
+            margin-bottom: 24px;
+        }
+        .num {
+            font: 600 .74rem var(--mono);
+            color: var(--primary);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .card {
+            padding: 20px;
+        }
+        .card p {
+            margin: .35rem 0;
+            color: var(--muted-fg);
+        }
+        ul {
+            padding-left: 19px;
+        }
+        .tight li {
+            margin: .45rem 0;
+        }
+        .callout {
+            padding: 15px 20px;
+            border-left: 3px solid var(--primary);
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+        .callout.warn {
+            border-left-color: var(--warning);
+        }
+        .callout.good {
+            border-left-color: var(--success);
+        }
+        .callout p {
+            margin: .25rem 0;
+            color: var(--muted-fg);
+        }
+        .table-wrap {
+            overflow: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .83rem;
+        }
+        th,
+        td {
+            text-align: left;
+            vertical-align: top;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--muted);
+        }
+        tr:last-child td {
+            border-bottom: 0;
+        }
+        .key,
+        code,
+        .tree {
+            font-family: var(--mono);
+        }
+        .key {
+            font-size: .73rem;
+        }
+        .tree {
+            font-size: .76rem;
+            line-height: 1.58;
+            white-space: pre;
+            overflow: auto;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tag {
+            padding: 3px 8px;
+            background: var(--muted);
+            border-radius: 5px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .tag.hot {
+            color: var(--primary);
+            background: color-mix(in oklab,var(--primary) 11%,transparent);
+        }
+        .swatches {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 9px;
+            margin-top: 18px;
+        }
+        .swatch {
+            min-height: 76px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            font: 600 .67rem var(--mono);
+        }
+        .swatch small {
+            font-weight: 400;
+            opacity: .78;
+        }
+        .code {
+            padding: 17px 19px;
+            margin: 14px 0;
+            background: var(--code);
+            overflow: auto;
+        }
+        .code .label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .code pre {
+            margin: 0;
+            min-width: max-content;
+            font: .76rem/1.55 var(--mono);
+        }
+        .kw {
+            color: var(--primary);
+        }
+        .str {
+            color: var(--success);
+        }
+        .cm {
+            color: var(--muted-fg);
+            font-style: italic;
+        }
+        .diagram {
+            padding: 22px;
+            margin: 18px 0;
+        }
+        .flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+        .node {
+            padding: 15px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            background: var(--bg);
+        }
+        .node strong {
+            display: block;
+        }
+        .node small {
+            font: 500 .68rem var(--mono);
+            color: var(--muted-fg);
+        }
+        .node.primary {
+            border-color: var(--primary);
+            background: color-mix(in oklab,var(--primary) 6%,var(--card));
+        }
+        .arrow {
+            color: var(--muted-fg);
+            font-size: 1.25rem;
+        }
+        .branches {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .caption {
+            text-align: center;
+            color: var(--muted-fg);
+            font: .7rem var(--mono);
+            margin-top: 12px;
+        }
+        .milestones {
+            display: flex;
+            flex-direction: column;
+        }
+        .milestone {
+            display: grid;
+            grid-template-columns: 82px 22px 1fr;
+            gap: 0 14px;
+        }
+        .phase {
+            text-align: right;
+        }
+        .rail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dot {
+            width: 13px;
+            height: 13px;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            background: var(--card);
+        }
+        .line {
+            width: 2px;
+            flex: 1;
+            background: var(--border);
+            margin: 4px 0;
+        }
+        .milestone:last-child .line {
+            display: none;
+        }
+        .milestone-body {
+            padding-bottom: 30px;
+        }
+        .milestone-body p {
+            margin: .25rem 0;
+            color: var(--muted-fg);
+        }
+        .proof {
+            font: .72rem var(--mono);
+            color: var(--fg)!important;
+        }
+        .checks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .check {
+            padding: 16px 18px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card);
+        }
+        .check b {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .check span {
+            color: var(--muted-fg);
+        }
+        .risks {
+            display: grid;
+            gap: 10px;
+        }
+        .risk {
+            display: grid;
+            grid-template-columns: 1fr 82px 1.6fr;
+            gap: 16px;
+            align-items: center;
+            padding: 13px 16px;
+        }
+        .badge {
+            font: 700 .65rem var(--mono);
+            text-align: center;
+            padding: 3px 7px;
+            border-radius: 5px;
+        }
+        .high {
+            color: var(--danger);
+            background: color-mix(in oklab,var(--danger) 13%,transparent);
+        }
+        .med {
+            color: var(--warning);
+            background: color-mix(in oklab,var(--warning) 13%,transparent);
+        }
+        .muted {
+            color: var(--muted-fg);
+        }
+        details {
+            margin: 15px 0;
+        }
+        summary {
+            cursor: pointer;
+            padding: 14px 18px;
+            font-weight: 600;
+        }
+        .details-body {
+            padding: 0 18px 18px;
+        }
+        .footer {
+            margin-top: 45px;
+            color: var(--muted-fg);
+            font-size: .83rem;
+        }
+        @media (max-width:820px) {
+            .stats,
+            .grid-2,
+            .checks {
+                grid-template-columns: 1fr 1fr;
+            }
+            .flow {
+                grid-template-columns: 1fr;
+            }
+            .arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+            .branches {
+                grid-template-columns: 1fr;
+            }
+            .risk {
+                grid-template-columns: 1fr;
+            }
+            .swatches {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width:540px) {
+            .container {
+                padding: 36px 16px 70px;
+            }
+            .stats,
+            .grid-2,
+            .checks {
+                grid-template-columns: 1fr;
+            }
+            .milestone {
+                grid-template-columns: 60px 18px 1fr;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <main class="container">
+            <header>
+                <span class="eyebrow">End-state plan · Black Atom ecosystem</span>
+                <h1>Rebuild the Theme Catalog from source truth</h1>
+                <div
+                    class="hero"><span class="label">Outcome</span><p>Produce a coherent Catalog of 7 Collections and 32 existing Themes from the source Catalog on <code>main</code>. Preserve every selected Theme’s colors, make construction local and explicit, regenerate all adapters, align Monitor and Livery, and reconcile dots against the monorepo. The Minium Collection reserves a third future Theme whose background-led name and colors remain open.</p></div>
+                <div class="stats">
+                    <div class="stat"><b>7</b><span>Collections</span></div>
+                    <div class="stat"><b>32</b><span>Themes</span></div>
+                    <div class="stat"><b>10</b><span>Adapters</span></div>
+                    <div class="stat"><b>2</b><span>Repositories</span></div>
+                </div>
+            </header>
+
+            <section>
+                <div
+                    class="section-head"><span class="num">01</span><h2>Intent and limits</h2></div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Must be true</h3>
+                        <ul class="tight">
+                            <li>The selected source Themes retain Primaries, Palette, Accents, Feedback, UI, and Syntax values.</li>
+                            <li>Each Theme Definition owns its Primaries and chooses every derived namespace locally.</li>
+                            <li>Catalog keys, generated outputs, Monitor, Livery, CLI, docs, and dots agree on the approved target Catalog.</li>
+                            <li>Generated output and external links contain no stale managed Theme.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Operating boundaries</h3>
+                        <ul class="tight">
+                            <li>The rebuild changes structure and names, not source colors. The future third Minium Theme is the only planned new color design.</li>
+                            <li>Color creators receive only the resolved namespaces they need; <code>defineCollection</code> assembles the final Theme metadata.</li>
+                            <li>Generated files come from the generator, and Livery validation uses a temporary <code>$HOME</code>.</li>
+                            <li>Git actions happen only when the owner requests them explicitly.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="callout" style="margin-top:20px">
+                    <h3>Starting point and execution model</h3>
+                    <p>The owner creates a fresh implementation branch directly from the repository’s normal <code>main</code> branch after approving this plan. This HTML is the implementation contract for the target structure; the current repository state is established separately before each slice begins.</p>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-head"><span class="num">02</span><h2>Catalog contract</h2></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID / Collection</th>
+                                <th>Target family</th>
+                                <th>Source identity</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TC-01 · DEFAULT</strong><div class="key">default · provisional</div></td>
+                                <td>Dark, Dimmed Dark, Light, Dimmed Light</td>
+                                <td>Default</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-02 · FACILITY</strong><div class="key">facility · proposed</div></td>
+                                <td>Dark, Dimmed Dark, Light, Dimmed Light</td>
+                                <td>Stations departments</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-03 · TERRA</strong><div class="key">terra</div></td>
+                                <td>Spring, Summer, Fall, Winter × Dark/Light</td>
+                                <td>TERRA</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-04 · JPN</strong><div class="key">jpn</div></td>
+                                <td>Koyo Dark/Light, Murasaki Dark, Tsuki Dark, Sanshoku Dark/Light</td>
+                                <td>JPN + MNML Mikado</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-05 · CLAY</strong><div class="key">clay</div></td>
+                                <td>Dark, Light</td>
+                                <td>MNML Clay</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-06 · MINIUM</strong><div class="key">minium · provisional</div></td>
+                                <td>Viridian Dark/Light, Polymer Dark/Light, third Theme open</td>
+                                <td>MNML 47 + MNML Orange; future light Orange/Blue Theme</td>
+                                <td>4 now</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TC-07 · MONO</strong><div class="key">mono</div></td>
+                                <td>Dark, Light, Dimmed Dark, Dimmed Light</td>
+                                <td>MNML Mono + E-Ink</td>
+                                <td>4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid-2" style="margin-top:20px">
+                    <div class="callout good">
+                        <h3>TC-01 · provisional DEFAULT</h3>
+                        <p>The former Default family is cool blue-gray with a green/teal lead near <code>#4EC983</code>, supported by blue and pink. DEFAULT is the working semantic name; approval confirms or replaces it before implementation.</p>
+                    </div>
+                    <div class="callout warn">
+                        <h3>TC-02 · proposed FACILITY</h3>
+                        <p>FACILITY groups the four Stations departments as states of one technical institution. It is a visible owner decision, not an approved name hidden inside the migration.</p>
+                    </div>
+                </div>
+                <div class="swatches">
+                    <div class="swatch"
+                        style="background:#12171b;color:#e5ecf3">Foundation<small>#12171B</small></div>
+                    <div class="swatch"
+                        style="background:#4ec983;color:#092117">Lead green<small>#4EC983</small></div>
+                    <div class="swatch"
+                        style="background:#7faaff;color:#10192a">Supporting blue<small>#7FAAFF</small></div>
+                    <div class="swatch"
+                        style="background:#fb82a1;color:#2b1018">Supporting pink<small>#FB82A1</small></div>
+                </div>
+                <details>
+                    <summary>Exact 32-key source mapping</summary>
+                    <div class="details-body">
+                        <p
+                            class="muted">Each target key must deep-equal the normalized six-namespace payload of its source key.</p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Target key</th>
+                                        <th>Clean-main source key</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="key">black-atom-default-dark</td>
+                                        <td class="key">black-atom-default-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-default-dimmed-dark</td>
+                                        <td class="key">black-atom-default-dark-dimmed</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-default-light</td>
+                                        <td class="key">black-atom-default-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-default-dimmed-light</td>
+                                        <td class="key">black-atom-default-light-dimmed</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-facility-dark</td>
+                                        <td class="key">black-atom-stations-engineering</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-facility-dimmed-dark</td>
+                                        <td class="key">black-atom-stations-operations</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-facility-light</td>
+                                        <td class="key">black-atom-stations-research</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-facility-dimmed-light</td>
+                                        <td class="key">black-atom-stations-medical</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-spring-dark</td>
+                                        <td class="key">black-atom-terra-spring-night</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-spring-light</td>
+                                        <td class="key">black-atom-terra-spring-day</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-summer-dark</td>
+                                        <td class="key">black-atom-terra-summer-night</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-summer-light</td>
+                                        <td class="key">black-atom-terra-summer-day</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-fall-dark</td>
+                                        <td class="key">black-atom-terra-fall-night</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-fall-light</td>
+                                        <td class="key">black-atom-terra-fall-day</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-winter-dark</td>
+                                        <td class="key">black-atom-terra-winter-night</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-terra-winter-light</td>
+                                        <td class="key">black-atom-terra-winter-day</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-koyo-dark</td>
+                                        <td class="key">black-atom-jpn-koyo-yoru</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-koyo-light</td>
+                                        <td class="key">black-atom-jpn-koyo-hiru</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-murasaki-dark</td>
+                                        <td class="key">black-atom-jpn-murasaki-yoru</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-tsuki-dark</td>
+                                        <td class="key">black-atom-jpn-tsuki-yoru</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-sanshoku-dark</td>
+                                        <td class="key">black-atom-mnml-mikado-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-jpn-sanshoku-light</td>
+                                        <td class="key">black-atom-mnml-mikado-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-clay-dark</td>
+                                        <td class="key">black-atom-mnml-clay-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-clay-light</td>
+                                        <td class="key">black-atom-mnml-clay-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-minium-polymer-dark</td>
+                                        <td class="key">black-atom-mnml-orange-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-minium-polymer-light</td>
+                                        <td class="key">black-atom-mnml-orange-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-minium-viridian-dark</td>
+                                        <td class="key">black-atom-mnml-47-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-minium-viridian-light</td>
+                                        <td class="key">black-atom-mnml-47-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-mono-dark</td>
+                                        <td class="key">black-atom-mnml-mono-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-mono-light</td>
+                                        <td class="key">black-atom-mnml-mono-light</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-mono-dimmed-dark</td>
+                                        <td class="key">black-atom-mnml-eink-dark</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="key">black-atom-mono-dimmed-light</td>
+                                        <td class="key">black-atom-mnml-eink-light</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>Sources intentionally omitted</summary>
+                    <div class="details-body">
+                        <p>Paper Blue Dark/Light, Paper Brown Dark/Light, MNML Osman Light, and MNML Ita Light have no target. Their keys, generated output, embedded data, docs entries, and managed links disappear at cutover.</p>
+                    </div>
+                </details>
+            </section>
+
+            <section>
+                <div
+                    class="section-head"><span class="num">03</span><h2>Collection modules define the catalog contract</h2></div>
+                <div class="callout good">
+                    <h3>Architecture contract</h3>
+                    <p>Each Theme file defines only its resolved color namespaces through <code>defineThemeColors</code>. Each Collection module owns the Collection metadata and its typed Theme map through <code>defineCollection</code>. The root Catalog aggregates the complete Collection objects and derives its public key types from one typed Tuple of those imports.</p>
+                </div>
+                <div class="card"
+                    style="margin-top:20px"><span class="label">Collection-to-Theme source structure</span><div class="tree">core/src/
+├── types/theme.ts
+└── themes/
+    ├── catalog.ts
+    ├── define-collection.ts
+    ├── define-theme-colors.ts
+    ├── __fixtures__/source-colors.json
+    ├── default/
+    │   ├── mod.ts
+    │   └── black-atom-default-dark.ts
+    ├── jpn/
+    │   ├── mod.ts
+    │   └── black-atom-jpn-koyo-yoru.ts
+    └── .../<collection>/
+        ├── mod.ts
+        └── <theme-key>.ts</div></div>
+                <div class="table-wrap" style="margin-top:16px">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File group</th>
+                                <th>Final responsibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>themes/&lt;collection&gt;/&lt;theme&gt;.ts</code></td>
+                                <td>Defines the Theme’s Primaries and color creators with <code>defineThemeColors({...})</code>. Exports resolved <code>Theme.Colors</code>; it does not own Collection metadata.</td>
+                            </tr>
+                            <tr>
+                                <td><code>themes/&lt;collection&gt;/mod.ts</code></td>
+                                <td>Imports the Theme color objects and calls <code>defineCollection({...})</code> once. The returned object contains inline Collection metadata and the typed Theme map, then becomes the module’s only export.</td>
+                            </tr>
+                            <tr>
+                                <td><code>themes/define-theme-colors.ts</code></td>
+                                <td>Resolves color namespace objects and creators in the fixed order Primaries → Accents → Palette → Feedback → UI/Syntax. Creators receive the namespaces resolved before them and the function returns finished <code>Theme.Colors</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>themes/define-collection.ts</code></td>
+                                <td>Combines Collection metadata with each Theme’s local name, appearance, status, and resolved colors. It injects the Theme key, display label, and Collection metadata into the finished <code>ThemeDefinition</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>themes/catalog.ts</code></td>
+                                <td>Stores imported Collection objects in one <code>as const</code> Tuple. It derives Collection keys, Theme keys, Collection metadata, and per-Collection Theme keys from that Tuple, then exposes the hierarchical Collection inputs and flat Theme projection.</td>
+                            </tr>
+                            <tr>
+                                <td><code>types/theme.ts</code></td>
+                                <td>Exports the public <code>ThemeDefinition</code>, <code>CollectionDefinition</code>, namespace types, and aliases for the Catalog-derived key and metadata types.</td>
+                            </tr>
+                            <tr>
+                                <td><code>source-colors.json</code> + theme tests</td>
+                                <td>Preserves the source payload and proves color equality, finished Collection assembly, and Collection-scoped Theme-key typing.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid-2">
+                    <div class="code"><span class="label">Theme file · target inline-creator shape after migration</span><pre><code><span class="kw">import</span> { defineThemeColors } <span class="kw">from</span> <span class="str">"../define-theme-colors.ts"</span>;
+<span class="kw">import</span> createUi <span class="kw">from</span> <span class="str">"./create-ui-dark.ts"</span>;
+<span class="kw">import</span> createSyntax <span class="kw">from</span> <span class="str">"./create-syntax-dark.ts"</span>;
+
+<span class="kw">const</span> colors = defineThemeColors({
+  primaries: {
+    <span class="cm">/* complete Primary scale */</span>
+  },
+  accents: ({ primaries }) =&gt; ({
+    a10: primaries.l10,
+    a20: primaries.l20,
+  }),
+  palette: ({ primaries, accents }) =&gt; ({
+    black: primaries.d40,
+    cyan: accents.a10,
+    <span class="cm">/* complete Palette mapping */</span>
+  }),
+  feedback: ({ palette }) =&gt; ({
+    negative: palette.red,
+    success: palette.green,
+    info: palette.blue,
+    warning: palette.yellow,
+  }),
+  ui: ({ primaries, accents, palette, feedback }) =&gt;
+    createUi({ primaries, accents, palette, feedback }),
+  syntax: ({ primaries, accents, palette, feedback }) =&gt;
+    createSyntax({ primaries, accents, palette, feedback }),
+});
+
+<span class="kw">export default</span> colors;</code></pre></div>
+                    <div class="code"><span class="label">Collection mod.ts · metadata plus Theme map</span><pre><code><span class="kw">import</span> { defineCollection } <span class="kw">from</span> <span class="str">"../define-collection.ts"</span>;
+<span class="kw">import</span> defaultDark <span class="kw">from</span> <span class="str">"./black-atom-default-dark.ts"</span>;
+
+<span class="kw">export default</span> defineCollection({
+  meta: { key: <span class="str">"default"</span>, label: <span class="str">"Default"</span>, order: <span class="num">0</span> },
+  themes: {
+    <span class="str">"black-atom-default-dark"</span>: {
+      meta: {
+        name: <span class="str">"Dark"</span>,
+        appearance: <span class="str">"dark"</span>,
+        status: <span class="str">"release"</span>,
+      },
+      colors: defaultDark,
+    },
+  },
+});</code></pre></div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3><code>defineThemeColors</code> contract</h3>
+                        <ul class="tight">
+                            <li>The input contains Primaries and each derived color namespace as either a finished value or a creator.</li>
+                            <li>Each derived namespace may be a value or an inline creator function. The creator receives the namespaces resolved before it.</li>
+                            <li>Resolution order is Primaries → Accents → Palette → Feedback → UI/Syntax.</li>
+                            <li><code>defineThemeColors</code> invokes those creators in order and collects the results into one typed <code>Theme.Colors</code> object; it does not add Theme metadata.</li>
+                            <li>Slice 1 proves this resolver contract; later Theme migration moves the current local resolutions into these inline creator properties.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3><code>defineCollection</code> contract</h3>
+                        <ul class="tight">
+                            <li>The input contains Collection metadata and a Theme map whose values pair local Theme metadata with resolved color objects.</li>
+                            <li>The function preserves the concrete Collection and Theme keys in its return type.</li>
+                            <li>It injects the Theme key, display label, and Collection metadata into each finished <code>ThemeDefinition</code>.</li>
+                            <li>The Collection module exports this one complete Collection object.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="code"><span class="label">core/src/themes/catalog.ts · typed Collection aggregation</span><pre><code><span class="kw">const</span> collections = [
+  defaultCollection,
+  jpnCollection,
+  terraCollection,
+  stationsCollection,
+  mnmlCollection,
+  paperCollection,
+] <span class="kw">as const</span>;
+
+<span class="kw">type</span> CatalogCollection = (<span class="kw">typeof</span> collections)[<span class="num">number</span>];
+<span class="kw">type</span> KeysOf&lt;T&gt; = T <span class="kw">extends</span> unknown ? <span class="kw">keyof</span> T : never;
+
+<span class="kw">export type</span> CatalogCollectionKey = CatalogCollection[<span class="str">"meta"</span>][<span class="str">"key"</span>];
+<span class="kw">export type</span> CatalogThemeKey = KeysOf&lt;CatalogCollection[<span class="str">"themes"</span>]&gt;;
+<span class="kw">export type</span> CatalogCollectionMeta = CatalogCollection[<span class="str">"meta"</span>];
+
+<span class="kw">type</span> CollectionForKey&lt;C <span class="kw">extends</span> CatalogCollectionKey&gt; = Extract&lt;
+  CatalogCollection,
+  { meta: { key: C } }
+&gt;;
+
+<span class="kw">export type</span> CatalogThemeKeysForCollection&lt;C <span class="kw">extends</span> CatalogCollectionKey&gt; =
+  <span class="kw">keyof</span> CollectionForKey&lt;C&gt;[<span class="str">"themes"</span>];</code></pre></div>
+                <div class="table-wrap" style="margin-top:14px">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Accepted value</th>
+                                <th>Creator receives</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>primaries</code></td>
+                                <td><code>Theme.Primaries</code></td>
+                                <td>Explicit inline object; no creator</td>
+                            </tr>
+                            <tr>
+                                <td><code>accents</code></td>
+                                <td><code>Theme.Accents</code> or creator</td>
+                                <td><code>{ primaries }</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>palette</code></td>
+                                <td><code>Theme.Palette</code> or inline creator</td>
+                                <td><code>{ primaries, accents }</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>feedback</code></td>
+                                <td><code>Theme.Feedback</code> or creator</td>
+                                <td><code>{ primaries, accents, palette }</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>ui</code></td>
+                                <td><code>Theme.Ui</code> or creator</td>
+                                <td>Full resolved color context</td>
+                            </tr>
+                            <tr>
+                                <td><code>syntax</code></td>
+                                <td><code>Theme.Syntax</code> or creator</td>
+                                <td>Full resolved color context</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout" style="margin-top:20px">
+                    <h3>Creator context</h3>
+                    <p>Appearance-specific palette, Feedback, UI, and Syntax creators may remain in Collection folders and be imported by Theme files. Their signatures use the smallest applicable slice of <code>Theme.Colors</code>; <code>defineThemeColors</code> passes that context into the inline creator properties.</p>
+                </div>
+            </section>
+
+            <section>
+                <div
+                    class="section-head"><span class="num">04</span><h2>Source truth and boundaries</h2></div>
+                <div class="callout good">
+                    <h3>Tracked color invariant</h3>
+                    <p>Before deleting source definitions, capture stable normalized JSON for the 32 selected source keys. The tracked fixture records all six color namespaces and is checked against the literal mapping above. Every final Theme deep-equals its source fixture entry; fixture changes require an explicit reviewed source-map change.</p>
+                </div>
+                <div class="diagram">
+                    <div
+                        class="flow"><div class="node primary"><strong>Core Catalog</strong><small>7 Collections · 32 Themes</small></div><span class="arrow">→</span><div class="node"><strong>Generator</strong><small>schema + templates</small></div><span class="arrow">→</span><div class="node"><strong>10 adapters</strong><small>exact generated inventories</small></div><span class="arrow">→</span><div class="node primary"><strong>Consumers</strong><small>one current key set</small></div></div>
+                    <div class="branches">
+                        <div
+                            class="node"><strong>Monitor</strong><small>routes · groups · previews</small></div>
+                        <div
+                            class="node"><strong>Livery + CLI</strong><small>embed · state · setup · apply</small></div>
+                        <div
+                            class="node"><strong>dots</strong><small>registry · selected keys · links</small></div>
+                    </div>
+                    <p
+                        class="caption">The Catalog crosses generated, embedded, persisted, UI, CLI, and external-link boundaries.</p>
+                </div>
+                <details>
+                    <summary>Durable surfaces in scope</summary>
+                    <div class="details-body">
+                        <ul class="tight">
+                            <li>Core keys, metadata, collection order, definition map, default, exports, schema, validation, and generated outputs.</li>
+                            <li>Monitor defaults, routes, grouping, previews, and fixtures.</li>
+                            <li>Livery TypeScript defaults, Rust embedded Catalog, persisted state behavior, setup/apply paths, CLI, fixtures, and generated bindings.</li>
+                            <li>Glossary, package docs, adapter docs, and Theme-related skills.</li>
+                            <li>dots registry, selected config literals, picker, linker, managed adapter directories, and live links.</li>
+                        </ul>
+                    </div>
+                </details>
+            </section>
+
+            <section>
+                <div
+                    class="section-head"><span class="num">05</span><h2>Outcome-oriented slices</h2></div>
+                <div class="callout">
+                    <h3>Review and commit cadence</h3>
+                    <p>The Visual Plan execution procedure runs in three bounded subagent-driven runs. Progress markers below describe the current working branch and are checked exploratively before each next run. Run 1 implements Slice 1 with the commit gate enabled. Run 2 implements Slice 2 with the commit gate enabled. Run 3 implements Slices 3–5 with the commit gate disabled and no intermediate commit gates. Live dots reconciliation keeps its separate safety gate.</p>
+                </div>
+                <div class="milestones" style="margin-top:24px">
+                    <div class="milestone">
+                        <div class="phase">Slice 1 · ✓ complete</div>
+                        <div class="rail"><span class="dot"></span><span class="line"></span></div>
+                        <div class="milestone-body">
+                            <h3>Prepare the shared foundation</h3>
+                            <p>Capture the 32-key source fixture and establish the <code>Theme.*</code> type shape, <code>defineThemeColors</code> context contract, <code>defineCollection</code> assembly contract, typed Collection Tuple, and creator-context tests.</p>
+                            <p
+                                class="proof">Done when the fixture is exact and the contracts prove fixed color resolution, object/creator inputs, typed Collection and Theme keys, finished Theme data, and Collection-scoped key narrowing. Then stop at the Slice 1 commit gate.</p>
+                        </div>
+                    </div>
+                    <div class="milestone">
+                        <div class="phase">Slice 2 · ◐ partial</div>
+                        <div class="rail"><span class="dot"></span><span class="line"></span></div>
+                        <div class="milestone-body">
+                            <h3>Rebuild DEFAULT</h3>
+                            <p>Use the shared foundation to migrate the four DEFAULT Theme files to the inline-creator <code>defineThemeColors({...})</code> shape and assemble them through the DEFAULT <code>defineCollection</code> module.</p>
+                            <p
+                                class="proof">Done when all four Themes match their mapped source fixture entries and demonstrate the uniform shape. Then stop at the Slice 2 commit gate.</p>
+                        </div>
+                    </div>
+                    <div class="milestone">
+                        <div class="phase">Slice 3 · ◐ partial</div>
+                        <div class="rail"><span class="dot"></span><span class="line"></span></div>
+                        <div class="milestone-body">
+                            <h3>Complete the 7/32 Core Catalog</h3>
+                            <p>Construct every remaining Theme with the same inline-creator <code>defineThemeColors({...})</code> shape. Split the former MNML group into Minium, JPN/Sanshoku, and the remaining target Collections; apply the Viridian and Polymer names; then align Collection modules, canonical keys, metadata, order, and default.</p>
+                            <p
+                                class="proof">Done when all 32 targets match the fixture and only the target Catalog remains in Core.</p>
+                        </div>
+                    </div>
+                    <div class="milestone">
+                        <div class="phase">Slice 4 · ◐ partial</div>
+                        <div class="rail"><span class="dot"></span><span class="line"></span></div>
+                        <div class="milestone-body">
+                            <h3>Regenerate and align consumers</h3>
+                            <p>Generate all adapters from source, then align Monitor, Livery, CLI, fixtures, bindings, docs, and skills with the renamed target keys.</p>
+                            <p
+                                class="proof">Done when generated path inventories are exact, generation is stable, Livery builds, and every consumer uses the current key set.</p>
+                        </div>
+                    </div>
+                    <div class="milestone">
+                        <div class="phase">Slice 5 · ○ open</div>
+                        <div class="rail"><span class="dot"></span></div>
+                        <div class="milestone-body">
+                            <h3>Reconcile dots behind the live-system gate</h3>
+                            <p>On the owner-provided dots branch, point discovery at the monorepo, update the registry and selected keys, and reconcile managed links in fixtures first.</p>
+                            <p
+                                class="proof">Done when fixture runs are safe and idempotent. Real-home reconciliation happens only after explicit owner confirmation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-head"><span class="num">06</span><h2>Acceptance</h2></div>
+                <div class="checks">
+                    <div
+                        class="check"><b>Catalog identity</b><span>Exactly 7 Collections and 32 unique Theme keys match the approved mapping and metadata. DEFAULT is the default family only if its provisional name is approved.</span></div>
+                    <div
+                        class="check"><b>Color equality</b><span>Every target’s six namespaces deep-equal its tracked source fixture payload. No omitted Theme remains reachable.</span></div>
+                    <div
+                        class="check"><b>Construction</b><span>Slice 1 proves the <code>defineThemeColors</code> resolver with object and creator inputs. Later Theme migration expresses dependent namespaces as inline creator properties, receives the resolved context in order, and returns the assembled colors through <code>defineThemeColors</code>. Every Collection assembles finished Theme Definitions through <code>defineCollection</code>; public key and metadata types come from the Collection Tuple.</span></div>
+                    <div
+                        class="check"><b>Generated output</b><span>Each adapter’s exact expected path set is present, stale generated files are absent, and a second generation makes no change.</span></div>
+                    <div
+                        class="check"><b>Monitor and Livery</b><span>Monitor renders every Collection; Livery embeds 32 Themes, builds, falls back safely from legacy state, and applies dark/light fixtures under sandboxed home.</span></div>
+                    <div
+                        class="check"><b>CLI behavior</b><span>Current keys succeed. Legacy or unknown keys fail clearly without mutating state or config.</span></div>
+                    <div
+                        class="check"><b>dots safety</b><span>Fixtures create/update current links, prune stale managed Black Atom symlinks, preserve real files and unrelated links, support dry run, and are idempotent.</span></div>
+                    <div
+                        class="check"><b>Repository checks</b><span>Generation, Deno checks/tests, Cargo formatting/tests/clippy, and the Livery production build pass. Legacy-name scans allow only explicit migration evidence.</span></div>
+                </div>
+                <div class="callout warn" style="margin-top:20px">
+                    <h3>Live-system gate</h3>
+                    <p>All Livery validation uses temporary <code>HOME</code>, <code>XDG_CONFIG_HOME</code>, and <code>XDG_DATA_HOME</code>. Fixture-tested dots reconciliation may touch real links only after the owner sees the dry run and confirms it. Unrelated files and links are never pruning candidates.</p>
+                </div>
+            </section>
+
+            <section>
+                <div
+                    class="section-head"><span class="num">07</span><h2>Risks and controls</h2></div>
+                <div class="risks">
+                    <div
+                        class="risk"><strong>Color drift under renamed keys</strong><span class="badge high">HIGH</span><span class="muted">The source fixture and literal 32-pair map keep equality observable after source definitions are removed.</span></div>
+                    <div
+                        class="risk"><strong>FACILITY name or grouping is rejected</strong><span class="badge med">MED</span><span class="muted">Resolve the visible owner decision before implementation; do not bury a rename inside code migration.</span></div>
+                    <div
+                        class="risk"><strong>Generated and embedded catalogs diverge</strong><span class="badge high">HIGH</span><span class="muted">Compare exact key/path inventories and require stable regeneration rather than relying on counts alone.</span></div>
+                    <div
+                        class="risk"><strong>Legacy state blocks Livery</strong><span class="badge med">MED</span><span class="muted">Unknown persisted keys fall back to the approved default and rewrite on the next successful selection.</span></div>
+                    <div
+                        class="risk"><strong>dots removes user-owned content</strong><span class="badge high">HIGH</span><span class="muted">Prune only stale managed Black Atom symlinks inside configured theme directories, proven in fixtures before the live gate.</span></div>
+                </div>
+                <details>
+                    <summary>Implementation record</summary>
+                    <div class="details-body">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Phase</th>
+                                        <th>Outcome</th>
+                                        <th>Artifact</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Planning</td>
+                                        <td>End state, source mapping, architecture, boundaries, and acceptance defined</td>
+                                        <td><code>plans/theme-catalog-rebuild.html</code></td>
+                                        <td>Awaiting review</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </section>
+            <p
+                class="footer">Plan status: implementation checkpoint rebased onto main. The Default collection name and the third Minium Theme remain under review.</p>
+        </main>
+    </body>
+</html>

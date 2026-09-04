@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 import { assertEquals } from "@std/assert";
 import { groupByCollection } from "./theme-utils.ts";
-import type { ThemeDefinition } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 const makeTheme = (key: string, collection: string) =>
     ({
@@ -12,7 +12,7 @@ const makeTheme = (key: string, collection: string) =>
             status: "release",
             collection: { key: collection, label: collection },
         },
-    }) as unknown as ThemeDefinition;
+    }) as unknown as Theme.Definition;
 
 Deno.test("groupByCollection groups themes by collection key", () => {
     const themes = [

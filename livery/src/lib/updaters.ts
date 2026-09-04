@@ -1,4 +1,4 @@
-import type { ThemeMeta } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import {
     type AppConfig,
     type AppName,
@@ -29,7 +29,7 @@ export function getEnabledApps(
 /** Build runnable updaters from enabled apps and theme metadata. */
 export function createUpdaters(
     enabledApps: [AppName, AppConfig][],
-    themeMeta: ThemeMeta,
+    themeMeta: Theme.Meta,
 ): UpdaterEntry[] {
     return enabledApps.map(([appName]) => ({
         app: appName,

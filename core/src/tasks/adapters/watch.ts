@@ -2,7 +2,7 @@ import { dirname, join, relative } from "@std/path";
 import { existsSync } from "@std/fs";
 import * as colors from "@std/fmt/colors";
 import { config } from "../../config.ts";
-import { themeKeys } from "../../types/theme.ts";
+import { themeKeys } from "../../themes/catalog.ts";
 import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";

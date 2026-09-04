@@ -6,7 +6,7 @@ description: Add a theme to an existing collection. Load when asked to create, d
 # New Theme
 
 1. Design the theme with the user before writing code: which collection (`default`, `jpn`,
-   `terra`, `stations`, `mnml`, `paper`), what name, dark and/or light appearance, and what makes
+   `terra`, `stations`, `mnml`, `paper`, `viridian`), what name, dark and/or light appearance, and what makes
    it fit the collection's concept. Read one or two existing files in
    `core/src/themes/<collection>/` for the collection's palette rules first, for example
    `core/src/themes/terra/black-atom-terra-winter-night.ts` or
@@ -21,14 +21,9 @@ description: Add a theme to an existing collection. Load when asked to create, d
    the collection uses them), and any per-collection palette overrides. Colors go through
    `oklch()` from `core/src/utils/color.ts`. No comments in theme definition files.
 
-3. Register the key in three places:
-   - `core/src/types/theme.ts`: add the key string to the `themeKeys` array.
-   - `core/src/types/themes.ts`: add an entry to `rawThemeKeyMetaMap` under the right collection
-     block, spreading the collection's `...xCollection` default and setting `key`, `name`,
-     `appearance`.
-   - `core/src/themes/map.ts`: add an import for the new file and an entry in the exported
-     `themeMap` object under the matching collection comment. `core/src/cli/generate.ts` imports
-     `themeMap` statically, generation silently skips anything missing here.
+3. Register the key in `core/src/themes/<collection>/mod.ts`: import the new theme file and add
+   one entry to that collection's default-exported object with its `name`, `appearance`, `status`,
+   and `collection` metadata. The root `themeCatalog` is assembled from these collection modules.
 
 4. Run `deno task check` from the repo root and fix any type errors before touching adapters.
 

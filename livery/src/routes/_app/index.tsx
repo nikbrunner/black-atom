@@ -3,7 +3,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useHotkey, useHotkeySequence } from "@tanstack/react-hotkeys";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useStore } from "@tanstack/react-store";
-import { collectionOrder, type ThemeCollectionKey, themeMap } from "@black-atom/core";
+import { collectionOrder, themeCatalog } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import {
     ACTIVE_THEME_PERSISTENCE_APP,
     activeThemePersistenceError,
@@ -33,7 +34,7 @@ function Component() {
     const config = useConfig();
     const navigate = useNavigate();
 
-    const allGroups = useMemo(() => getGroupedThemes(themeMap), []);
+    const allGroups = useMemo(() => getGroupedThemes(themeCatalog), []);
     const allThemes = useMemo(() => allGroups.flatMap((g) => g.themes), [allGroups]);
 
     const activeTheme = useActiveTheme();
@@ -41,7 +42,7 @@ function Component() {
 
     const [query, setQuery] = useState("");
     // Filter sets — empty set = no filter (ALL).
-    const [collectionFilter, setCollectionFilter] = useState<ReadonlySet<ThemeCollectionKey>>(
+    const [collectionFilter, setCollectionFilter] = useState<ReadonlySet<Theme.CollectionKey>>(
         new Set(),
     );
     const [appearanceFilter, setAppearanceFilter] = useState<ReadonlySet<"dark" | "light">>(

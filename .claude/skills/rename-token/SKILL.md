@@ -17,9 +17,9 @@ primaries renames too; don't skip adapters on the assumption the rule is enforce
 
 ## Steps
 
-1. Read `core/src/types/theme.ts` and find the exact interface for the group (`ThemeUiColors`,
-   `ThemeSyntaxColors`, `ThemePaletteColors`, `ThemePrimaryColors`, `ThemeFeedbackColors`, possibly
-   nested one level, e.g. `ThemeUiColors.bg`). Rename the key there first.
+1. Read `core/src/types/theme.ts` and find the exact interface for the group (`Ui`, `Syntax`,
+   `Palette`, `Primaries`, `Feedback`, possibly nested one level, e.g. `Ui.bg`). Rename the key
+   there first.
 2. Rename the key everywhere it's set. Theme files under `core/src/themes/<collection>/*.ts` do
    not set `ui`/`syntax`/`palette`/`feedback` directly, they call shared creator functions. Edit
    the creators, one pair per collection (`default`, `jpn`, `terra`, `stations`, `mnml`, `paper`):

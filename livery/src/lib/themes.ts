@@ -1,22 +1,17 @@
-import {
-    collectionOrder,
-    type ThemeCollectionKey,
-    type ThemeDefinition,
-    type ThemeKeyDefinitionMap,
-    themeMap,
-} from "@black-atom/core";
+import { collectionOrder, themeCatalog } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 
 /**
  * What livery wears before anything is recorded, and what `livery setup`
  * applies when it is not asked interactively. Kept in step with
  * DEFAULT_THEME_KEY in livery/cli/src/commands.rs.
  */
-export const defaultTheme: ThemeDefinition = themeMap["black-atom-default-dark"];
+export const defaultTheme: Theme.Definition = themeCatalog["black-atom-default-dark"];
 
 export interface ThemeGroup {
-    collectionKey: ThemeCollectionKey;
+    collectionKey: Theme.CollectionKey;
     label: string;
-    themes: ThemeDefinition[];
+    themes: Theme.Definition[];
 }
 
 /**
@@ -31,15 +26,17 @@ export function formatCollectionTitle(key: string, label: string): string {
 }
 
 /** Group themes by collection in display order. Sorts themes within each group by name. */
-export function getGroupedThemes(themeMap: ThemeKeyDefinitionMap): ThemeGroup[] {
-    const themes = Object.values(themeMap).filter((d): d is ThemeDefinition => d !== null);
+export function getGroupedThemes(themeCatalog: Theme.DefinitionMap): ThemeGroup[] {
+    const themes = Object.values(themeCatalog).filter((theme): theme is Theme.Definition =>
+        theme !== undefined
+    );
 
     const grouped = themes.reduce((acc, theme) => {
         const key = theme.meta.collection.key;
         if (!acc.has(key)) acc.set(key, []);
         acc.get(key)!.push(theme);
         return acc;
-    }, new Map<ThemeCollectionKey, ThemeDefinition[]>());
+    }, new Map<Theme.CollectionKey, Theme.Definition[]>());
 
     grouped.forEach((group) => group.sort((a, b) => a.meta.name.localeCompare(b.meta.name)));
 
@@ -61,12 +58,12 @@ export function getGroupedThemes(themeMap: ThemeKeyDefinitionMap): ThemeGroup[] 
  * (defaults to Math.random) so the pick is deterministic under test.
  */
 export function pickRandomOtherTheme(
-    themeMap: ThemeKeyDefinitionMap,
+    themeCatalog: Theme.DefinitionMap,
     currentKey: string,
     random: () => number = Math.random,
-): ThemeDefinition | null {
-    const candidates = Object.values(themeMap).filter(
-        (d): d is ThemeDefinition => d !== null && d.meta.key !== currentKey,
+): Theme.Definition | null {
+    const candidates = Object.values(themeCatalog).filter(
+        (theme): theme is Theme.Definition => theme !== undefined && theme.meta.key !== currentKey,
     );
     if (candidates.length === 0) return null;
     return candidates[Math.floor(random() * candidates.length)];

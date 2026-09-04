@@ -1,10 +1,5 @@
-import type {
-    ThemeAccentColors,
-    ThemeDefinition,
-    ThemeFeedbackColors,
-    ThemePrimaryColors,
-} from "../../types/theme.ts";
-import { themeKeyMetaMap } from "../../types/themes.ts";
+import type * as Theme from "../../types/theme.ts";
+import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
 import createPalette from "./create-palette-light.ts";
@@ -12,9 +7,7 @@ import createSyntax from "./create-syntax-light.ts";
 import createUi from "./create-ui-light.ts";
 import createFeedback from "./create-feedback-light.ts";
 
-const meta = themeKeyMetaMap["black-atom-mnml-eink-light"];
-
-const primaries: ThemePrimaryColors = {
+const primaries: Theme.Primaries = {
     d10: oklch(0.20, 0, 0),
     d20: oklch(0.28, 0, 0),
     d30: oklch(0.36, 0, 0),
@@ -31,27 +24,26 @@ const primaries: ThemePrimaryColors = {
     l40: oklch(0.94, 0, 0),
 };
 
-const accents: ThemeAccentColors = {
+const accents: Theme.Accents = {
     a10: oklch(0.45, 0.02, 0),
     a20: oklch(0.55, 0.01, 0),
 };
 
 const palette = createPalette(primaries);
 
-const feedback: ThemeFeedbackColors = createFeedback(accents);
+const feedback: Theme.Feedback = createFeedback(accents);
 
 const options = { primaries, palette, feedback, accents };
 const ui = createUi(options);
 const syntax = createSyntax(options);
 
-const theme: ThemeDefinition = {
-    meta,
+const colors = defineThemeColors({
     primaries,
     palette,
     accents,
     feedback,
     ui,
     syntax,
-};
+});
 
-export default theme;
+export default colors;

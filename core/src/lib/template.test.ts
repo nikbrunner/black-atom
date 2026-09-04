@@ -3,16 +3,16 @@ import { assertEquals } from "@std/assert";
 import { join } from "@std/path";
 import { processTemplates } from "./template.ts";
 import type { AdapterConfig } from "./validate-adapter.ts";
-import type { ThemeDefinition, ThemeMeta } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 const testTheme = {
     meta: { key: "black-atom-jpn-koyo-yoru" },
     ui: { bg: { default: "#332733" } },
-} as unknown as ThemeDefinition;
+} as unknown as Theme.Definition;
 
 const themeMap = {
     "black-atom-jpn-koyo-yoru": testTheme,
-} as unknown as Record<ThemeMeta["key"], ThemeDefinition | null>;
+} satisfies Theme.DefinitionMap;
 
 async function withTempAdapterDir(
     run: (adapterDir: string) => Promise<void>,
