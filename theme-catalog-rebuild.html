@@ -788,7 +788,7 @@
 <span class="kw">import</span> createUi <span class="kw">from</span> <span class="str">"./create-ui-dark.ts"</span>;
 <span class="kw">import</span> createSyntax <span class="kw">from</span> <span class="str">"./create-syntax-dark.ts"</span>;
 
-<span class="kw">const</span> colors = defineThemeColors({
+<span class="kw">export default</span> defineThemeColors({
   primaries: {
     <span class="cm">/* complete Primary scale */</span>
   },
@@ -807,13 +807,9 @@
     info: palette.blue,
     warning: palette.yellow,
   }),
-  ui: ({ primaries, accents, palette, feedback }) =&gt;
-    createUi({ primaries, accents, palette, feedback }),
-  syntax: ({ primaries, accents, palette, feedback }) =&gt;
-    createSyntax({ primaries, accents, palette, feedback }),
-});
-
-<span class="kw">export default</span> colors;</code></pre></div>
+  ui: createUi,
+  syntax: createSyntax,
+});</code></pre></div>
                     <div class="code"><span class="label">Collection mod.ts · metadata plus Theme map</span><pre><code><span class="kw">import</span> { defineCollection } <span class="kw">from</span> <span class="str">"../define-collection.ts"</span>;
 <span class="kw">import</span> defaultDark <span class="kw">from</span> <span class="str">"./black-atom-default-dark.ts"</span>;
 
@@ -989,7 +985,7 @@
                         </div>
                     </div>
                     <div class="milestone">
-                        <div class="phase">Slice 3 · ◐ partial</div>
+                        <div class="phase">Slice 3 · ✓ complete</div>
                         <div class="rail"><span class="dot"></span><span class="line"></span></div>
                         <div class="milestone-body">
                             <h3>Complete the 7/32 Core Catalog</h3>

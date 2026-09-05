@@ -1,30 +1,28 @@
 import { defineCollection } from "../define-collection.ts";
 
 import blackAtomDefaultDark from "./black-atom-default-dark.ts";
-import blackAtomDefaultDarkDimmed from "./black-atom-default-dark-dimmed.ts";
+import blackAtomDefaultDimmedDark from "./black-atom-default-dimmed-dark.ts";
 import blackAtomDefaultLight from "./black-atom-default-light.ts";
-import blackAtomDefaultLightDimmed from "./black-atom-default-light-dimmed.ts";
+import blackAtomDefaultDimmedLight from "./black-atom-default-dimmed-light.ts";
 
-const collection = defineCollection({
+export default defineCollection({
     meta: { key: "default", label: "Default", order: 0 },
     themes: {
         "black-atom-default-dark": {
             meta: { name: "Dark", appearance: "dark", status: "release" },
             colors: blackAtomDefaultDark,
         },
-        "black-atom-default-dark-dimmed": {
-            meta: { name: "Dark Dimmed", appearance: "dark", status: "release" },
-            colors: blackAtomDefaultDarkDimmed,
+        "black-atom-default-dimmed-dark": {
+            meta: { name: "Dimmed Dark", appearance: "dark", status: "release" },
+            colors: blackAtomDefaultDimmedDark,
         },
         "black-atom-default-light": {
             meta: { name: "Light", appearance: "light", status: "release" },
             colors: blackAtomDefaultLight,
         },
-        "black-atom-default-light-dimmed": {
-            meta: { name: "Light Dimmed", appearance: "light", status: "release" },
-            colors: blackAtomDefaultLightDimmed,
+        "black-atom-default-dimmed-light": {
+            meta: { name: "Dimmed Light", appearance: "light", status: "release" },
+            colors: blackAtomDefaultDimmedLight,
         },
     },
 });
-
-export default collection;

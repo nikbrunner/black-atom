@@ -20,8 +20,8 @@ export default defineThemeColors({
 
         l10: oklch(0.75, 0.012, 250),
         l20: oklch(0.85, 0.012, 250),
-        l30: oklch(0.97, 0.012, 250),
-        l40: oklch(0.99, 0.012, 250),
+        l30: oklch(0.90, 0.012, 250),
+        l40: oklch(0.94, 0.012, 250),
     },
     accents: {
         a10: oklch(0.67, 0.15, 155),

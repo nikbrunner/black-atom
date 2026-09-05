@@ -2,18 +2,20 @@ import type * as Theme from "../types/theme.ts";
 
 import defaultCollection from "./default/mod.ts";
 import jpnCollection from "./jpn/mod.ts";
-import mnmlCollection from "./mnml/mod.ts";
-import paperCollection from "./paper/mod.ts";
-import stationsCollection from "./stations/mod.ts";
+import clayCollection from "./clay/mod.ts";
+import miniumCollection from "./minium/mod.ts";
+import monoCollection from "./mono/mod.ts";
+import facilityCollection from "./facility/mod.ts";
 import terraCollection from "./terra/mod.ts";
 
 const collections = [
     defaultCollection,
-    jpnCollection,
+    facilityCollection,
     terraCollection,
-    stationsCollection,
-    mnmlCollection,
-    paperCollection,
+    jpnCollection,
+    clayCollection,
+    miniumCollection,
+    monoCollection,
 ] as const;
 
 type CatalogCollection = (typeof collections)[number];
@@ -34,11 +36,12 @@ export type CatalogThemeKeysForCollection<CollectionKey extends CatalogCollectio
 
 export const themeCatalog = {
     ...defaultCollection.themes,
-    ...jpnCollection.themes,
+    ...facilityCollection.themes,
     ...terraCollection.themes,
-    ...stationsCollection.themes,
-    ...mnmlCollection.themes,
-    ...paperCollection.themes,
+    ...jpnCollection.themes,
+    ...clayCollection.themes,
+    ...miniumCollection.themes,
+    ...monoCollection.themes,
 } as const satisfies Record<CatalogThemeKey, Theme.ThemeDefinition>;
 
 export const themeKeys = Object.keys(themeCatalog) as CatalogThemeKey[];

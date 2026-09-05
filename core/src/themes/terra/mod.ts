@@ -1,50 +1,48 @@
 import { defineCollection } from "../define-collection.ts";
 
-import blackAtomTerraSpringDay from "./black-atom-terra-spring-day.ts";
-import blackAtomTerraSpringNight from "./black-atom-terra-spring-night.ts";
-import blackAtomTerraFallDay from "./black-atom-terra-fall-day.ts";
-import blackAtomTerraFallNight from "./black-atom-terra-fall-night.ts";
-import blackAtomTerraSummerDay from "./black-atom-terra-summer-day.ts";
-import blackAtomTerraSummerNight from "./black-atom-terra-summer-night.ts";
-import blackAtomTerraWinterDay from "./black-atom-terra-winter-day.ts";
-import blackAtomTerraWinterNight from "./black-atom-terra-winter-night.ts";
+import blackAtomTerraSpringDark from "./black-atom-terra-spring-dark.ts";
+import blackAtomTerraSpringLight from "./black-atom-terra-spring-light.ts";
+import blackAtomTerraSummerDark from "./black-atom-terra-summer-dark.ts";
+import blackAtomTerraSummerLight from "./black-atom-terra-summer-light.ts";
+import blackAtomTerraFallDark from "./black-atom-terra-fall-dark.ts";
+import blackAtomTerraFallLight from "./black-atom-terra-fall-light.ts";
+import blackAtomTerraWinterDark from "./black-atom-terra-winter-dark.ts";
+import blackAtomTerraWinterLight from "./black-atom-terra-winter-light.ts";
 
-const collection = defineCollection({
+export default defineCollection({
     meta: { key: "terra", label: "TERRA", order: 2 },
     themes: {
-        "black-atom-terra-spring-day": {
-            meta: { name: "Spring Day", appearance: "light", status: "development" },
-            colors: blackAtomTerraSpringDay,
+        "black-atom-terra-spring-dark": {
+            meta: { name: "Spring Dark", appearance: "dark", status: "release" },
+            colors: blackAtomTerraSpringDark,
         },
-        "black-atom-terra-spring-night": {
-            meta: { name: "Spring Night", appearance: "dark", status: "release" },
-            colors: blackAtomTerraSpringNight,
+        "black-atom-terra-spring-light": {
+            meta: { name: "Spring Light", appearance: "light", status: "development" },
+            colors: blackAtomTerraSpringLight,
         },
-        "black-atom-terra-fall-day": {
-            meta: { name: "Fall Day", appearance: "light", status: "development" },
-            colors: blackAtomTerraFallDay,
+        "black-atom-terra-summer-dark": {
+            meta: { name: "Summer Dark", appearance: "dark", status: "release" },
+            colors: blackAtomTerraSummerDark,
         },
-        "black-atom-terra-fall-night": {
-            meta: { name: "Fall Night", appearance: "dark", status: "release" },
-            colors: blackAtomTerraFallNight,
+        "black-atom-terra-summer-light": {
+            meta: { name: "Summer Light", appearance: "light", status: "development" },
+            colors: blackAtomTerraSummerLight,
         },
-        "black-atom-terra-summer-day": {
-            meta: { name: "Summer Day", appearance: "light", status: "development" },
-            colors: blackAtomTerraSummerDay,
+        "black-atom-terra-fall-dark": {
+            meta: { name: "Fall Dark", appearance: "dark", status: "release" },
+            colors: blackAtomTerraFallDark,
         },
-        "black-atom-terra-summer-night": {
-            meta: { name: "Summer Night", appearance: "dark", status: "release" },
-            colors: blackAtomTerraSummerNight,
+        "black-atom-terra-fall-light": {
+            meta: { name: "Fall Light", appearance: "light", status: "development" },
+            colors: blackAtomTerraFallLight,
         },
-        "black-atom-terra-winter-day": {
-            meta: { name: "Winter Day", appearance: "light", status: "development" },
-            colors: blackAtomTerraWinterDay,
+        "black-atom-terra-winter-dark": {
+            meta: { name: "Winter Dark", appearance: "dark", status: "release" },
+            colors: blackAtomTerraWinterDark,
         },
-        "black-atom-terra-winter-night": {
-            meta: { name: "Winter Night", appearance: "dark", status: "release" },
-            colors: blackAtomTerraWinterNight,
+        "black-atom-terra-winter-light": {
+            meta: { name: "Winter Light", appearance: "light", status: "development" },
+            colors: blackAtomTerraWinterLight,
         },
     },
 });
-
-export default collection;

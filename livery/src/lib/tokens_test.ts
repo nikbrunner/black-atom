@@ -2,7 +2,7 @@ import { assertEquals, assertMatch, assertStringIncludes } from "@std/assert";
 import { themeCatalog } from "@black-atom/core";
 import { themeToCustomProperties, themeToStyleSheet } from "./tokens.ts";
 
-const theme = themeCatalog["black-atom-jpn-koyo-yoru"];
+const theme = themeCatalog["black-atom-jpn-koyo-dark"];
 
 Deno.test("themeToCustomProperties maps the theme's UI palette onto --ba-* roles", () => {
     const props = themeToCustomProperties(theme);
@@ -35,7 +35,7 @@ Deno.test("themeToStyleSheet emits a :root block with color-scheme and declarati
 });
 
 Deno.test("light themes emit color-scheme: light", () => {
-    const light = themeCatalog["black-atom-terra-spring-day"];
+    const light = themeCatalog["black-atom-terra-spring-light"];
 
     assertStringIncludes(themeToStyleSheet(light), "color-scheme: light;");
 });

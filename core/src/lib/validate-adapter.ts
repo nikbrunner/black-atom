@@ -17,10 +17,11 @@ export function createAdapterConfigSchema(themeKeys: readonly string[]) {
     const collectionEntries: Record<Theme.CollectionKey, typeof collectionConfigSchema> = {
         default: collectionConfigSchema,
         jpn: collectionConfigSchema,
-        stations: collectionConfigSchema,
+        facility: collectionConfigSchema,
         terra: collectionConfigSchema,
-        mnml: collectionConfigSchema,
-        paper: collectionConfigSchema,
+        clay: collectionConfigSchema,
+        minium: collectionConfigSchema,
+        mono: collectionConfigSchema,
     };
 
     const collectionsSchema = z.object(collectionEntries).partial();

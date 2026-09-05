@@ -24,11 +24,12 @@ Deno.test("themeCatalog entries contain metadata and finished colors", () => {
 Deno.test("collectionOrder follows collection metadata", () => {
     assertEquals(collectionOrder, [
         "default",
-        "jpn",
+        "facility",
         "terra",
-        "stations",
-        "mnml",
-        "paper",
+        "jpn",
+        "clay",
+        "minium",
+        "mono",
     ]);
 });
 
@@ -39,7 +40,7 @@ function acceptDefaultThemeKey(_: DefaultThemeKey) {}
 acceptDefaultThemeKey("black-atom-default-dark");
 
 // @ts-expect-error JPN themes do not belong to the default collection.
-acceptDefaultThemeKey("black-atom-jpn-koyo-yoru");
+acceptDefaultThemeKey("black-atom-jpn-koyo-dark");
 
 const defaultThemeKey = "black-atom-default-dark" satisfies keyof typeof defaultCollection.themes;
 assertEquals(defaultThemeKey, "black-atom-default-dark");

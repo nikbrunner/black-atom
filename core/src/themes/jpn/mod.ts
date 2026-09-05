@@ -1,30 +1,38 @@
 import { defineCollection } from "../define-collection.ts";
 
-import blackAtomJpnKoyoYoru from "./black-atom-jpn-koyo-yoru.ts";
-import blackAtomJpnKoyoHiru from "./black-atom-jpn-koyo-hiru.ts";
-import blackAtomJpnTsukiYoru from "./black-atom-jpn-tsuki-yoru.ts";
-import blackAtomJpnMurasakiYoru from "./black-atom-jpn-murasaki-yoru.ts";
+import blackAtomJpnKoyoDark from "./black-atom-jpn-koyo-dark.ts";
+import blackAtomJpnKoyoLight from "./black-atom-jpn-koyo-light.ts";
+import blackAtomJpnMurasakiDark from "./black-atom-jpn-murasaki-dark.ts";
+import blackAtomJpnTsukiDark from "./black-atom-jpn-tsuki-dark.ts";
+import blackAtomJpnSanshokuDark from "./black-atom-jpn-sanshoku-dark.ts";
+import blackAtomJpnSanshokuLight from "./black-atom-jpn-sanshoku-light.ts";
 
-const collection = defineCollection({
-    meta: { key: "jpn", label: "JPN", order: 1 },
+export default defineCollection({
+    meta: { key: "jpn", label: "JPN", order: 3 },
     themes: {
-        "black-atom-jpn-koyo-yoru": {
-            meta: { name: "Koyo Yoru", appearance: "dark", status: "release" },
-            colors: blackAtomJpnKoyoYoru,
+        "black-atom-jpn-koyo-dark": {
+            meta: { name: "Koyo Dark", appearance: "dark", status: "release" },
+            colors: blackAtomJpnKoyoDark,
         },
-        "black-atom-jpn-koyo-hiru": {
-            meta: { name: "Koyo Hiru", appearance: "light", status: "release" },
-            colors: blackAtomJpnKoyoHiru,
+        "black-atom-jpn-koyo-light": {
+            meta: { name: "Koyo Light", appearance: "light", status: "release" },
+            colors: blackAtomJpnKoyoLight,
         },
-        "black-atom-jpn-tsuki-yoru": {
-            meta: { name: "Tsuki Yoru", appearance: "dark", status: "release" },
-            colors: blackAtomJpnTsukiYoru,
+        "black-atom-jpn-murasaki-dark": {
+            meta: { name: "Murasaki Dark", appearance: "dark", status: "release" },
+            colors: blackAtomJpnMurasakiDark,
         },
-        "black-atom-jpn-murasaki-yoru": {
-            meta: { name: "Murasaki Yoru", appearance: "dark", status: "release" },
-            colors: blackAtomJpnMurasakiYoru,
+        "black-atom-jpn-tsuki-dark": {
+            meta: { name: "Tsuki Dark", appearance: "dark", status: "release" },
+            colors: blackAtomJpnTsukiDark,
+        },
+        "black-atom-jpn-sanshoku-dark": {
+            meta: { name: "Sanshoku Dark", appearance: "dark", status: "development" },
+            colors: blackAtomJpnSanshokuDark,
+        },
+        "black-atom-jpn-sanshoku-light": {
+            meta: { name: "Sanshoku Light", appearance: "light", status: "development" },
+            colors: blackAtomJpnSanshokuLight,
         },
     },
 });
-
-export default collection;
