@@ -1,4 +1,3 @@
-import type * as Theme from "../../types/theme.ts";
 import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
@@ -7,50 +6,40 @@ import createPalette from "./create-palette-dark.ts";
 import createSyntax from "./create-syntax-dark.ts";
 import createUi from "./create-ui-dark.ts";
 
-const primaries: Theme.Primaries = {
-    d10: oklch(0.16, 0.012, 250),
-    d20: oklch(0.20, 0.012, 250),
-    d30: oklch(0.24, 0.012, 250),
-    d40: oklch(0.28, 0.012, 250),
+export default defineThemeColors({
+    primaries: {
+        d10: oklch(0.16, 0.012, 250),
+        d20: oklch(0.20, 0.012, 250),
+        d30: oklch(0.24, 0.012, 250),
+        d40: oklch(0.28, 0.012, 250),
 
-    m10: oklch(0.48, 0.012, 250),
-    m20: oklch(0.54, 0.012, 250),
-    m30: oklch(0.60, 0.012, 250),
-    m40: oklch(0.66, 0.012, 250),
+        m10: oklch(0.48, 0.012, 250),
+        m20: oklch(0.54, 0.012, 250),
+        m30: oklch(0.60, 0.012, 250),
+        m40: oklch(0.66, 0.012, 250),
 
-    l10: oklch(0.88, 0.012, 250),
-    l20: oklch(0.91, 0.012, 250),
-    l30: oklch(0.94, 0.012, 250),
-    l40: oklch(0.97, 0.012, 250),
-};
-
-const accents: Theme.Accents = {
-    a10: oklch(0.75, 0.15, 155),
-    a20: oklch(0.70, 0.15, 145),
-    a30: oklch(0.75, 0.15, 265),
-    a40: oklch(0.75, 0.15, 365),
-};
-
-const palette = createPalette(primaries, {
-    override: (palette) => ({
-        ...palette,
-        cyan: accents.a10,
-        darkCyan: accents.a20,
-        magenta: accents.a30 ?? accents.a10,
-        darkMagenta: accents.a40 ?? accents.a10,
-    }),
+        l10: oklch(0.88, 0.012, 250),
+        l20: oklch(0.91, 0.012, 250),
+        l30: oklch(0.94, 0.012, 250),
+        l40: oklch(0.97, 0.012, 250),
+    },
+    accents: {
+        a10: oklch(0.75, 0.15, 155),
+        a20: oklch(0.70, 0.15, 145),
+        a30: oklch(0.75, 0.15, 265),
+        a40: oklch(0.75, 0.15, 365),
+    },
+    palette: ({ primaries, accents }) =>
+        createPalette(primaries, {
+            override: (palette) => ({
+                ...palette,
+                cyan: accents.a10,
+                darkCyan: accents.a20,
+                magenta: accents.a30 ?? accents.a10,
+                darkMagenta: accents.a40 ?? accents.a10,
+            }),
+        }),
+    feedback: () => createFeedback(),
+    ui: (context) => createUi(context),
+    syntax: (context) => createSyntax(context),
 });
-
-const feedback = createFeedback();
-const options = { primaries, palette, feedback, accents };
-
-const colors = defineThemeColors({
-    primaries,
-    palette,
-    accents,
-    feedback,
-    ui: createUi(options),
-    syntax: createSyntax(options),
-});
-
-export default colors;
