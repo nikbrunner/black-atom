@@ -1,0 +1,29 @@
+# Black Atom — Minium ∷ Viridian Light
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#e95e00"
+      - bold
+    inactiveBorderColor:
+      - "#3a816a"
+    optionsTextColor:
+      - "#88cfb6"
+    selectedLineBgColor:
+      - "#aed5c6"
+    cherryPickedCommitBgColor:
+      - "#c2dfd4"
+    cherryPickedCommitFgColor:
+      - "#e95e00"
+    unstagedChangesColor:
+      - "#f14d4c"
+    defaultFgColor:
+      - "#194034"
+    searchingActiveBorderColor:
+      - "#e95e00"
+
+  authorColors:
+    "*": "#bb929a"

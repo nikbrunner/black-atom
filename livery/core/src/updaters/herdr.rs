@@ -429,7 +429,7 @@ mod tests {
         let source_dir = themes.path().join("terra");
         std::fs::create_dir(&source_dir).unwrap();
         std::fs::write(
-            source_dir.join("black-atom-terra-summer-day.toml"),
+            source_dir.join("black-atom-terra-summer-light.toml"),
             fixture("themes/herdr-theme.toml"),
         )
         .unwrap();
@@ -450,7 +450,7 @@ mod tests {
             settings: None,
         };
         let ctx = UpdateContext {
-            theme_key: "black-atom-terra-summer-day",
+            theme_key: "black-atom-terra-summer-light",
             appearance: "light",
             collection_key: "terra",
             theme_label: None,
@@ -478,7 +478,7 @@ mod tests {
         let source_dir = themes.path().join("terra");
         std::fs::create_dir(&source_dir).unwrap();
         std::fs::write(
-            source_dir.join("black-atom-terra-summer-day.toml"),
+            source_dir.join("black-atom-terra-summer-light.toml"),
             fixture("themes/herdr-theme.toml"),
         )
         .unwrap();
@@ -495,7 +495,7 @@ mod tests {
             settings: None,
         };
         let ctx = UpdateContext {
-            theme_key: "black-atom-terra-summer-day",
+            theme_key: "black-atom-terra-summer-light",
             appearance: "light",
             collection_key: "terra",
             theme_label: None,

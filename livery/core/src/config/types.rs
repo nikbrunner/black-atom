@@ -243,14 +243,14 @@ mod tests {
     #[test]
     fn config_round_trips_an_optional_active_theme() {
         let mut value = serde_json::to_value(Config::default()).unwrap();
-        value["active_theme"] = serde_json::json!("black-atom-jpn-koyo-yoru");
+        value["active_theme"] = serde_json::json!("black-atom-jpn-koyo-dark");
 
         let restored: Config = serde_json::from_value(value).unwrap();
         let serialized = serde_json::to_value(restored).unwrap();
 
         assert_eq!(
             serialized["active_theme"],
-            serde_json::json!("black-atom-jpn-koyo-yoru")
+            serde_json::json!("black-atom-jpn-koyo-dark")
         );
     }
 }

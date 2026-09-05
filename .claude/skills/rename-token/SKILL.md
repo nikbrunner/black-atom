@@ -10,23 +10,23 @@ A color token is a key under `theme.ui`, `theme.syntax`, `theme.palette`, `theme
 `theme.feedback` in `ThemeDefinition`. Renaming one touches the type, every collection's color
 creators, every adapter template that reads it, and the monitor app if it displays the raw path.
 
-`theme.primaries.*` is meant to stay core-only per `GLOSSARY.md`, but
-`adapters/nvim/lua/black-atom/themes/*/collection.template.lua` and
-`adapters/obsidian/themes/*/collection.template.css` read it today for every collection. Grep for
-primaries renames too; don't skip adapters on the assumption the rule is enforced.
+`theme.primaries.*` stays core-only per `GLOSSARY.md`. Adapter templates consume semantic UI,
+syntax, palette, and feedback tokens.
 
 ## Steps
 
 1. Read `core/src/types/theme.ts` and find the exact interface for the group (`Ui`, `Syntax`,
    `Palette`, `Primaries`, `Feedback`, possibly nested one level, e.g. `Ui.bg`). Rename the key
    there first.
-2. Rename the key everywhere it's set. Theme files under `core/src/themes/<collection>/*.ts` do
-   not set `ui`/`syntax`/`palette`/`feedback` directly, they call shared creator functions. Edit
-   the creators, one pair per collection (`default`, `jpn`, `terra`, `stations`, `mnml`, `paper`):
+2. Rename the key everywhere it's set. Theme files under `core/src/themes/<collection>/*.ts` call
+   `defineThemeColors()` with values or creators for each derived group. Check those inputs and
+   the shared creators in all seven collections (`default`, `facility`, `terra`, `jpn`, `clay`,
+   `minium`, `mono`):
    - `ui` → `core/src/themes/<collection>/create-ui-dark.ts` and `create-ui-light.ts`
    - `syntax` → `create-syntax-dark.ts` and `create-syntax-light.ts`
    - `palette` → `create-palette-dark.ts`, `create-palette-light.ts`, and the shared
      `core/src/themes/create-palette.ts`
+   - `feedback` → `create-feedback-dark.ts`, `create-feedback-light.ts`, and theme inputs
    - `primaries` → each theme file directly, e.g. `core/src/themes/default/black-atom-default-dark.ts`
 3. Find every template that reads the token, across every group in one pass:
    ```
@@ -37,11 +37,8 @@ primaries renames too; don't skip adapters on the assumption the rule is enforce
    per-collection templates (`adapters/<name>/themes/<collection>/collection.template.<ext>`), the
    shared single templates (`adapters/herdr/themes/collection.template.toml`,
    `adapters/waybar/themes/collection.template.css`), and nvim's
-   `adapters/nvim/lua/black-atom/themes/<collection>/collection.template.lua`. Edit every hit with
+   `adapters/nvim/templates/collection.template.lua`. Edit every hit with
    `theme.<old>` to `theme.<new>`.
-   One hit doesn't belong to the pipeline:
-   `adapters/nvim/lua/black-atom/themes/nord/collection.template.lua` has no `nord` entry in
-   `adapters/nvim/black-atom-adapter.json`, so it's never rendered. Leave it alone.
 4. Check the monitor app for the same qualified path, in both raw and CSS-var form:
    ```
    grep -rn "<old-qualified-path>" core/monitor/src

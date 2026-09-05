@@ -60,8 +60,8 @@ Deno.test("createUpdaters creates an entry per enabled app", () => {
     ];
 
     const themeMeta = {
-        key: "black-atom-terra-fall-night",
-        name: "Fall Night",
+        key: "black-atom-terra-fall-dark",
+        name: "Fall Dark",
         appearance: "dark",
         status: "release",
         collection: { key: "terra", label: "Terra" },

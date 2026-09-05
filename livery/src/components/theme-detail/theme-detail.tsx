@@ -246,7 +246,7 @@ function getFeedbackBands(theme: Theme.Definition): ColorBand[] {
     ];
 }
 
-/** Two-letter initials from a theme name, e.g. "Koyo Yoru" -> "KY". */
+/** Two-letter initials from a theme name, e.g. "Koyo Dark" -> "KY". */
 function initials(name: string): string {
     const letters = name
         .split(/\s+/)

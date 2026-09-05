@@ -7,7 +7,7 @@ user-invocable: false
 # Rename Theme
 
 Renames `black-atom-<collection>-<old>` to `black-atom-<collection>-<new>` everywhere it appears,
-in one commit. Example below uses collection `mnml`, old name `eink`, new name `paper-white`.
+in one commit. Example below uses collection `minium`, old name `polymer`, new name `ochre`.
 
 1. Confirm the old key exists and the new key is free:
    `grep -rn "black-atom-<collection>-<new>" core adapters` should return nothing.
@@ -18,8 +18,10 @@ in one commit. Example below uses collection `mnml`, old name `eink`, new name `
    suffix the theme has, e.g. `-dark`, `-light`).
 
 3. Update `core/src/themes/<collection>/mod.ts`: change the imported filename and identifier,
-   then update the key and display metadata in that collection's default-exported object. The
-   root `themeCatalog` is assembled from these collection modules.
+   then update the key and `meta.name` in `defineCollection()`'s `themes` map. Each entry pairs
+   `meta` with `colors` from a `defineThemeColors()` export. The helper derives the label and
+   collection metadata; the catalog's `collections` tuple drives key types, and `themeCatalog`
+   combines the collections' `.themes` maps.
 
 4. If the renamed key is `DEFAULT_THEME_KEY` (in `core/src/themes/catalog.ts`), also update that
    constant, `livery/src/store/app.ts`, and `livery/src/lib/themes_test.ts`. Otherwise skip this

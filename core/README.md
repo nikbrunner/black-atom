@@ -18,14 +18,17 @@ For details on the color token system, see [Color Token System](./docs/color_tok
 
 ## Available Theme Collections
 
-| Collection   | Themes                                                     | Description                   |
-| ------------ | ---------------------------------------------------------- | ----------------------------- |
-| **Default**  | dark, dark-dimmed, light, light-dimmed                     | Core default themes           |
-| **Stations** | engineering, operations, medical, research                 | Space station-inspired themes |
-| **JPN**      | koyo-hiru, koyo-yoru, murasaki-yoru, tsuki-yoru            | Japanese-inspired themes      |
-| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night) | Earth season-inspired themes  |
-| **MNML**     | 47, clay, eink, ita, mikado, mono, orange, osman           | Minimalist themes             |
-| **Paper**    | brown-light, brown-dark, blue-light, blue-dark             | Paper-inspired themes         |
+32 themes across seven collections:
+
+| Collection   | Themes                                                 | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| **Default**  | dark, dimmed-dark, light, dimmed-light                 | Core default themes          |
+| **Facility** | dark, dimmed-dark, light, dimmed-light                 | Facility-inspired themes     |
+| **Terra**    | spring, summer, fall, winter (dark/light)              | Earth season-inspired themes |
+| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark | Japanese-inspired themes     |
+| **Clay**     | dark, light                                            | Clay-inspired themes         |
+| **Minium**   | polymer, viridian (dark/light)                         | Minimal accent themes        |
+| **Mono**     | dark, dimmed-dark, light, dimmed-light                 | Monochrome themes            |
 
 ## Usage
 
@@ -116,12 +119,21 @@ deno task publish
 tests across every workspace member, core included.
 
 > **Note on `--allow-slow-types`**: The publish task uses `--allow-slow-types` because the theme
-> catalog in `src/themes/catalog.ts` relies on `as const satisfies` patterns to preserve literal
-> type narrowing (e.g., knowing a theme's appearance is `"dark"` not `"dark" | "light"`). JSR's
+> catalog in `src/themes/catalog.ts` derives its key types from an `as const` collections tuple
+> and combines the collection theme maps with `as const satisfies`. JSR's
 > fast check cannot resolve these inferred types. Tracked in
 > [DEV-292](https://linear.app/black-atom-industries/issue/DEV-292).
 
 ### Creating New Themes and Adapters
+
+Theme files export colors through `defineThemeColors()`, which resolves primaries, accents,
+palette, feedback, UI, and syntax in dependency order. Each collection's `mod.ts` calls
+`defineCollection()` with collection metadata (`key`, `label`, `order`) and a theme map whose
+entries contain `meta` (`name`, `appearance`, `status`) and `colors`. The helper derives each
+theme's key, label, and collection metadata.
+
+The `collections` tuple in `src/themes/catalog.ts` drives collection and theme key types;
+`themeCatalog` combines the collections' `.themes` maps, and `collectionOrder` sorts by `meta.order`.
 
 Detailed guides live in `.claude/skills/`:
 

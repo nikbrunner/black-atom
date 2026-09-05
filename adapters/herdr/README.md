@@ -14,14 +14,17 @@ fragments safely.
 
 ## Collections
 
-| Collection | Themes                                                    |
-| ---------- | --------------------------------------------------------- |
-| Default    | dark, dark dimmed, light, light dimmed                    |
-| JPN        | koyo hiru/yoru, tsuki yoru, murasaki yoru                 |
-| Stations   | engineering, operations, medical, research                |
-| Terra      | spring, summer, fall, winter — day and night              |
-| MNML       | clay, orange, osman, mikado, 47, eink, mono, ita variants |
-| Paper      | brown and blue — light and dark                           |
+32 themes across seven collections:
+
+| Collection   | Themes                                                 |
+| ------------ | ------------------------------------------------------ |
+| **Default**  | dark, dimmed-dark, light, dimmed-light                 |
+| **Facility** | dark, dimmed-dark, light, dimmed-light                 |
+| **Terra**    | spring, summer, fall, winter (dark/light)              |
+| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark |
+| **Clay**     | dark, light                                            |
+| **Minium**   | polymer, viridian (dark/light)                         |
+| **Mono**     | dark, dimmed-dark, light, dimmed-light                 |
 
 Generated files live at `themes/<collection>/<theme-key>.toml`.
 

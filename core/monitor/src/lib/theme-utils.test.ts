@@ -2,6 +2,21 @@
 import { assertEquals } from "@std/assert";
 import { groupByCollection } from "./theme-utils.ts";
 import type * as Theme from "@core/types/theme.ts";
+import { themeCatalog } from "@core/themes/catalog.ts";
+
+Deno.test("Monitor groups all 32 current themes into seven collections", () => {
+    const groups = groupByCollection(Object.values(themeCatalog));
+    assertEquals([...groups].map(([key, themes]) => [key, themes.length]), [
+        ["default", 4],
+        ["facility", 4],
+        ["terra", 8],
+        ["jpn", 6],
+        ["clay", 2],
+        ["minium", 4],
+        ["mono", 4],
+    ]);
+    assertEquals([...groups.values()].flat().length, 32);
+});
 
 const makeTheme = (key: string, collection: string) =>
     ({

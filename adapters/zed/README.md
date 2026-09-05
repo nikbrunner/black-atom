@@ -10,16 +10,17 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes multiple theme collections, each with dark and light variants:
+Black Atom includes 32 themes across seven collections, with dark and light appearances:
 
-| Collection   | Description                   |
-| ------------ | ----------------------------- |
-| **Default**  | Core Black Atom themes        |
-| **JPN**      | Japanese-inspired themes      |
-| **MNML**     | Minimalist accent themes      |
-| **Paper**    | Paper-inspired themes         |
-| **Stations** | Space station-inspired themes |
-| **Terra**    | Earth season-inspired themes  |
+| Collection   | Description                  |
+| ------------ | ---------------------------- |
+| **Default**  | Core default themes          |
+| **Facility** | Facility-inspired themes     |
+| **Terra**    | Earth season-inspired themes |
+| **JPN**      | Japanese-inspired themes     |
+| **Clay**     | Clay-inspired themes         |
+| **Minium**   | Minimal accent themes        |
+| **Mono**     | Monochrome themes            |
 
 ## Installation
 
@@ -52,7 +53,7 @@ Alternatively, you can edit your Zed settings JSON file directly:
 
 ```json
 {
-    "theme": "black-atom-jpn-koyo-yoru"
+    "theme": "black-atom-jpn-koyo-dark"
 }
 ```
 
@@ -80,11 +81,11 @@ definitions:
 
 ```json
 {
-  "name": "Black Atom JPN Koyo Hiru",
+  "name": "Black Atom JPN Koyo Light",
   "author": "Black Atom Industries",
   "themes": [
     {
-      "name": "Black Atom JPN Koyo Hiru",
+      "name": "Black Atom JPN Koyo Light",
       "appearance": "light",
       "style": {
         "background": <%= theme.ui.bg.default %>,

@@ -214,7 +214,7 @@ mod tests {
 
     #[test]
     fn test_only_generated_themes_and_the_nvim_runtime_unpack() {
-        assert!(is_unpackable("", "black-atom-jpn-koyo-yoru.conf"));
+        assert!(is_unpackable("", "black-atom-jpn-koyo-dark.conf"));
         assert!(!is_unpackable("", "collection.template.conf"));
         assert!(!is_unpackable("", "README.md"));
         assert!(!is_unpackable("", "LICENSE"));
@@ -222,7 +222,7 @@ mod tests {
         // `require` it, so the whole tree ships.
         assert!(is_unpackable("lua", "init.lua"));
         assert!(is_unpackable("lua", "highlights.lua"));
-        assert!(is_unpackable("colors", "black-atom-jpn-koyo-yoru.lua"));
+        assert!(is_unpackable("colors", "black-atom-jpn-koyo-dark.lua"));
         assert!(!is_unpackable("colors", "template.lua"));
     }
 

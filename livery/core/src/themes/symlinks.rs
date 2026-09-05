@@ -194,17 +194,7 @@ fn link_destination(link: &Path) -> Option<PathBuf> {
     } else {
         resolve_lexically(link.parent()?).ok()?.join(raw)
     };
-    let mut normalized = PathBuf::new();
-    for component in joined.components() {
-        match component {
-            std::path::Component::CurDir => {}
-            std::path::Component::ParentDir => {
-                normalized.pop();
-            }
-            other => normalized.push(other),
-        }
-    }
-    Some(normalized)
+    resolve_lexically(&joined).ok()
 }
 
 /// Filename → absolute managed path for every theme file one collection
@@ -391,7 +381,7 @@ mod tests {
         std::fs::write(
             managed
                 .join("jpn")
-                .join(format!("black-atom-jpn-koyo-yoru{extension}")),
+                .join(format!("black-atom-jpn-koyo-dark{extension}")),
             "content",
         )
         .unwrap();
@@ -470,7 +460,7 @@ mod tests {
         assert_eq!(stats.linked, 1);
         assert!(real
             .join("themes")
-            .join("black-atom-jpn-koyo-yoru.json")
+            .join("black-atom-jpn-koyo-dark.json")
             .exists());
     }
 
@@ -495,7 +485,7 @@ mod tests {
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
 
         assert_eq!(stats.linked, 1);
-        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
+        let link = s.app_dir.join("black-atom-jpn-koyo-dark.json");
         let raw = std::fs::read_link(&link).unwrap();
         assert!(
             raw.is_relative(),
@@ -506,7 +496,7 @@ mod tests {
             link.canonicalize().unwrap(),
             s.managed
                 .join("jpn")
-                .join("black-atom-jpn-koyo-yoru.json")
+                .join("black-atom-jpn-koyo-dark.json")
                 .canonicalize()
                 .unwrap()
         );
@@ -525,7 +515,7 @@ mod tests {
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".conf").unwrap();
 
         assert_eq!(stats.linked, 1);
-        assert!(s.app_dir.join("black-atom-jpn-koyo-yoru.conf").exists());
+        assert!(s.app_dir.join("black-atom-jpn-koyo-dark.conf").exists());
         assert!(!s.app_dir.join("black-atom-other.json").exists());
     }
 
@@ -533,7 +523,7 @@ mod tests {
     fn test_heals_dangling_and_foreign_links() {
         let s = setup(".json");
         std::fs::create_dir_all(&s.app_dir).unwrap();
-        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
+        let link = s.app_dir.join("black-atom-jpn-koyo-dark.json");
         std::os::unix::fs::symlink("/nonexistent/clone/theme.json", &link).unwrap();
 
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
@@ -565,7 +555,7 @@ mod tests {
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
 
         assert_eq!(stats.pruned, 1);
-        assert!(!s.app_dir.join("black-atom-gone.json").exists());
+        assert!(std::fs::symlink_metadata(s.app_dir.join("black-atom-gone.json")).is_err());
         assert!(
             std::fs::symlink_metadata(s.app_dir.join("black-atom-foreign.json")).is_ok(),
             "foreign symlink must survive"
@@ -573,15 +563,31 @@ mod tests {
     }
 
     #[test]
+    fn test_prunes_a_dangling_absolute_target_through_a_directory_alias() {
+        let s = setup(".json");
+        std::fs::create_dir_all(&s.app_dir).unwrap();
+        let alias = s.app_dir.parent().unwrap().join("managed-alias");
+        std::os::unix::fs::symlink(&s.managed, &alias).unwrap();
+        let link = s.app_dir.join("black-atom-gone.json");
+        std::os::unix::fs::symlink(alias.join("jpn/black-atom-gone.json"), &link).unwrap();
+
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+
+        assert_eq!(stats.pruned, 1);
+        assert!(std::fs::symlink_metadata(link).is_err());
+        assert!(alias.is_symlink());
+    }
+
+    #[test]
     fn test_never_touches_a_real_file() {
         let s = setup(".json");
         std::fs::create_dir_all(&s.app_dir).unwrap();
-        let real = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
+        let real = s.app_dir.join("black-atom-jpn-koyo-dark.json");
         std::fs::write(&real, "user's own file").unwrap();
 
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
 
-        assert_eq!(stats.skipped, vec!["black-atom-jpn-koyo-yoru.json"]);
+        assert_eq!(stats.skipped, vec!["black-atom-jpn-koyo-dark.json"]);
         assert_eq!(std::fs::read_to_string(&real).unwrap(), "user's own file");
     }
 
@@ -607,7 +613,7 @@ mod tests {
 
         sync_flat_symlinks(&s.managed, &s.app_dir, ".conf").unwrap();
 
-        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.conf");
+        let link = s.app_dir.join("black-atom-jpn-koyo-dark.conf");
         assert!(std::fs::read_link(&link).unwrap().is_relative());
         assert_eq!(std::fs::read_to_string(&link).unwrap(), "content");
         assert!(has_managed_links(&s.app_dir, &s.managed, ".conf"));
@@ -617,8 +623,8 @@ mod tests {
     fn test_heals_an_absolute_link_to_relative() {
         let s = setup(".json");
         std::fs::create_dir_all(&s.app_dir).unwrap();
-        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
-        let target = s.managed.join("jpn").join("black-atom-jpn-koyo-yoru.json");
+        let link = s.app_dir.join("black-atom-jpn-koyo-dark.json");
+        let target = s.managed.join("jpn").join("black-atom-jpn-koyo-dark.json");
         std::os::unix::fs::symlink(&target, &link).unwrap();
 
         sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();

@@ -11,11 +11,11 @@
  * import { themeCatalog } from "@black-atom/core";
  * import type * as Theme from "@black-atom/core";
  *
- * // Access theme meta (narrowed to exact literal types)
- * const meta = themeCatalog["black-atom-jpn-koyo-yoru"].meta;
+ * // Access theme metadata with exact theme and collection key types
+ * const meta = themeCatalog["black-atom-jpn-koyo-dark"].meta;
  *
  * // Access a specific theme definition
- * const theme: Theme.Definition = themeCatalog["black-atom-jpn-koyo-yoru"]!;
+ * const theme: Theme.ThemeDefinition = themeCatalog["black-atom-jpn-koyo-dark"];
  *
  * console.log(theme.ui.bg.default); // hex color for the background
  * console.log(theme.syntax.keyword.default); // hex color for keywords

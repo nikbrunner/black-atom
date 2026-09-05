@@ -43,7 +43,8 @@ function Component() {
             <section>
                 <SectionLabel>Inline elements</SectionLabel>
                 <Typo.P>
-                    Run <Typo.InlineCode>livery apply --theme jpn-koyo-yoru</Typo.InlineCode>{" "}
+                    Run <Typo.InlineCode>livery apply black-atom-jpn-koyo-dark</Typo.InlineCode>
+                    {" "}
                     to switch themes from the command line. Use the{" "}
                     <Typo.Highlight>--dry-run</Typo.Highlight>{" "}
                     flag to preview changes before writing to disk.
@@ -209,12 +210,12 @@ function Component() {
 
             <section>
                 <SectionLabel>Theme detail</SectionLabel>
-                <Typo.H2>Theme: JPN Koyo Yoru</Typo.H2>
+                <Typo.H2>Theme: JPN Koyo Dark</Typo.H2>
                 <Typo.Lead>
                     A warm autumn palette inspired by Japanese maple forests at dusk.
                 </Typo.Lead>
                 <Typo.P>
-                    Koyo Yoru uses deep burgundy and amber tones as its accent palette, with a muted
+                    Koyo Dark uses deep burgundy and amber tones as its accent palette, with a muted
                     charcoal base that keeps contrast comfortable for extended coding sessions. The
                     {" "}
                     <Typo.InlineCode>fg-accent</Typo.InlineCode> token maps to{" "}
@@ -247,7 +248,7 @@ function Component() {
                 </Typo.P>
                 <Typo.P color="positive">
                     Delta, Tmux, and macOS appearance updated successfully. All 3 tools are in sync
-                    with <Typo.Highlight color="positive">TERRA Spring Night</Typo.Highlight>.
+                    with <Typo.Highlight color="positive">TERRA Spring Dark</Typo.Highlight>.
                 </Typo.P>
                 <Typo.Small>Attempted at 18:32 · 3 of 5 tools synced</Typo.Small>
             </section>
@@ -296,18 +297,16 @@ function Component() {
             <section>
                 <SectionLabel>Release notes</SectionLabel>
                 <Typo.H2>Livery v0.2.0</Typo.H2>
-                <Typo.Lead>MNML collection and consolidated updaters</Typo.Lead>
+                <Typo.Lead>Minium collection and consolidated updaters</Typo.Lead>
                 <Typo.P>
                     This release introduces the{" "}
-                    <Typo.Highlight>MNML theme collection</Typo.Highlight>{" "}
-                    — 14 minimal, low-saturation themes designed for distraction-free coding.
-                    Available in both light and dark variants across Clay, Orange, Mikado, 47,
-                    E-Ink, Mono, and ITA palettes.
+                    <Typo.Highlight>Minium theme collection</Typo.Highlight>{" "}
+                    contains four themes: Polymer and Viridian, each available in light and dark.
                 </Typo.P>
                 <Typo.H4>What changed</Typo.H4>
                 <Typo.UnorderedList>
                     <li>
-                        <Typo.Highlight>New:</Typo.Highlight> MNML collection with 14 themes
+                        <Typo.Highlight>New:</Typo.Highlight> Minium collection with 4 themes
                     </li>
                     <li>
                         <Typo.Highlight>New:</Typo.Highlight>{" "}

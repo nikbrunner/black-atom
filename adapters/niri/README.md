@@ -10,16 +10,17 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes multiple theme collections, each with its own distinct style:
+Black Atom includes 32 themes across seven collections, with dark and light appearances:
 
-| Collection   | Themes                                                                     | Description                   |
-| ------------ | -------------------------------------------------------------------------- | ----------------------------- |
-| **Default**  | dark, dark-dimmed, light, light-dimmed                                     | Core Black Atom themes        |
-| **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru                            | Japanese-inspired themes      |
-| **Stations** | engineering, operations, medical, research                                 | Space station-inspired themes |
-| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night)                 | Earth season-inspired themes  |
-| **MNML**     | clay, orange, mikado, 47, eink, mono (dark/light), osman, ita (light-only) | Minimalist themes             |
-| **Paper**    | brown, blue (dark/light)                                                   | Paper-inspired themes         |
+| Collection   | Themes                                                 | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| **Default**  | dark, dimmed-dark, light, dimmed-light                 | Core default themes          |
+| **Facility** | dark, dimmed-dark, light, dimmed-light                 | Facility-inspired themes     |
+| **Terra**    | spring, summer, fall, winter (dark/light)              | Earth season-inspired themes |
+| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark | Japanese-inspired themes     |
+| **Clay**     | dark, light                                            | Clay-inspired themes         |
+| **Minium**   | polymer, viridian (dark/light)                         | Minimal accent themes        |
+| **Mono**     | dark, dimmed-dark, light, dimmed-light                 | Monochrome themes            |
 
 ## Installation
 
@@ -38,7 +39,7 @@ Include a theme file directly in your niri config:
 
 ```kdl
 // In your ~/.config/niri/config.kdl
-include "/path/to/black-atom/adapters/niri/themes/terra/black-atom-terra-fall-night.kdl"
+include "/path/to/black-atom/adapters/niri/themes/terra/black-atom-terra-fall-dark.kdl"
 ```
 
 ### Method 2: Symlink (Recommended for Theme Switching)
@@ -47,7 +48,7 @@ Create a symlink that you can update to switch themes:
 
 ```bash
 # Create initial symlink
-ln -sf /path/to/black-atom/adapters/niri/themes/terra/black-atom-terra-fall-night.kdl ~/.config/niri/theme.kdl
+ln -sf /path/to/black-atom/adapters/niri/themes/terra/black-atom-terra-fall-dark.kdl ~/.config/niri/theme.kdl
 ```
 
 Then include it in your config:
@@ -60,7 +61,7 @@ include "theme.kdl"
 To switch themes, just update the symlink:
 
 ```bash
-ln -sf /path/to/black-atom/adapters/niri/themes/jpn/black-atom-jpn-koyo-yoru.kdl ~/.config/niri/theme.kdl
+ln -sf /path/to/black-atom/adapters/niri/themes/jpn/black-atom-jpn-koyo-dark.kdl ~/.config/niri/theme.kdl
 ```
 
 Niri will automatically reload the configuration when the included file changes.

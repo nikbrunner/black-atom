@@ -21,7 +21,7 @@ struct Cli {
 enum Command {
     /// Apply a theme to every enabled app; without a theme, pick one interactively
     Apply {
-        /// Theme key, for example black-atom-jpn-koyo-yoru
+        /// Theme key, for example black-atom-jpn-koyo-dark
         theme: Option<String>,
     },
     /// Reapply the recorded active theme to every enabled app

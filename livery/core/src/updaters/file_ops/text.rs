@@ -82,7 +82,7 @@ mod tests {
         let mut vars = HashMap::new();
         vars.insert(
             "themeKey".to_string(),
-            "black-atom-terra-spring-day".to_string(),
+            "black-atom-terra-spring-light".to_string(),
         );
 
         patch_text_file(
@@ -109,7 +109,7 @@ mod tests {
         let mut vars = HashMap::new();
         vars.insert(
             "themeKey".to_string(),
-            "black-atom-terra-spring-day".to_string(),
+            "black-atom-terra-spring-light".to_string(),
         );
 
         patch_text_file(
@@ -136,7 +136,7 @@ mod tests {
         let mut vars = HashMap::new();
         vars.insert(
             "themeKey".to_string(),
-            "black-atom-jpn-koyo-yoru".to_string(),
+            "black-atom-jpn-koyo-dark".to_string(),
         );
         vars.insert("collectionKey".to_string(), "jpn".to_string());
         vars.insert("themesPath".to_string(), "~/themes".to_string());
@@ -188,7 +188,7 @@ mod tests {
         let mut vars = HashMap::new();
         vars.insert(
             "themeKey".to_string(),
-            "black-atom-terra-spring-day".to_string(),
+            "black-atom-terra-spring-light".to_string(),
         );
 
         patch_text_file(

@@ -1,7 +1,7 @@
 # Black Atom
 
-A family of dark and light themes for developer tools. Six collections, each with its own palette
-and mood: `default`, `jpn`, `terra`, `stations`, `mnml`, `paper`. Every theme is defined once and
+A family of dark and light themes for developer tools. 32 themes across seven collections, each with its own palette
+and mood: `default`, `facility`, `terra`, `jpn`, `clay`, `minium`, `mono`. Every theme is defined once and
 rendered for each platform through an adapter, so the same colors show up in your terminal, editor,
 and everything else you point Black Atom at.
 
@@ -79,7 +79,7 @@ vim.g.black_atom_core_config = {
         },
     },
 }
-vim.cmd.colorscheme("black-atom-jpn-koyo-yoru")
+vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
 ```
 
 Defaults live in `adapters/nvim/lua/black-atom/config.lua`. See `adapters/nvim/README.md` for the

@@ -10,16 +10,17 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes multiple theme collections, each with dark and light variants:
+Black Atom includes 32 themes across seven collections, with dark and light appearances:
 
-| Collection   | Description                   |
-| ------------ | ----------------------------- |
-| **Default**  | Core Black Atom themes        |
-| **JPN**      | Japanese-inspired themes      |
-| **MNML**     | Minimalist accent themes      |
-| **Paper**    | Paper-inspired themes         |
-| **Stations** | Space station-inspired themes |
-| **Terra**    | Earth season-inspired themes  |
+| Collection   | Description                  |
+| ------------ | ---------------------------- |
+| **Default**  | Core default themes          |
+| **Facility** | Facility-inspired themes     |
+| **Terra**    | Earth season-inspired themes |
+| **JPN**      | Japanese-inspired themes     |
+| **Clay**     | Clay-inspired themes         |
+| **Minium**   | Minimal accent themes        |
+| **Mono**     | Monochrome themes            |
 
 ## Installation
 
@@ -54,7 +55,7 @@ if wezterm.config_builder then
 end
 
 -- To use a specific theme:
-config.color_scheme = "Black Atom — JPN ∷ Koyo Yoru"
+config.color_scheme = "Black Atom — JPN ∷ Koyo Dark"
 
 return config
 ```
@@ -74,13 +75,13 @@ end
 
 -- Load color scheme from file
 config.color_schemes = {
-  ["Black Atom — JPN ∷ Koyo Yoru"] = wezterm.color_scheme.load(
-    "~/.config/wezterm/colors/black-atom-jpn-koyo-yoru.toml"
+  ["Black Atom — JPN ∷ Koyo Dark"] = wezterm.color_scheme.load(
+    "~/.config/wezterm/colors/black-atom-jpn-koyo-dark.toml"
   ),
 }
 
 -- Use the loaded scheme
-config.color_scheme = "Black Atom — JPN ∷ Koyo Yoru"
+config.color_scheme = "Black Atom — JPN ∷ Koyo Dark"
 
 return config
 ```
@@ -109,7 +110,7 @@ WezTerm themes are TOML files that define terminal colors. Black Atom themes def
 # Metadata
 [metadata]
 author = "Black Atom Industries"
-name = "Black Atom — JPN ∷ Koyo Yoru"
+name = "Black Atom — JPN ∷ Koyo Dark"
 
 # Basic terminal colors
 [colors]

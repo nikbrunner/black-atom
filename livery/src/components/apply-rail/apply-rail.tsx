@@ -37,7 +37,7 @@ export type ApplyRailMode = "idle" | "active" | "settled";
 
 interface ApplyRailProps {
     mode: ApplyRailMode;
-    /** Theme name shown in the register line, e.g. "KOYO YORU". */
+    /** Theme name shown in the register line, e.g. "KOYO DARK". */
     themeName: string;
     /** Updater results in run order — one AdapterStatusRow each. */
     results: UpdateResult[];

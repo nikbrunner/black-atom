@@ -5,68 +5,67 @@
             "template": "./themes/default/collection.template.json",
             "themes": [
                 "black-atom-default-dark",
-                "black-atom-default-dark-dimmed",
+                "black-atom-default-dimmed-dark",
                 "black-atom-default-light",
-                "black-atom-default-light-dimmed"
+                "black-atom-default-dimmed-light"
             ]
         },
-        "jpn": {
-            "template": "./themes/jpn/collection.template.json",
+        "facility": {
+            "template": "./themes/facility/collection.template.json",
             "themes": [
-                "black-atom-jpn-koyo-yoru",
-                "black-atom-jpn-koyo-hiru",
-                "black-atom-jpn-tsuki-yoru",
-                "black-atom-jpn-murasaki-yoru"
-            ]
-        },
-        "stations": {
-            "template": "./themes/stations/collection.template.json",
-            "themes": [
-                "black-atom-stations-engineering",
-                "black-atom-stations-operations",
-                "black-atom-stations-medical",
-                "black-atom-stations-research"
+                "black-atom-facility-dark",
+                "black-atom-facility-dimmed-dark",
+                "black-atom-facility-light",
+                "black-atom-facility-dimmed-light"
             ]
         },
         "terra": {
             "template": "./themes/terra/collection.template.json",
             "themes": [
-                "black-atom-terra-spring-day",
-                "black-atom-terra-spring-night",
-                "black-atom-terra-summer-day",
-                "black-atom-terra-summer-night",
-                "black-atom-terra-fall-day",
-                "black-atom-terra-fall-night",
-                "black-atom-terra-winter-day",
-                "black-atom-terra-winter-night"
+                "black-atom-terra-spring-dark",
+                "black-atom-terra-spring-light",
+                "black-atom-terra-summer-dark",
+                "black-atom-terra-summer-light",
+                "black-atom-terra-fall-dark",
+                "black-atom-terra-fall-light",
+                "black-atom-terra-winter-dark",
+                "black-atom-terra-winter-light"
             ]
         },
-        "mnml": {
-            "template": "./themes/mnml/collection.template.json",
+        "jpn": {
+            "template": "./themes/jpn/collection.template.json",
             "themes": [
-                "black-atom-mnml-clay-dark",
-                "black-atom-mnml-clay-light",
-                "black-atom-mnml-orange-dark",
-                "black-atom-mnml-orange-light",
-                "black-atom-mnml-osman-light",
-                "black-atom-mnml-mikado-dark",
-                "black-atom-mnml-mikado-light",
-                "black-atom-mnml-47-light",
-                "black-atom-mnml-47-dark",
-                "black-atom-mnml-eink-light",
-                "black-atom-mnml-eink-dark",
-                "black-atom-mnml-mono-dark",
-                "black-atom-mnml-mono-light",
-                "black-atom-mnml-ita-light"
+                "black-atom-jpn-koyo-dark",
+                "black-atom-jpn-koyo-light",
+                "black-atom-jpn-murasaki-dark",
+                "black-atom-jpn-tsuki-dark",
+                "black-atom-jpn-sanshoku-dark",
+                "black-atom-jpn-sanshoku-light"
             ]
         },
-        "paper": {
-            "template": "./themes/paper/collection.template.json",
+        "clay": {
+            "template": "./themes/clay/collection.template.json",
             "themes": [
-                "black-atom-paper-brown-light",
-                "black-atom-paper-brown-dark",
-                "black-atom-paper-blue-light",
-                "black-atom-paper-blue-dark"
+                "black-atom-clay-dark",
+                "black-atom-clay-light"
+            ]
+        },
+        "minium": {
+            "template": "./themes/minium/collection.template.json",
+            "themes": [
+                "black-atom-minium-polymer-dark",
+                "black-atom-minium-polymer-light",
+                "black-atom-minium-viridian-dark",
+                "black-atom-minium-viridian-light"
+            ]
+        },
+        "mono": {
+            "template": "./themes/mono/collection.template.json",
+            "themes": [
+                "black-atom-mono-dark",
+                "black-atom-mono-light",
+                "black-atom-mono-dimmed-dark",
+                "black-atom-mono-dimmed-light"
             ]
         }
     }

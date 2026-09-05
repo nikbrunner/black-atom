@@ -104,9 +104,9 @@ emoji. If a glyph can't say it, a mono label does.
 Technical documentation voice. Terse, factual, confident — instrument-panel captions, not marketing.
 
 - **Casing:** chrome text is UPPERCASE mono with letterspacing (`SEMANTIC · FEEDBACK`,
-  `APPLYING KOYO YORU`). Body prose is sentence case. Theme names are Title Case.
+  `APPLYING KOYO DARK`). Body prose is sentence case. Theme names are Title Case.
 - **Separators:** middle dot `·` joins facts; em-dash `—` introduces qualifiers
-  (`■ APPLIED — KOYO YORU`). Counts as `n/m`.
+  (`■ APPLIED — KOYO DARK`). Counts as `n/m`.
 - **Voice:** imperative and impersonal. "Select any theme with j/k and press ⏎." Never "we", rarely
   "you". No exclamation marks.
 - **Keyboard-first:** every action names its key (`[ r RETRY FAILED ]`, `esc DISMISS`). The footer

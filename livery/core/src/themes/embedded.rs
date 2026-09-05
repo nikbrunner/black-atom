@@ -128,6 +128,33 @@ mod tests {
     use crate::config::types::AppName;
 
     #[test]
+    fn test_every_adapter_embeds_exactly_the_current_keys() {
+        fn keys(dir: &Dir<'_>, result: &mut Vec<String>) {
+            for file in dir.files() {
+                let key = file.path().file_stem().unwrap().to_str().unwrap();
+                if key.starts_with("black-atom-") {
+                    result.push(key.to_string());
+                }
+            }
+            for child in dir.dirs() {
+                keys(child, result);
+            }
+        }
+
+        let expected: Vec<super::super::catalog::ThemeEntry> =
+            serde_json::from_str(include_str!("../../tests/fixtures/catalog.json")).unwrap();
+        let expected: Vec<_> = expected.into_iter().map(|theme| theme.key).collect();
+        for adapter in Adapter::ALL {
+            let mut actual = Vec::new();
+            for (_, dir) in embedded(adapter) {
+                keys(dir, &mut actual);
+            }
+            actual.sort();
+            assert_eq!(actual, expected, "{}", adapter.dir_name());
+        }
+    }
+
+    #[test]
     fn test_every_adapter_carries_files() {
         for adapter in Adapter::ALL {
             let files: usize = embedded(adapter)

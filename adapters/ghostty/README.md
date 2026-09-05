@@ -10,16 +10,17 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes multiple theme collections, each with dark and light variants:
+Black Atom includes 32 themes across seven collections, with dark and light appearances:
 
-| Collection   | Description                   |
-| ------------ | ----------------------------- |
-| **Default**  | Core Black Atom themes        |
-| **JPN**      | Japanese-inspired themes      |
-| **MNML**     | Minimalist accent themes      |
-| **Paper**    | Paper-inspired themes         |
-| **Stations** | Space station-inspired themes |
-| **Terra**    | Earth season-inspired themes  |
+| Collection   | Description                  |
+| ------------ | ---------------------------- |
+| **Default**  | Core default themes          |
+| **Facility** | Facility-inspired themes     |
+| **Terra**    | Earth season-inspired themes |
+| **JPN**      | Japanese-inspired themes     |
+| **Clay**     | Clay-inspired themes         |
+| **Minium**   | Minimal accent themes        |
+| **Mono**     | Monochrome themes            |
 
 ## Installation
 
@@ -52,14 +53,14 @@ option:
 
 ```ini
 # In your ~/.config/ghostty/config file
-theme = black-atom-jpn-koyo-yoru
+theme = black-atom-jpn-koyo-dark
 ```
 
 You can also specify different themes for light and dark mode:
 
 ```ini
 # Use different themes based on system appearance
-theme = dark:black-atom-terra-fall-night,light:black-atom-terra-fall-day
+theme = dark:black-atom-terra-fall-dark,light:black-atom-terra-fall-light
 ```
 
 > Don't forget to [reload your configuration](https://ghostty.org/docs/config#reloading-the-configuration) after changing the theme.
@@ -70,7 +71,7 @@ Alternatively, you can directly include a theme file:
 
 ```ini
 # In your ~/.config/ghostty/config file
-include ~/.config/ghostty/themes/black-atom-jpn-koyo-yoru.conf
+include ~/.config/ghostty/themes/black-atom-jpn-koyo-dark.conf
 ```
 
 ### Theme Installation

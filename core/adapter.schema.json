@@ -23,19 +23,22 @@
                 "default": {
                     "$ref": "#/$defs/collectionConfig"
                 },
-                "stations": {
-                    "$ref": "#/$defs/collectionConfig"
-                },
-                "jpn": {
+                "facility": {
                     "$ref": "#/$defs/collectionConfig"
                 },
                 "terra": {
                     "$ref": "#/$defs/collectionConfig"
                 },
-                "mnml": {
+                "jpn": {
                     "$ref": "#/$defs/collectionConfig"
                 },
-                "paper": {
+                "clay": {
+                    "$ref": "#/$defs/collectionConfig"
+                },
+                "minium": {
+                    "$ref": "#/$defs/collectionConfig"
+                },
+                "mono": {
                     "$ref": "#/$defs/collectionConfig"
                 }
             },

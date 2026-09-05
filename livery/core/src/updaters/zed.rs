@@ -176,12 +176,12 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         std::fs::copy(
             fixture_path("jsonc/zed-theme-family.json"),
-            dir.path().join("black-atom-jpn-tsuki-yoru.json"),
+            dir.path().join("black-atom-jpn-tsuki-dark.json"),
         )
         .unwrap();
         std::os::unix::fs::symlink(
             dir.path().join("does-not-exist.json"),
-            dir.path().join("black-atom-north-night.json"),
+            dir.path().join("black-atom-jpn-koyo-light.json"),
         )
         .unwrap();
         std::fs::write(dir.path().join("README.md"), "not a theme").unwrap();
@@ -193,7 +193,7 @@ mod tests {
         let dir = fake_themes_dir();
         let dirs = vec![dir.path().to_path_buf()];
         assert_eq!(
-            theme_installed_in(&dirs, "Black Atom — JPN ∷ Tsuki Yoru"),
+            theme_installed_in(&dirs, "Black Atom — JPN ∷ Tsuki Dark"),
             Some(true)
         );
     }
@@ -202,9 +202,9 @@ mod tests {
     fn test_theme_installed_reports_missing_theme() {
         let dir = fake_themes_dir();
         let dirs = vec![dir.path().to_path_buf()];
-        // The NORTH theme file is a dangling symlink — it must NOT count.
+        // A dangling symlink does not make the theme available to Zed.
         assert_eq!(
-            theme_installed_in(&dirs, "Black Atom — NORTH ∷ Night"),
+            theme_installed_in(&dirs, "Black Atom — JPN ∷ Koyo Light"),
             Some(false)
         );
     }

@@ -6,6 +6,6 @@ M.config = {
 }
 
 -- Set colorscheme
-vim.cmd.colorscheme("black-atom-default-dark-dimmed")
+vim.cmd.colorscheme("black-atom-default-dimmed-dark")
 
 return M

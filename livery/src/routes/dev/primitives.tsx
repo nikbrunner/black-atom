@@ -18,8 +18,8 @@ import { TextInput } from "../../components/primitives/text-input/text-input.tsx
 import { Toggle } from "../../components/primitives/toggle/toggle.tsx";
 import type { UpdateResult } from "../../lib/updaters.ts";
 
-const KOYO_YORU_PALETTE = ["#C46A5A", "#D9A662", "#8FA36B", "#A97BA2"];
-const KOYO_HIRU_PALETTE = ["#B0543F", "#7A8B4C", "#B08D3E", "#5F7A94"];
+const KOYO_DARK_PALETTE = ["#C46A5A", "#D9A662", "#8FA36B", "#A97BA2"];
+const KOYO_LIGHT_PALETTE = ["#B0543F", "#7A8B4C", "#B08D3E", "#5F7A94"];
 
 const PROGRESS_FIXTURES: Record<string, UpdateResult[]> = {
     idle: [],
@@ -163,9 +163,9 @@ function Page() {
                         tag="DERIVED FROM PALETTE.RED"
                     />
                     <div style={{ display: "flex", gap: 2, maxWidth: 420 }}>
-                        {KOYO_YORU_PALETTE.map((c) => <Swatch key={c} color={c} />)}
+                        {KOYO_DARK_PALETTE.map((c) => <Swatch key={c} color={c} />)}
                     </div>
-                    <Swatch variant="pips" colors={KOYO_YORU_PALETTE} />
+                    <Swatch variant="pips" colors={KOYO_DARK_PALETTE} />
                 </div>
             </section>
 
@@ -259,9 +259,9 @@ function Page() {
                     ListRow — keyboard-list row with palette pips
                 </h2>
                 <div style={{ display: "flex", flexDirection: "column", maxWidth: 420 }}>
-                    <ListRow name="Koyo Hiru" pips={KOYO_HIRU_PALETTE} appearance="L" />
-                    <ListRow selected name="Koyo Yoru" pips={KOYO_YORU_PALETTE} appearance="D" />
-                    <ListRow name="Warm Precision" pips={KOYO_YORU_PALETTE} appearance="D" />
+                    <ListRow name="Koyo Light" pips={KOYO_LIGHT_PALETTE} appearance="L" />
+                    <ListRow selected name="Koyo Dark" pips={KOYO_DARK_PALETTE} appearance="D" />
+                    <ListRow name="Warm Precision" pips={KOYO_DARK_PALETTE} appearance="D" />
                     <ListRow dimmed name="Dark Dimmed" appearance="D" />
                 </div>
             </section>

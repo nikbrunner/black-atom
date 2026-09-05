@@ -3,6 +3,26 @@ import { themeCatalog } from "@black-atom/core";
 import { collectionOrder } from "@black-atom/core";
 import type * as Theme from "@black-atom/core";
 import { formatCollectionTitle, getGroupedThemes, pickRandomOtherTheme } from "./themes.ts";
+import expectedCatalog from "../../core/tests/fixtures/catalog.json" with { type: "json" };
+
+Deno.test("Livery exposes the exact embedded catalog metadata and all seven groups", () => {
+    const actual = Object.values(themeCatalog).map(({ meta }) => ({
+        key: meta.key,
+        collection_key: meta.collection.key,
+        appearance: meta.appearance,
+        label: meta.label,
+    })).sort((a, b) => a.key.localeCompare(b.key));
+    assertEquals(actual, expectedCatalog);
+    assertEquals(getGroupedThemes(themeCatalog).map((group) => group.collectionKey), [
+        "default",
+        "facility",
+        "terra",
+        "jpn",
+        "clay",
+        "minium",
+        "mono",
+    ]);
+});
 
 Deno.test("formatCollectionTitle collapses a label that merely echoes the key", () => {
     assertEquals(formatCollectionTitle("jpn", "JPN"), "JPN");

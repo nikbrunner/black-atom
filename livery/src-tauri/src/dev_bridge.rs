@@ -311,11 +311,26 @@ mod tests {
         let previous_config_home = std::env::var_os("XDG_CONFIG_HOME");
         std::env::set_var("XDG_CONFIG_HOME", &config_home);
 
+        let mut seeded = crate::commands::get_config();
+        seeded.active_theme = Some("black-atom-jpn-koyo-yoru".to_string());
+        crate::commands::save_config(seeded).unwrap();
+        let config_path = config_home.join("black-atom/livery/config.json");
+        let before = std::fs::read(&config_path).unwrap();
+        assert_eq!(
+            dispatch("get_active_theme", Value::Null).unwrap(),
+            "black-atom-jpn-koyo-yoru"
+        );
+        assert_eq!(std::fs::read(&config_path).unwrap(), before);
+
         let result = dispatch(
             "set_active_theme",
-            json!({ "key": "black-atom-jpn-koyo-yoru" }),
+            json!({ "key": "black-atom-jpn-koyo-light" }),
         )
         .unwrap();
+        assert_eq!(
+            dispatch("get_active_theme", Value::Null).unwrap(),
+            "black-atom-jpn-koyo-light"
+        );
 
         match previous_config_home {
             Some(value) => std::env::set_var("XDG_CONFIG_HOME", value),
@@ -326,7 +341,7 @@ mod tests {
             std::fs::read_to_string(config_home.join("black-atom/livery/config.json")).unwrap();
         assert_eq!(
             serde_json::from_str::<serde_json::Value>(&config).unwrap()["active_theme"],
-            "black-atom-jpn-koyo-yoru"
+            "black-atom-jpn-koyo-light"
         );
         std::fs::remove_dir_all(config_home).unwrap();
     }
