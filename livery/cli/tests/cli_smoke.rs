@@ -16,7 +16,7 @@ const BINARY: &str = env!("CARGO_BIN_EXE_livery");
 /// The theme `setup` applies when it is not asked interactively.
 const DEFAULT_THEME: &str = "black-atom-default-dark";
 
-const THEME: &str = "black-atom-jpn-koyo-yoru";
+const THEME: &str = "black-atom-jpn-koyo-dark";
 
 struct Sandbox {
     home: tempfile::TempDir,
@@ -210,7 +210,7 @@ fn cli_end_to_end() {
         .lines()
         .filter(|line| line.contains("black-atom-"))
         .count();
-    assert!(theme_lines >= 30, "only {theme_lines} themes listed");
+    assert_eq!(theme_lines, 32);
     assert!(
         listed.contains("JPN"),
         "collections are not grouped:\n{listed}"
@@ -351,11 +351,63 @@ fn cli_end_to_end() {
         .enabled = false;
     livery_core::config::commands::save_config(after_setup).unwrap();
 
-    let unknown = sandbox.run(&["apply", "not-a-theme"]);
-    assert!(
-        !unknown.status.success(),
-        "an unknown theme must exit non-zero: {unknown:?}"
-    );
+    for key in [
+        "not-a-theme",
+        "black-atom-jpn-koyo-yoru",
+        "black-atom-mnml-mono-light",
+        "black-atom-default-dark-dimmed",
+    ] {
+        let paths = [
+            &config_path,
+            &tmux_config,
+            &ghostty_config,
+            &sandbox.appearance_log(),
+        ];
+        let before: Vec<_> = paths
+            .iter()
+            .map(|path| std::fs::read(path).unwrap())
+            .collect();
+        let rejected = sandbox.run(&["apply", key]);
+        assert!(!rejected.status.success(), "{key} must fail: {rejected:?}");
+        assert!(
+            String::from_utf8_lossy(&rejected.stderr).contains("unknown theme"),
+            "{rejected:?}"
+        );
+        for (path, expected) in paths.iter().zip(before) {
+            assert_eq!(
+                std::fs::read(path).unwrap(),
+                expected,
+                "rejected {key} changed {}",
+                path.display()
+            );
+        }
+    }
+
+    for key in ["black-atom-jpn-koyo-light", DEFAULT_THEME] {
+        let applied = sandbox.run(&["apply", key]);
+        assert!(applied.status.success(), "{applied:?}");
+        assert_eq!(
+            std::fs::read_to_string(&ghostty_config).unwrap(),
+            fixture("ghostty-config.txt").replace("black-atom-default-dimmed-dark", key)
+        );
+        assert_eq!(
+            livery_core::config::commands::get_active_theme().as_deref(),
+            Some(key)
+        );
+        let arguments = std::fs::read_to_string(sandbox.appearance_log()).unwrap();
+        #[cfg(target_os = "macos")]
+        assert!(arguments.contains(if key.ends_with("light") {
+            "false"
+        } else {
+            "true"
+        }));
+        #[cfg(target_os = "linux")]
+        assert!(arguments.contains(if key.ends_with("light") {
+            "prefer-light"
+        } else {
+            "prefer-dark"
+        }));
+    }
 
     // The record follows what was written, not what was attempted: a pass
     // where nothing succeeds must leave the previous theme standing. System

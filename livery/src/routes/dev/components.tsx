@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { themeMap } from "@black-atom/core";
+import { themeCatalog } from "@black-atom/core";
 import { AppHeader } from "../../components/app-header/index.ts";
 import { AppFooter } from "../../components/app-footer/index.ts";
 import { ApplyRail } from "../../components/apply-rail/index.ts";
@@ -128,7 +128,7 @@ export const Route = createFileRoute("/dev/components")({
     component: Page,
 });
 
-const groups = getGroupedThemes(themeMap);
+const groups = getGroupedThemes(themeCatalog);
 const themes = groups.flatMap((g) => g.themes);
 
 const PROGRESS_FIXTURES: Record<string, UpdateResult[]> = {
@@ -160,7 +160,7 @@ function Page() {
     const [settingsSelectedApp, setSettingsSelectedApp] = useState<AppName>("ghostty");
     const [settingsTestApplyResults, setSettingsTestApplyResults] = useState<
         Partial<Record<AppName, TestApplyResult>>
-    >({ ghostty: { status: "ok", durationMs: 412, testedThemeLabel: "Koyo Yoru" } });
+    >({ ghostty: { status: "ok", durationMs: 412, testedThemeLabel: "Koyo Dark" } });
     const [settingsVerifyPathResults, setSettingsVerifyPathResults] = useState<
         Partial<Record<AppName, VerifyPathResult>>
     >({
@@ -419,7 +419,7 @@ function Page() {
                                                     status: "ok",
                                                     durationMs: 380 +
                                                         Math.round(Math.random() * 80),
-                                                    testedThemeLabel: "Fall Night",
+                                                    testedThemeLabel: "Fall Dark",
                                                 },
                                         }));
                                     }, 600);
@@ -544,14 +544,14 @@ function Page() {
                 <div style={{ height: 400, border: "1px solid var(--ba-color-fg-hint)" }}>
                     <ApplyRail
                         mode="idle"
-                        themeName="KOYO YORU"
+                        themeName="KOYO DARK"
                         results={APPLY_RAIL_FIXTURES.idle}
                     />
                 </div>
                 <div style={{ height: 400, border: "1px solid var(--ba-color-fg-hint)" }}>
                     <ApplyRail
                         mode="active"
-                        themeName="KOYO YORU"
+                        themeName="KOYO DARK"
                         results={APPLY_RAIL_FIXTURES.running}
                         cursorApp="delta"
                     />
@@ -559,14 +559,14 @@ function Page() {
                 <div style={{ height: 400, border: "1px solid var(--ba-color-fg-hint)" }}>
                     <ApplyRail
                         mode="active"
-                        themeName="KOYO YORU"
+                        themeName="KOYO DARK"
                         results={APPLY_RAIL_FIXTURES.success}
                     />
                 </div>
                 <div style={{ height: 400, border: "1px solid var(--ba-color-fg-hint)" }}>
                     <ApplyRail
                         mode="active"
-                        themeName="KOYO YORU"
+                        themeName="KOYO DARK"
                         results={APPLY_RAIL_FIXTURES.partialFailure}
                         cursorApp="obsidian"
                         expandedApp="obsidian"
@@ -577,7 +577,7 @@ function Page() {
                 <div style={{ height: 400, border: "1px solid var(--ba-color-fg-hint)" }}>
                     <ApplyRail
                         mode="active"
-                        themeName="KOYO YORU"
+                        themeName="KOYO DARK"
                         results={APPLY_RAIL_FIXTURES.degraded}
                         cursorApp="ghostty"
                     />

@@ -13,28 +13,28 @@ use livery_core::updaters::{
 //   Other collections:  "Black Atom — {COLLECTION} ∷ {name}"
 const THEMES: &[(&str, &str, &str, &str)] = &[
     (
-        "black-atom-terra-fall-night",
+        "black-atom-terra-fall-dark",
         "dark",
         "terra",
-        "Black Atom — TERRA ∷ Fall Night",
+        "Black Atom — TERRA ∷ Fall Dark",
     ),
     (
-        "black-atom-terra-spring-day",
+        "black-atom-terra-spring-light",
         "light",
         "terra",
-        "Black Atom — TERRA ∷ Spring Day",
+        "Black Atom — TERRA ∷ Spring Light",
     ),
     (
-        "black-atom-jpn-koyo-yoru",
+        "black-atom-jpn-koyo-dark",
         "dark",
         "jpn",
-        "Black Atom — JPN ∷ Koyo Yoru",
+        "Black Atom — JPN ∷ Koyo Dark",
     ),
     (
-        "black-atom-jpn-koyo-hiru",
+        "black-atom-jpn-koyo-light",
         "light",
         "jpn",
-        "Black Atom — JPN ∷ Koyo Hiru",
+        "Black Atom — JPN ∷ Koyo Light",
     ),
     (
         "black-atom-default-dark",

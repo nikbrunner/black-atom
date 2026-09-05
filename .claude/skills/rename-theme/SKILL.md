@@ -7,7 +7,7 @@ user-invocable: false
 # Rename Theme
 
 Renames `black-atom-<collection>-<old>` to `black-atom-<collection>-<new>` everywhere it appears,
-in one commit. Example below uses collection `mnml`, old name `eink`, new name `paper-white`.
+in one commit. Example below uses collection `minium`, old name `polymer`, new name `ochre`.
 
 1. Confirm the old key exists and the new key is free:
    `grep -rn "black-atom-<collection>-<new>" core adapters` should return nothing.
@@ -17,15 +17,13 @@ in one commit. Example below uses collection `mnml`, old name `eink`, new name `
    core/src/themes/<collection>/black-atom-<collection>-<new>-dark.ts` (repeat per appearance
    suffix the theme has, e.g. `-dark`, `-light`).
 
-3. Update the four core registration points, in this order:
-   - `core/src/types/theme.ts`: the key string inside the `themeKeys` array.
-   - `core/src/types/themes.ts`: the object key and the `key:` field in `rawThemeKeyMetaMap`, and
-     the `name:` field if the display name is changing too.
-   - `core/src/themes/map.ts`: the import path (now pointing at the renamed file), the import
-     identifier, and the object key in `themeMap`.
-   - The renamed definition file itself: the string passed to `themeKeyMetaMap[...]`.
+3. Update `core/src/themes/<collection>/mod.ts`: change the imported filename and identifier,
+   then update the key and `meta.name` in `defineCollection()`'s `themes` map. Each entry pairs
+   `meta` with `colors` from a `defineThemeColors()` export. The helper derives the label and
+   collection metadata; the catalog's `collections` tuple drives key types, and `themeCatalog`
+   combines the collections' `.themes` maps.
 
-4. If the renamed key is `DEFAULT_THEME_KEY` (in `core/src/types/theme.ts`), also update that
+4. If the renamed key is `DEFAULT_THEME_KEY` (in `core/src/themes/catalog.ts`), also update that
    constant, `livery/src/store/app.ts`, and `livery/src/lib/themes_test.ts`. Otherwise skip this
    step; renaming a non-default theme normally needs no livery change.
 
@@ -43,7 +41,7 @@ in one commit. Example below uses collection `mnml`, old name `eink`, new name `
    path inside it to the new key. Repeat per appearance.
 
 7. Search the rest of livery for a hardcoded reference to this specific key (most renames find
-   nothing here, since livery normally reads keys through `themeMap`):
+   nothing here, since livery normally reads keys through `themeCatalog`):
    `grep -rn "black-atom-<collection>-<old>" livery/src livery/src-tauri`. Fix any hit.
 
 8. Delete the stale generated files rather than renaming them by hand:

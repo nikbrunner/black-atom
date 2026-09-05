@@ -1,7 +1,7 @@
 import { wcagContrast } from "culori";
 import { wcagGrade } from "./wcag.ts";
 import type { WcagGrade } from "./wcag.ts";
-import type { ThemeDefinition } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 /** A defined fg/bg key pairing that occurs in real UI. */
 export interface PairingDef {
@@ -100,9 +100,9 @@ export const INTENDED_PAIRINGS: PairingCategory[] = [
 
 /** Resolves a dot-path key (e.g. "fg.default") to a hex color from a theme.
  *  Keys must be single-dot format: "fg.<token>" or "bg.<token>". */
-function resolveColor(theme: ThemeDefinition, key: string) {
-    type UiBgKey = keyof ThemeDefinition["ui"]["bg"];
-    type UiFgKey = keyof ThemeDefinition["ui"]["fg"];
+function resolveColor(theme: Theme.Definition, key: string) {
+    type UiBgKey = keyof Theme.Definition["ui"]["bg"];
+    type UiFgKey = keyof Theme.Definition["ui"]["fg"];
 
     const [group, token] = key.split(".");
     const color = group === "fg"
@@ -117,7 +117,7 @@ function resolveColor(theme: ThemeDefinition, key: string) {
 }
 
 /** Computes a ContrastPair from a theme and a pairing definition. */
-function computePair(theme: ThemeDefinition, def: PairingDef): ContrastPair {
+function computePair(theme: Theme.Definition, def: PairingDef): ContrastPair {
     const fgColor = resolveColor(theme, def.fg);
     const bgColor = resolveColor(theme, def.bg);
     const ratio = wcagContrast(fgColor, bgColor);
@@ -133,7 +133,7 @@ function computePair(theme: ThemeDefinition, def: PairingDef): ContrastPair {
  * Analyzes a theme against all intended fg/bg pairings.
  * Returns pass rates, worst pair, and all pairs grouped by category.
  */
-export function analyzeThemeContrast(theme: ThemeDefinition): ThemeContrastAnalysis {
+export function analyzeThemeContrast(theme: Theme.Definition): ThemeContrastAnalysis {
     const categories: ContrastCategory[] = INTENDED_PAIRINGS.map((cat) => ({
         name: cat.name,
         pairs: cat.pairs.map((def) => computePair(theme, def)),

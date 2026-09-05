@@ -1,4 +1,4 @@
-import type { ThemeDefinition } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 const PREFIX = "--ba";
 
@@ -23,7 +23,7 @@ function flatten(obj: Record<string, unknown>, path: string[] = []): Record<stri
 }
 
 /** Converts all theme color tokens into CSS custom properties. */
-export function themeToCssVars(theme: ThemeDefinition): Record<string, string> {
+export function themeToCssVars(theme: Theme.Definition): Record<string, string> {
     const { meta: _, ...colors } = theme;
     return flatten(colors);
 }

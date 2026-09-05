@@ -1,10 +1,10 @@
-import type { ThemeDefinition } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import { themeToStyleSheet } from "../../lib/tokens.ts";
 
 import styles from "./theme-provider.module.css";
 
 interface Props {
-    theme: ThemeDefinition;
+    theme: Theme.Definition;
     children: React.ReactNode;
 }
 

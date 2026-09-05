@@ -1,6 +1,6 @@
-import type { ThemeFeedbackColors, ThemePaletteColors } from "../../types/theme.ts";
+import type * as Theme from "../../types/theme.ts";
 
-export default function (palette: ThemePaletteColors): ThemeFeedbackColors {
+export default function (palette: Theme.Palette): Theme.Feedback {
     return {
         negative: palette.red,
         success: palette.green,

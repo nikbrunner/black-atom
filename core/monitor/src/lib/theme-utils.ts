@@ -1,8 +1,8 @@
-import type { ThemeCollectionKey, ThemeDefinition } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 /** Groups themes by their collection key. */
 export function groupByCollection(
-    themes: ThemeDefinition[],
-): Map<ThemeCollectionKey, ThemeDefinition[]> {
+    themes: Theme.Definition[],
+): Map<Theme.CollectionKey, Theme.Definition[]> {
     return Map.groupBy(themes, (t) => t.meta.collection.key);
 }

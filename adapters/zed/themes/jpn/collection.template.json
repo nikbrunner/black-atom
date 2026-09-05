@@ -261,7 +261,7 @@
                     "keyword": {
                         "color": "<%= theme.syntax.keyword.default %>",
                         "font_style": null,
-                        "font_weight": 700
+                        "font_weight": <%= theme.meta.key.startsWith("black-atom-jpn-sanshoku-") ? "null" : "700" %>
                     },
                     "label": {
                         "color": "<%= theme.syntax.attribute.default %>",

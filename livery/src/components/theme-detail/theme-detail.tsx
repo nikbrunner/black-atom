@@ -1,4 +1,4 @@
-import type { ThemeDefinition } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import { formatCollectionTitle } from "../../lib/themes.ts";
 import { themeToCustomProperties } from "../../lib/tokens.ts";
 import { Badge } from "../primitives/badge/badge.tsx";
@@ -13,12 +13,11 @@ import styles from "./theme-detail.module.css";
 
 const STATUS_INTENT = {
     release: "positive",
-    beta: "warn",
     development: "negative",
-} as const satisfies Record<ThemeDefinition["meta"]["status"], "positive" | "warn" | "negative">;
+} as const satisfies Record<Theme.Definition["meta"]["status"], "positive" | "warn" | "negative">;
 
 interface ThemeDetailProps {
-    theme: ThemeDefinition | undefined;
+    theme: Theme.Definition | undefined;
     /** Whether this theme is the one currently applied to the system. */
     isActive?: boolean;
 }
@@ -201,12 +200,12 @@ type ColorBand = { label: string; color: string; tag?: string };
 
 /**
  * The theme's own accent colors. Published core 0.4.x predates
- * `ThemeDefinition.accents`, so bundles built against it fall back to the
+ * `Theme.Definition.accents`, so bundles built against it fall back to the
  * board's ANSI derivation (tagged as such) — never hide the section,
  * never show it empty.
  */
-function getAccentBands(theme: ThemeDefinition): ColorBand[] {
-    const accents = (theme as Partial<ThemeDefinition>).accents;
+function getAccentBands(theme: Theme.Definition): ColorBand[] {
+    const accents = (theme as Partial<Theme.Definition>).accents;
 
     if (accents) {
         const entries = [accents.a10, accents.a20, accents.a30, accents.a40];
@@ -227,8 +226,8 @@ function getAccentBands(theme: ThemeDefinition): ColorBand[] {
  * The theme's semantic feedback colors, with the same 0.4.x fallback —
  * the `ui.fg` intents carry the equivalent values.
  */
-function getFeedbackBands(theme: ThemeDefinition): ColorBand[] {
-    const feedback = (theme as Partial<ThemeDefinition>).feedback;
+function getFeedbackBands(theme: Theme.Definition): ColorBand[] {
+    const feedback = (theme as Partial<Theme.Definition>).feedback;
 
     if (feedback) {
         return [
@@ -247,7 +246,7 @@ function getFeedbackBands(theme: ThemeDefinition): ColorBand[] {
     ];
 }
 
-/** Two-letter initials from a theme name, e.g. "Koyo Yoru" -> "KY". */
+/** Two-letter initials from a theme name, e.g. "Koyo Dark" -> "KY". */
 function initials(name: string): string {
     const letters = name
         .split(/\s+/)

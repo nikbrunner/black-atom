@@ -11,8 +11,7 @@ import {
     useSearch,
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { DEFAULT_THEME_KEY, themeKeys } from "@core/types/theme.ts";
-import type { ThemeKey } from "@core/types/theme.ts";
+
 import { analyzeThemeContrast } from "@core/lib/contrast-analysis.ts";
 import { useTheme, useThemes } from "../queries/themes";
 import { useServerReloadListener } from "../hooks/use-server-reload-listener";
@@ -21,6 +20,7 @@ import { TopNav } from "../components/top-nav";
 import { AnalyticsSidebar } from "../components/analytics-sidebar";
 import { ThemeSwitcher } from "../partials/theme-switcher";
 import { themeToCssVars } from "../lib/theme-css-vars";
+import { DEFAULT_THEME_KEY, themeKeys } from "@core/themes/catalog.ts";
 
 const rootSearchSchema = z.object({
     themeKey: z.enum(themeKeys).default(DEFAULT_THEME_KEY),
@@ -80,7 +80,7 @@ function Component() {
             <ThemeSwitcher
                 themes={themes ?? []}
                 currentThemeKey={themeKey}
-                onSelect={(key: ThemeKey) =>
+                onSelect={(key) =>
                     navigate({
                         to: location.pathname,
                         search: { themeKey: key },

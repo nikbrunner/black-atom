@@ -4,8 +4,8 @@
   "buffer_font_size": 16.0,
   "theme": {
     "mode": "system",
-    "dark": "Black Atom — TERRA ∷ Fall Night",
-    "light": "Black Atom — TERRA ∷ Fall Day",
+    "dark": "Black Atom — TERRA ∷ Fall Dark",
+    "light": "Black Atom — TERRA ∷ Fall Light",
   },
   "ui_font_size": 16.0,
   "telemetry": {

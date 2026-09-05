@@ -110,7 +110,7 @@ fn setup_chain_end_to_end() {
     write_file(&home.join(".config/zed/settings.json"), "{}\n");
     write_file(
         &home.join(".config/tmux/tmux.conf"),
-        "source-file ~/.config/tmux/themes/black-atom-jpn-koyo-yoru.conf\n",
+        "source-file ~/.config/tmux/themes/black-atom-jpn-koyo-dark.conf\n",
     );
     write_file(
         &home.join(".config/herdr/config.toml"),
@@ -130,12 +130,12 @@ fn setup_chain_end_to_end() {
 
     for (adapter, file) in [
         ("ghostty", "default/black-atom-default-dark.conf"),
-        ("tmux", "jpn/black-atom-jpn-koyo-yoru.conf"),
-        ("zed", "jpn/black-atom-jpn-koyo-yoru.json"),
-        ("obsidian", "jpn/black-atom-jpn-koyo-yoru.css"),
+        ("tmux", "jpn/black-atom-jpn-koyo-dark.conf"),
+        ("zed", "jpn/black-atom-jpn-koyo-dark.json"),
+        ("obsidian", "jpn/black-atom-jpn-koyo-dark.css"),
         ("obsidian", "theme.css"),
         ("obsidian", "manifest.json"),
-        ("nvim", "colors/black-atom-jpn-koyo-yoru.lua"),
+        ("nvim", "colors/black-atom-jpn-koyo-dark.lua"),
         ("nvim", "lua/black-atom/init.lua"),
         ("niri", "default/black-atom-default-dark.kdl"),
         ("waybar", "default/black-atom-default-dark.css"),
@@ -235,10 +235,10 @@ fn setup_chain_end_to_end() {
         assert!(result.linked.unwrap_or(0) > 0);
     }
     for link in [
-        home.join(".config/ghostty/themes/black-atom-jpn-koyo-yoru.conf"),
+        home.join(".config/ghostty/themes/black-atom-jpn-koyo-dark.conf"),
         home.join(".config/ghostty/themes/black-atom-default-dark.conf"),
-        home.join(".config/tmux/themes/black-atom-jpn-koyo-yoru.conf"),
-        home.join(".config/zed/themes/black-atom-jpn-koyo-yoru.json"),
+        home.join(".config/tmux/themes/black-atom-jpn-koyo-dark.conf"),
+        home.join(".config/zed/themes/black-atom-jpn-koyo-dark.json"),
         home.join("config_folder/.obsidian/themes/Black Atom/theme.css"),
         home.join("config_folder/.obsidian/themes/Black Atom/manifest.json"),
     ] {
@@ -254,7 +254,7 @@ fn setup_chain_end_to_end() {
         "nvim pack dir must point at the unpacked themes"
     );
     assert!(pack_link
-        .join("colors/black-atom-jpn-koyo-yoru.lua")
+        .join("colors/black-atom-jpn-koyo-dark.lua")
         .is_file());
     assert!(pack_link.join("lua/black-atom/init.lua").is_file());
     // Merged adapters consume the managed dir directly — linking is a skip.

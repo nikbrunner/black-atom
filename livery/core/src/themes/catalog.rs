@@ -11,8 +11,9 @@ use super::embedded::{self, Adapter};
 /// One theme as `update_app` needs it: the key it is applied by, plus the
 /// metadata the updaters render into config lines.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(test, derive(serde::Deserialize))]
 pub struct ThemeEntry {
-    /// `black-atom-jpn-koyo-yoru` — the file stem every adapter names its
+    /// `black-atom-jpn-koyo-dark` — the file stem every adapter names its
     /// output by.
     pub key: String,
     /// The collection directory the theme is generated into: `jpn`, `terra`,
@@ -20,7 +21,7 @@ pub struct ThemeEntry {
     pub collection_key: String,
     /// `dark` or `light`.
     pub appearance: String,
-    /// `Black Atom — JPN ∷ Koyo Yoru`.
+    /// `Black Atom — JPN ∷ Koyo Dark`.
     pub label: String,
 }
 
@@ -85,12 +86,22 @@ fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
 mod tests {
     use super::*;
 
-    const COLLECTIONS: [&str; 6] = ["default", "jpn", "mnml", "paper", "stations", "terra"];
+    const COLLECTIONS: [&str; 7] = [
+        "clay", "default", "facility", "jpn", "minium", "mono", "terra",
+    ];
 
     #[test]
     fn test_every_embedded_theme_parses_a_complete_entry() {
         let themes = themes();
-        assert!(themes.len() >= 30, "got {} themes", themes.len());
+        let expected: Vec<ThemeEntry> =
+            serde_json::from_str(include_str!("../../tests/fixtures/catalog.json")).unwrap();
+        assert_eq!(themes.len(), 32);
+        assert_eq!(themes, expected);
+        let collections: std::collections::BTreeSet<_> = themes
+            .iter()
+            .map(|theme| theme.collection_key.as_str())
+            .collect();
+        assert_eq!(collections.into_iter().collect::<Vec<_>>(), COLLECTIONS);
 
         for theme in &themes {
             assert!(theme.key.starts_with("black-atom-"), "{}", theme.key);
@@ -117,13 +128,13 @@ mod tests {
 
     #[test]
     fn test_collection_key_is_the_directory_not_the_header() {
-        let koyo = find("black-atom-jpn-koyo-yoru").expect("jpn koyo yoru is embedded");
+        let koyo = find("black-atom-jpn-koyo-dark").expect("jpn koyo dark is embedded");
         assert_eq!(koyo.collection_key, "jpn");
         assert_eq!(koyo.appearance, "dark");
-        assert_eq!(koyo.label, "Black Atom — JPN ∷ Koyo Yoru");
+        assert_eq!(koyo.label, "Black Atom — JPN ∷ Koyo Dark");
 
-        let hiru = find("black-atom-jpn-koyo-hiru").expect("jpn koyo hiru is embedded");
-        assert_eq!(hiru.appearance, "light");
+        let light = find("black-atom-jpn-koyo-light").expect("jpn koyo light is embedded");
+        assert_eq!(light.appearance, "light");
     }
 
     #[test]

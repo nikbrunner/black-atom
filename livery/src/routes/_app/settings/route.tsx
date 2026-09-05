@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { createFileRoute, Outlet, useMatches, useNavigate } from "@tanstack/react-router";
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { themeMap } from "@black-atom/core";
+import { themeCatalog } from "@black-atom/core";
 import { Typo } from "../../../components/typo/index.ts";
 import { useConfig } from "../../../queries/use-config.ts";
 import { useAppStatus } from "../../../queries/use-app-status.ts";
@@ -310,7 +310,7 @@ function SettingsRoute() {
         // has recorded anything there is nothing to revert to, so the probe
         // falls back to the same default setup would have seeded.
         const before = activeTheme.theme ?? defaultTheme;
-        const probe = pickRandomOtherTheme(themeMap, before.meta.key);
+        const probe = pickRandomOtherTheme(themeCatalog, before.meta.key);
         if (!probe) return;
 
         setTestApplyResults((prev) => ({ ...prev, [appName]: { status: "running" } }));

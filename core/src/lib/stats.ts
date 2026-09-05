@@ -1,6 +1,6 @@
 import { wcagContrast } from "culori";
 import { wcagGrade } from "./wcag.ts";
-import type { ThemeDefinition } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 export interface ThemeContrastResult {
     ratio: number;
@@ -22,12 +22,12 @@ export interface OrgStatsResult {
     avgContrast: number;
 }
 
-export function themeContrast(theme: ThemeDefinition): ThemeContrastResult {
+export function themeContrast(theme: Theme.Definition): ThemeContrastResult {
     const ratio = wcagContrast(theme.ui.fg.default, theme.ui.bg.default);
     return { ratio, level: wcagGrade(ratio) };
 }
 
-export function collectionStats(themes: ThemeDefinition[]): CollectionStatsResult {
+export function collectionStats(themes: Theme.Definition[]): CollectionStatsResult {
     const contrasts = themes.map((t) => themeContrast(t).ratio);
     return {
         themeCount: themes.length,
@@ -37,7 +37,7 @@ export function collectionStats(themes: ThemeDefinition[]): CollectionStatsResul
     };
 }
 
-export function orgStats(themes: ThemeDefinition[]): OrgStatsResult {
+export function orgStats(themes: Theme.Definition[]): OrgStatsResult {
     const contrasts = themes.map((t) => themeContrast(t).ratio);
     const collectionCount = new Set(themes.map((t) => t.meta.collection.key)).size;
     return {

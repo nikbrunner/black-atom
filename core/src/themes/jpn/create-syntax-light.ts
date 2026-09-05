@@ -1,8 +1,8 @@
-import type { ThemeCreatorOptions, ThemeSyntaxColors } from "../../types/theme.ts";
+import type * as Theme from "../../types/theme.ts";
 
 export default function (
-    { primaries, palette, feedback }: ThemeCreatorOptions,
-): ThemeSyntaxColors {
+    { primaries, palette, feedback }: Theme.CreatorContext,
+): Theme.Syntax {
     return {
         variable: {
             default: palette.blue,

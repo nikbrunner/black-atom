@@ -14,17 +14,19 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 | Term                 | Definition                                                                                                                      | Aliases to avoid          |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
 | **Theme**            | A complete visual definition for one appearance variant, composed of metadata, primaries, palette, UI colors, and syntax colors | Colorscheme, scheme, skin |
-| **Theme Key**        | Unique identifier string for a theme (e.g., `black-atom-terra-winter-night`)                                                    | ID, slug, theme name      |
+| **Theme Key**        | Unique identifier string for a theme (e.g., `black-atom-terra-winter-dark`)                                                     | ID, slug, theme name      |
 | **Theme Definition** | The TypeScript object (`ThemeDefinition`) representing a complete theme — metadata plus all color groups                        | Theme config, theme data  |
 | **Appearance**       | Whether a theme is `"light"` or `"dark"`                                                                                        | Mode, variant, brightness |
-| **Status**           | A theme's maturity level: `"development"`, `"beta"`, or `"release"`                                                             | Stage, phase              |
+| **Status**           | A theme's maturity level: `"development"` or `"release"`                                                                        | Stage, phase              |
 
 ## Collections
 
-| Term               | Definition                                                                                           | Aliases to avoid               |
-| ------------------ | ---------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Collection**     | A named group of thematically related themes sharing a design concept (e.g., `jpn`, `terra`, `mnml`) | Category, family, group        |
-| **Collection Key** | The string identifier for a collection: `"default"`, `"stations"`, `"jpn"`, `"terra"`, `"mnml"`      | Collection name, collection ID |
+The catalog contains 32 themes across seven collections.
+
+| Term               | Definition                                                                                                            | Aliases to avoid               |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Collection**     | A named group of thematically related themes sharing a design concept (e.g., `jpn`, `terra`, `clay`)                  | Category, family, group        |
+| **Collection Key** | The string identifier for a collection: `"default"`, `"facility"`, `"terra"`, `"jpn"`, `"clay"`, `"minium"`, `"mono"` | Collection name, collection ID |
 
 ## Color Groups
 
@@ -33,9 +35,15 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 | **Primaries** | A 12-color gradient scale spanning dark-to-light, organized as d10-d40 (dark), m10-m40 (mid), l10-l40 (light) — the foundation all other colors derive from | Base colors, scale, gradient                 |
 | **Palette**   | A 16-color ANSI terminal color set (black, red, green, yellow, blue, magenta, cyan, white + dark variants) derived from primaries                           | Terminal colors, ANSI colors                 |
 | **Feedback**  | Four semantic status colors: `negative`, `success`, `info`, `warning` — represent application state, orthogonal to primaries                                | Status colors, state colors, semantic colors |
-| **Accents**   | A minimal emphasis scale (a10-a40) used primarily by the MNML collection to add color without a full palette                                                | Highlights, emphasis colors                  |
+| **Accents**   | An emphasis scale with required a10/a20 and optional a30/a40 tokens used to derive palette and semantic colors                                              | Highlights, emphasis colors                  |
 
 ## Derived Color Layers
+
+Theme files export `Colors` through `defineThemeColors()`. It resolves primaries, accents, palette,
+feedback, then UI and syntax; each derived group accepts a value or a creator using earlier groups.
+Collection modules call `defineCollection({ meta, themes })`, with `{ meta, colors }` per theme.
+The `collections` tuple in `core/src/themes/catalog.ts` drives key types and collection metadata;
+`themeCatalog` combines each collection's `.themes` map.
 
 | Term                      | Definition                                                                                                                                                                  | Aliases to avoid                |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
@@ -45,13 +53,13 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 
 ## Adapter & Generation Pipeline
 
-| Term               | Definition                                                                                                                                | Aliases to avoid               |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Adapter**        | A platform-specific repository that consumes Black Atom themes and generates output files for that platform (e.g., Zed, Neovim, Obsidian) | Plugin, extension, integration |
-| **Adapter Config** | The `black-atom-adapter.json` file in an adapter repo that declares its collections, templates, and optional post-generation commands     | Manifest, config file          |
-| **Template**       | An Eta template file (`.template.{ext}`) in an adapter repo that receives a `ThemeDefinition` and produces platform-specific output       | Eta file, template file        |
-| **Generated File** | The output artifact produced by rendering a template with theme data — the file end-users consume                                         | Output, artifact, built file   |
-| **postGenerate**   | An optional shell command in adapter config that runs after template rendering (e.g., formatting, building)                               | Post-hook, after-generate      |
+| Term               | Definition                                                                                                                                                 | Aliases to avoid               |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Adapter**        | A platform-specific directory under `adapters/` that consumes Black Atom themes and generates output files for that platform (e.g., Zed, Neovim, Obsidian) | Plugin, extension, integration |
+| **Adapter Config** | The `black-atom-adapter.json` file in an adapter directory that declares its collections, templates, and optional post-generation commands                 | Manifest, config file          |
+| **Template**       | An Eta template file (`.template.{ext}`) in an adapter directory that receives a `ThemeDefinition` and produces platform-specific output                   | Eta file, template file        |
+| **Generated File** | The output artifact produced by rendering a template with theme data — the file end-users consume                                                          | Output, artifact, built file   |
+| **postGenerate**   | An optional shell command in adapter config that runs after template rendering (e.g., formatting, building)                                                | Post-hook, after-generate      |
 
 ## Color Utilities
 
@@ -63,12 +71,12 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 
 ## Metadata
 
-| Term                | Definition                                                                                             | Aliases to avoid         |
-| ------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------ |
-| **Theme Meta**      | Metadata attached to a theme: key, name, label, appearance, status, collection                         | Header, info, properties |
-| **Theme Meta Base** | The author-defined subset of metadata — excludes computed fields like `label`                          | Raw meta, base meta      |
-| **Label**           | A computed display string combining theme name and collection, derived at runtime from `ThemeMetaBase` | Display name, title      |
-| **Name**            | The human-readable short name for a theme (e.g., "Winter Night")                                       | Title, display name      |
+| Term                | Definition                                                                                                        | Aliases to avoid         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| **Theme Meta**      | Metadata attached to a theme: key, name, label, appearance, status, collection                                    | Header, info, properties |
+| **Theme Meta Base** | The `MetaBase` type: theme metadata without `label`; collection entries supply `name`, `appearance`, and `status` | Raw meta, base meta      |
+| **Label**           | A computed display string combining theme name and collection, derived by `defineCollection()`                    | Display name, title      |
+| **Name**            | The human-readable short name for a theme (e.g., "Winter Dark")                                                   | Title, display name      |
 
 ---
 
@@ -181,8 +189,7 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
   derived from them
 - **Feedback** colors are orthogonal to **Primaries** — they represent application state, not the
   theme's color identity
-- **Accents** optionally supplement **Primaries** for collections (like MNML) that need emphasis
-  without a full **Palette**
+- **Accents** supplement **Primaries** with required `a10`/`a20` and optional `a30`/`a40` tokens
 - An **Adapter** discovers themes via core, applies them to **Templates**, and produces
   **Generated Files**
 - **Theme Creator Options** bundle all color groups (**Primaries**, **Palette**, **Feedback**,
@@ -208,9 +215,9 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 > **Dev:** "When I create a new **Theme** in the `terra` **Collection**, do I need to define all
 > color groups?"
 >
-> **Domain expert:** "You define **Primaries** and **Feedback** — those are always required.
-> **Palette** is derived from **Primaries** by the collection's creator function. **Accents** are
-> optional and mostly used by `mnml`."
+> **Domain expert:** "You supply **Primaries** and values or creators for **Accents**, **Palette**,
+> **Feedback**, **UI Colors**, and **Syntax Colors** to `defineThemeColors()`. Each creator receives
+> the earlier color groups; UI and syntax creators receive **Theme Creator Options**."
 >
 > **Dev:** "And when livery applies that theme, what moves?"
 >

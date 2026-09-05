@@ -1,11 +1,11 @@
-import type { ThemeDefinition } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 import { Link } from "@tanstack/react-router";
 import { themeToCssVars } from "../../lib/theme-css-vars";
 import { AppearanceBadge } from "../appearance-badge";
 import styles from "./ThemePreviewCard.module.css";
 
 interface Props {
-    theme: ThemeDefinition;
+    theme: Theme.Definition;
 }
 
 const PRIMARY_ORDER = [

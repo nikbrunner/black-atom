@@ -1,6 +1,6 @@
 import { join } from "@std/path";
 import { config } from "./config.ts";
-import type { ThemeKey, ThemeKeyDefinitionMap } from "./types/theme.ts";
+import type * as Theme from "./types/theme.ts";
 
 const PORT = 4171;
 
@@ -8,7 +8,7 @@ const PORT = 4171;
  * Loads the theme map by spawning a fresh Deno subprocess.
  * This bypasses the module cache so edited theme files are picked up.
  */
-async function loadThemeMap(): Promise<ThemeKeyDefinitionMap> {
+async function loadThemeMap(): Promise<Theme.DefinitionMap> {
     const script = join(config.dir.core, "src", "monitor-dump-themes.ts");
     const command = new Deno.Command(Deno.execPath(), {
         args: ["run", "--allow-read", script],
@@ -43,7 +43,7 @@ const sseClients = new Set<ReadableStreamDefaultController>();
  * Can be called standalone or imported by dev.ts.
  */
 export function startPreviewServer() {
-    let themeMap: ThemeKeyDefinitionMap | null = null;
+    let themeMap: Theme.DefinitionMap | null = null;
     const ready = loadThemeMap().then((map) => {
         themeMap = map;
     });
@@ -137,7 +137,7 @@ export function startPreviewServer() {
                 // GET /api/themes/:key — single theme definition
                 const match = path.match(/^\/api\/themes\/(.+)$/);
                 if (match) {
-                    const key = match[1] as ThemeKey;
+                    const key = match[1] as Theme.Key;
                     const theme = themeMap![key];
                     if (!theme) {
                         return json({ error: `Theme not found: ${key}` }, 404);

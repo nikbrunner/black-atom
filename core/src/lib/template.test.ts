@@ -3,16 +3,16 @@ import { assertEquals } from "@std/assert";
 import { join } from "@std/path";
 import { processTemplates } from "./template.ts";
 import type { AdapterConfig } from "./validate-adapter.ts";
-import type { ThemeDefinition, ThemeMeta } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 const testTheme = {
-    meta: { key: "black-atom-jpn-koyo-yoru" },
+    meta: { key: "black-atom-jpn-koyo-dark" },
     ui: { bg: { default: "#332733" } },
-} as unknown as ThemeDefinition;
+} as unknown as Theme.Definition;
 
 const themeMap = {
-    "black-atom-jpn-koyo-yoru": testTheme,
-} as unknown as Record<ThemeMeta["key"], ThemeDefinition | null>;
+    "black-atom-jpn-koyo-dark": testTheme,
+} satisfies Theme.DefinitionMap;
 
 async function withTempAdapterDir(
     run: (adapterDir: string) => Promise<void>,
@@ -43,7 +43,7 @@ Deno.test("processTemplates writes into collection.output when set", async () =>
                 jpn: {
                     template: "themes/collection.template.css",
                     output: "themes/jpn",
-                    themes: ["black-atom-jpn-koyo-yoru"],
+                    themes: ["black-atom-jpn-koyo-dark"],
                 },
             },
         } as unknown as AdapterConfig;
@@ -52,7 +52,7 @@ Deno.test("processTemplates writes into collection.output when set", async () =>
         assertEquals(errors, []);
 
         const written = await Deno.readTextFile(
-            join(adapterDir, "themes", "jpn", "black-atom-jpn-koyo-yoru.css"),
+            join(adapterDir, "themes", "jpn", "black-atom-jpn-koyo-dark.css"),
         );
         assertEquals(written, "bg: #332733;");
     });
@@ -72,7 +72,7 @@ Deno.test("processTemplates writes next to the template when output is unset", a
             collections: {
                 jpn: {
                     template: "themes/collection.template.css",
-                    themes: ["black-atom-jpn-koyo-yoru"],
+                    themes: ["black-atom-jpn-koyo-dark"],
                 },
             },
         } as unknown as AdapterConfig;
@@ -81,7 +81,7 @@ Deno.test("processTemplates writes next to the template when output is unset", a
         assertEquals(errors, []);
 
         const written = await Deno.readTextFile(
-            join(adapterDir, "themes", "black-atom-jpn-koyo-yoru.css"),
+            join(adapterDir, "themes", "black-atom-jpn-koyo-dark.css"),
         );
         assertEquals(written, "bg: #332733;");
     });

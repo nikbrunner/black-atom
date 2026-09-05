@@ -1,8 +1,8 @@
-import type { ThemeCreatorOptions, ThemeSyntaxColors } from "../../types/theme.ts";
+import type * as Theme from "../../types/theme.ts";
 
 export default function (
-    { primaries, feedback, accents }: ThemeCreatorOptions,
-): ThemeSyntaxColors {
+    { primaries, feedback, accents }: Theme.CreatorContext,
+): Theme.Syntax {
     return {
         variable: {
             default: primaries.l20,

@@ -1,3 +1,3 @@
-import { themeMap } from "./themes/map.ts";
+import { themeCatalog } from "./themes/catalog.ts";
 
-console.log(JSON.stringify(themeMap));
+console.log(JSON.stringify(themeCatalog));

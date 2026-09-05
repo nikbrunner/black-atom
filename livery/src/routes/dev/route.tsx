@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
-import { themeMap } from "@black-atom/core";
+import { themeCatalog } from "@black-atom/core";
 import { defaultTheme } from "../../lib/themes.ts";
-import type { ThemeDefinition } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import { ThemeProvider } from "../../components/theme-provider/theme-provider.tsx";
 import { DevLayout } from "../../components/dev-layout/dev-layout.tsx";
 
@@ -17,10 +17,10 @@ const sections = [
     { to: "/dev/components", label: "Components" },
 ] as const;
 
-const themes = Object.values(themeMap);
+const themes = Object.values(themeCatalog);
 
 function Component() {
-    const [theme, setTheme] = useState<ThemeDefinition>(
+    const [theme, setTheme] = useState<Theme.Definition>(
         defaultTheme,
     );
 

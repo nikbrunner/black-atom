@@ -15,7 +15,7 @@ flowchart TD
     B --> C["discoverAdapters():<br/>scan adapters/ for<br/>black-atom-adapter.json"]
     C --> D["Filter: enabled"]
     D --> E["For each adapter:<br/>read black-atom-adapter.json"]
-    E --> F["themeMap<br/>(core theme definitions)"]
+    E --> F["themeCatalog<br/>(core theme definitions)"]
     F --> G["processTemplates()"]
     G --> H["For each collection in config:"]
     H --> I["Read .template. file"]

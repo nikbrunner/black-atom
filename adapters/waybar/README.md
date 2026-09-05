@@ -54,7 +54,7 @@ deno task generate
 Import a theme in your `style.css`:
 
 ```css
-@import "path/to/themes/jpn/black-atom-jpn-koyo-yoru.css";
+@import "path/to/themes/jpn/black-atom-jpn-koyo-dark.css";
 
 window#waybar {
     background-color: @ba-bg-default;
@@ -77,14 +77,17 @@ window#waybar {
 
 ## Available Themes
 
-| Collection   | Description              | Themes    |
-| ------------ | ------------------------ | --------- |
-| **Default**  | Core Black Atom themes   | 4 themes  |
-| **JPN**      | Japanese-inspired themes | 4 themes  |
-| **MNML**     | Minimal themes           | 14 themes |
-| **Paper**    | Paper-inspired themes    | 4 themes  |
-| **Stations** | Space station-inspired   | 4 themes  |
-| **Terra**    | Earth seasons-inspired   | 8 themes  |
+32 themes across seven collections:
+
+| Collection   | Description                  | Themes   |
+| ------------ | ---------------------------- | -------- |
+| **Default**  | Core default themes          | 4 themes |
+| **Facility** | Facility-inspired themes     | 4 themes |
+| **Terra**    | Earth season-inspired themes | 8 themes |
+| **JPN**      | Japanese-inspired themes     | 6 themes |
+| **Clay**     | Clay-inspired themes         | 2 themes |
+| **Minium**   | Minimal accent themes        | 4 themes |
+| **Mono**     | Monochrome themes            | 4 themes |
 
 ## Development
 
@@ -103,7 +106,7 @@ deno task dev        # watch mode
 └── themes/
     ├── collection.template.css     # single template for all collections
     ├── default/black-atom-default-dark.css
-    ├── jpn/black-atom-jpn-koyo-yoru.css
+    ├── jpn/black-atom-jpn-koyo-dark.css
     └── ...                         # one directory per collection
 ```
 

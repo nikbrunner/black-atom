@@ -7,7 +7,7 @@ channel = "preview"
 agent_panel_sort = "priority"
 
 # BEGIN BLACK ATOM LIVERY THEME
-# Black Atom — TERRA ∷ Summer Day
+# Black Atom — TERRA ∷ Summer Light
 [theme]
 name = "catppuccin-latte"
 

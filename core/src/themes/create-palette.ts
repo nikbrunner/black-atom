@@ -1,7 +1,7 @@
-import type { ThemePaletteColors } from "../types/theme.ts";
+import type * as Theme from "../types/theme.ts";
 
 /** Hardcoded ANSI debug palette for visual testing of palette slot assignments. */
-export const debugPalette: ThemePaletteColors = {
+export const debugPalette: Theme.Palette = {
     black: "#000000",
     gray: "#808080",
 
@@ -28,12 +28,12 @@ export const debugPalette: ThemePaletteColors = {
 };
 
 export function createPalette(
-    colors: ThemePaletteColors,
+    colors: Theme.Palette,
     opts?: {
         debug?: boolean;
-        override?: (palette: ThemePaletteColors) => ThemePaletteColors;
+        override?: (palette: Theme.Palette) => Theme.Palette;
     },
-): ThemePaletteColors {
+): Theme.Palette {
     if (opts?.debug) return debugPalette;
     if (opts?.override) return opts.override(colors);
     return colors;

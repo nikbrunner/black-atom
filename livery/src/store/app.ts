@@ -1,5 +1,5 @@
 import { Store } from "@tanstack/store";
-import type { ThemeDefinition } from "@black-atom/core";
+import type * as Theme from "@black-atom/core";
 import type { UpdateResult } from "../lib/updaters.ts";
 
 export interface AppState {
@@ -9,7 +9,7 @@ export interface AppState {
      * it outlives the run so retry re-applies the same theme. The theme
      * livery last applied is server state and lives in useActiveTheme().
      */
-    applyingTheme: ThemeDefinition | null;
+    applyingTheme: Theme.Definition | null;
     updaterResults: UpdateResult[];
 }
 

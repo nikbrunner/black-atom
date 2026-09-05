@@ -114,7 +114,7 @@ mod tests {
         let file = copy_fixture_to_temp("jsonc/zed-settings.jsonc");
         let path = file.path().to_str().unwrap().to_string();
 
-        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Day").unwrap();
+        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Light").unwrap();
 
         let result = std::fs::read_to_string(&path).unwrap();
         let expected =
@@ -131,12 +131,7 @@ mod tests {
         let file = copy_fixture_to_temp("jsonc/zed-settings-object.jsonc");
         let path = file.path().to_str().unwrap().to_string();
 
-        patch_jsonc_file(
-            path.clone(),
-            "theme.dark",
-            "Black Atom — TERRA ∷ Fall Night",
-        )
-        .unwrap();
+        patch_jsonc_file(path.clone(), "theme.dark", "Black Atom — TERRA ∷ Fall Dark").unwrap();
 
         let result = std::fs::read_to_string(&path).unwrap();
         let expected = std::fs::read_to_string(fixture_path(
@@ -158,7 +153,7 @@ mod tests {
         patch_jsonc_file(
             path.clone(),
             "theme.light",
-            "Black Atom — TERRA ∷ Spring Day",
+            "Black Atom — TERRA ∷ Spring Light",
         )
         .unwrap();
 
@@ -179,7 +174,7 @@ mod tests {
         let file = copy_fixture_to_temp("jsonc/zed-settings.jsonc");
         let path = file.path().to_str().unwrap().to_string();
 
-        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Day").unwrap();
+        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Light").unwrap();
 
         let result = std::fs::read_to_string(&path).unwrap();
 
@@ -201,7 +196,7 @@ mod tests {
         let file = copy_fixture_to_temp("jsonc/zed-settings-plain.json");
         let path = file.path().to_str().unwrap().to_string();
 
-        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Day").unwrap();
+        patch_jsonc_file(path.clone(), "theme", "Black Atom — TERRA ∷ Spring Light").unwrap();
 
         let result = std::fs::read_to_string(&path).unwrap();
         let expected =
@@ -259,7 +254,7 @@ mod tests {
         patch_jsonc_file(
             path.clone(),
             "black-atom-variants@@dark-theme-variant",
-            "black-atom-jpn-murasaki-yoru",
+            "black-atom-jpn-murasaki-dark",
         )
         .unwrap();
 
@@ -283,7 +278,7 @@ mod tests {
         patch_jsonc_file(
             path.clone(),
             "black-atom-variants@@light-theme-variant",
-            "black-atom-terra-spring-day",
+            "black-atom-terra-spring-light",
         )
         .unwrap();
 

@@ -3,12 +3,12 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { CommandPalette } from "../components/command-palette";
 import type { CommandItem } from "../components/command-palette";
 import { groupByCollection } from "../lib/theme-utils";
-import type { ThemeDefinition, ThemeKey } from "@core/types/theme.ts";
+import type * as Theme from "@core/types/theme.ts";
 
 type Props = {
-    themes: ThemeDefinition[];
-    currentThemeKey: ThemeKey;
-    onSelect: (key: ThemeKey) => void;
+    themes: Theme.Definition[];
+    currentThemeKey: Theme.Key;
+    onSelect: (key: Theme.Key) => void;
 };
 
 export function ThemeSwitcher({ themes, currentThemeKey, onSelect }: Props) {
@@ -27,7 +27,7 @@ export function ThemeSwitcher({ themes, currentThemeKey, onSelect }: Props) {
                     group: collectionKey,
                     meta: t.meta.appearance,
                     selected: t.meta.key === currentThemeKey,
-                    onSelect: () => onSelect(t.meta.key as ThemeKey),
+                    onSelect: () => onSelect(t.meta.key),
                 });
             }
         }

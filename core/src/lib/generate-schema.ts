@@ -1,4 +1,4 @@
-import { themeKeys } from "../types/theme.ts";
+import { themeKeys } from "../themes/catalog.ts";
 import log from "./log.ts";
 
 function generateSchema() {

@@ -10,16 +10,17 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes multiple theme collections, each with its own distinct style:
+Black Atom includes 32 themes across seven collections, with dark and light appearances:
 
-| Collection   | Themes                                                                     | Description                   |
-| ------------ | -------------------------------------------------------------------------- | ----------------------------- |
-| **Default**  | dark, dark-dimmed, light, light-dimmed                                     | Core Black Atom themes        |
-| **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru                            | Japanese-inspired themes      |
-| **Stations** | engineering, operations, medical, research                                 | Space station-inspired themes |
-| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night)                 | Earth season-inspired themes  |
-| **MNML**     | clay, orange, mikado, 47, eink, mono (dark/light), osman, ita (light-only) | Minimalist themes             |
-| **Paper**    | brown, blue (dark/light)                                                   | Paper-inspired themes         |
+| Collection   | Themes                                                 | Description                  |
+| ------------ | ------------------------------------------------------ | ---------------------------- |
+| **Default**  | dark, dimmed-dark, light, dimmed-light                 | Core default themes          |
+| **Facility** | dark, dimmed-dark, light, dimmed-light                 | Facility-inspired themes     |
+| **Terra**    | spring, summer, fall, winter (dark/light)              | Earth season-inspired themes |
+| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark | Japanese-inspired themes     |
+| **Clay**     | dark, light                                            | Clay-inspired themes         |
+| **Minium**   | polymer, viridian (dark/light)                         | Minimal accent themes        |
+| **Mono**     | dark, dimmed-dark, light, dimmed-light                 | Monochrome themes            |
 
 ## Installation
 
@@ -56,7 +57,7 @@ The simplest approach is to merge the theme directly into your `config.yml`. You
 
 ```bash
 # Choose your theme file
-THEME_FILE="themes/jpn/black-atom-jpn-koyo-yoru.yml"
+THEME_FILE="themes/jpn/black-atom-jpn-koyo-dark.yml"
 
 # Merge the theme into your config
 yq -i ".gui.theme = load(\"$THEME_FILE\").gui.theme" ~/.config/lazygit/config.yml
@@ -66,7 +67,7 @@ yq -i ".gui.authorColors = load(\"$THEME_FILE\").gui.authorColors" ~/.config/laz
 Or manually copy the theme block into your config:
 
 <details>
-<summary>Example: Black Atom — JPN ∷ Koyo Yoru</summary>
+<summary>Example: Black Atom — JPN ∷ Koyo Dark</summary>
 
 ```yaml
 gui:
@@ -104,19 +105,19 @@ Lazygit supports merging multiple config files at startup:
 1. Copy your chosen theme file to your config directory:
 
 ```bash
-cp themes/jpn/black-atom-jpn-koyo-yoru.yml ~/.config/lazygit/
+cp themes/jpn/black-atom-jpn-koyo-dark.yml ~/.config/lazygit/
 ```
 
 2. Launch lazygit with the merged configs:
 
 ```bash
-lazygit --use-config-file="~/.config/lazygit/config.yml,~/.config/lazygit/black-atom-jpn-koyo-yoru.yml"
+lazygit --use-config-file="~/.config/lazygit/config.yml,~/.config/lazygit/black-atom-jpn-koyo-dark.yml"
 ```
 
 Or set an environment variable:
 
 ```bash
-export LG_CONFIG_FILE="~/.config/lazygit/config.yml,~/.config/lazygit/black-atom-jpn-koyo-yoru.yml"
+export LG_CONFIG_FILE="~/.config/lazygit/config.yml,~/.config/lazygit/black-atom-jpn-koyo-dark.yml"
 lazygit
 ```
 

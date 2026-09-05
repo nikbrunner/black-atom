@@ -13,66 +13,65 @@ deno task generate
 Then source your preferred theme in your `~/.tmux.conf`:
 
 ```bash
-source-file /path/to/black-atom/adapters/tmux/themes/mnml/black-atom-mnml-clay-dark.conf
+source-file /path/to/black-atom/adapters/tmux/themes/clay/black-atom-clay-dark.conf
 ```
 
 ## Available Themes
 
+32 themes across seven collections:
+
 ### Default Collection
 
-- `black-atom-default-dark` - Default dark
-- `black-atom-default-dark-dimmed` - Default dark dimmed
-- `black-atom-default-light` - Default light
-- `black-atom-default-light-dimmed` - Default light dimmed
+- `black-atom-default-dark` - Dark
+- `black-atom-default-dimmed-dark` - Dimmed Dark
+- `black-atom-default-light` - Light
+- `black-atom-default-dimmed-light` - Dimmed Light
 
-### JPN Collection (Japanese-inspired)
+### Facility Collection
 
-- `black-atom-jpn-koyo-yoru` - Autumn evening theme (dark)
-- `black-atom-jpn-koyo-hiru` - Autumn daytime theme (light)
-- `black-atom-jpn-tsuki-yoru` - Moonlit night theme (dark)
-- `black-atom-jpn-murasaki-yoru` - Purple night theme (dark)
+- `black-atom-facility-dark` - Dark
+- `black-atom-facility-dimmed-dark` - Dimmed Dark
+- `black-atom-facility-light` - Light
+- `black-atom-facility-dimmed-light` - Dimmed Light
 
-### MNML Collection (Minimal)
+### Terra Collection
 
-- `black-atom-mnml-clay-dark` - Clay dark
-- `black-atom-mnml-clay-light` - Clay light
-- `black-atom-mnml-orange-dark` - Orange accent dark
-- `black-atom-mnml-orange-light` - Orange accent light
-- `black-atom-mnml-mikado-dark` - Mikado accent dark
-- `black-atom-mnml-mikado-light` - Mikado accent light
-- `black-atom-mnml-47-dark` - Special variant dark
-- `black-atom-mnml-47-light` - Special variant light
-- `black-atom-mnml-eink-dark` - E-ink dark
-- `black-atom-mnml-eink-light` - E-ink light
-- `black-atom-mnml-mono-dark` - Monochrome dark
-- `black-atom-mnml-mono-light` - Monochrome light
-- `black-atom-mnml-osman-light` - Osman light
-- `black-atom-mnml-ita-light` - Ita light
+- `black-atom-terra-spring-dark` - Spring Dark
+- `black-atom-terra-spring-light` - Spring Light
+- `black-atom-terra-summer-dark` - Summer Dark
+- `black-atom-terra-summer-light` - Summer Light
+- `black-atom-terra-fall-dark` - Fall Dark
+- `black-atom-terra-fall-light` - Fall Light
+- `black-atom-terra-winter-dark` - Winter Dark
+- `black-atom-terra-winter-light` - Winter Light
 
-### Paper Collection (Paper-inspired)
+### JPN Collection
 
-- `black-atom-paper-brown-dark` - Brown dark
-- `black-atom-paper-brown-light` - Brown light
-- `black-atom-paper-blue-dark` - Blue dark
-- `black-atom-paper-blue-light` - Blue light
+- `black-atom-jpn-koyo-dark` - Koyo Dark
+- `black-atom-jpn-koyo-light` - Koyo Light
+- `black-atom-jpn-murasaki-dark` - Murasaki Dark
+- `black-atom-jpn-tsuki-dark` - Tsuki Dark
+- `black-atom-jpn-sanshoku-dark` - Sanshoku Dark
+- `black-atom-jpn-sanshoku-light` - Sanshoku Light
 
-### Stations Collection (Space station-inspired)
+### Clay Collection
 
-- `black-atom-stations-engineering` - Engineering station (dark)
-- `black-atom-stations-operations` - Operations station (dark)
-- `black-atom-stations-medical` - Medical station (light)
-- `black-atom-stations-research` - Research station (light)
+- `black-atom-clay-dark` - Dark
+- `black-atom-clay-light` - Light
 
-### Terra Collection (Earth seasons-inspired)
+### Minium Collection
 
-- `black-atom-terra-spring-day` - Spring daytime (light)
-- `black-atom-terra-spring-night` - Spring evening (dark)
-- `black-atom-terra-summer-day` - Summer daytime (light)
-- `black-atom-terra-summer-night` - Summer evening (dark)
-- `black-atom-terra-fall-day` - Fall daytime (light)
-- `black-atom-terra-fall-night` - Fall evening (dark)
-- `black-atom-terra-winter-day` - Winter daytime (light)
-- `black-atom-terra-winter-night` - Winter evening (dark)
+- `black-atom-minium-polymer-dark` - Polymer Dark
+- `black-atom-minium-polymer-light` - Polymer Light
+- `black-atom-minium-viridian-dark` - Viridian Dark
+- `black-atom-minium-viridian-light` - Viridian Light
+
+### Mono Collection
+
+- `black-atom-mono-dark` - Dark
+- `black-atom-mono-light` - Light
+- `black-atom-mono-dimmed-dark` - Dimmed Dark
+- `black-atom-mono-dimmed-light` - Dimmed Light
 
 ## What Gets Themed
 
@@ -95,8 +94,8 @@ The Black Atom tmux themes customize the following elements:
 Each collection has its own styling philosophy:
 
 - **JPN**: Balanced with unique accent colors
-- **MNML**: Minimal contrast, subtle indicators
-- **Stations**: Bold, technical appearance
+- **Clay**, **Minium**, **Mono**: Minimal contrast, subtle indicators
+- **Facility**: Bold, technical appearance
 - **Terra**: Natural, seasonal variations
 
 ## Development

@@ -6,6 +6,6 @@ M.config = {
 }
 
 -- Set colorscheme
-vim.cmd.colorscheme("black-atom-terra-spring-day")
+vim.cmd.colorscheme("black-atom-terra-spring-light")
 
 return M

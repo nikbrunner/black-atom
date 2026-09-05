@@ -12,7 +12,7 @@ frontend settings page.
 
 Find where the app's theme file lives, its extension, and how the app loads it (config key, file
 drop, plugin). Read `core/adapter.schema.json` for the adapter config shape. Read
-`adapters/ghostty/themes/default/collection.template.conf` and
+`adapters/ghostty/themes/collection.template.conf` and
 `adapters/zed/themes/default/collection.template.json` as two worked examples of Eta templates:
 `<%= theme.ui.bg.default %>` style token references, never `theme.primaries.*`.
 
@@ -27,9 +27,10 @@ from a template. If the target format needs a value no token covers, ask before 
 Create `adapters/<name>/`:
 
 - `black-atom-adapter.json` — copy the `collections` block verbatim from
-  `adapters/ghostty/black-atom-adapter.json` (all six collections: `default`, `jpn`, `terra`,
-  `stations`, `mnml`, `paper`, each with its current theme keys) and change only the `template`
-  path per collection to `./themes/<collection>/collection.template.<ext>`.
+  `adapters/ghostty/black-atom-adapter.json` (all seven collections: `default`, `facility`, `terra`,
+  `jpn`, `clay`, `minium`, `mono`, with 32 theme keys) and change only the `template`
+  path per collection to `./themes/<collection>/collection.template.<ext>`. Keep each collection's
+  `outputDir` at `./themes/<collection>`.
 - `deno.json` — copy from `adapters/ghostty/deno.json` unchanged (same `generate`/`dev` tasks in
   every adapter):
   ```json

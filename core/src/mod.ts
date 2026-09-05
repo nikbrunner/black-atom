@@ -8,14 +8,14 @@
  *
  * @example
  * ```ts
- * import { themeMap, themeKeyMetaMap } from "@black-atom/core";
- * import type { ThemeDefinition, ThemeKey } from "@black-atom/core";
+ * import { themeCatalog } from "@black-atom/core";
+ * import type * as Theme from "@black-atom/core";
  *
- * // Access theme meta (narrowed to exact literal types)
- * const meta = themeKeyMetaMap["black-atom-jpn-koyo-yoru"];
+ * // Access theme metadata with exact theme and collection key types
+ * const meta = themeCatalog["black-atom-jpn-koyo-dark"].meta;
  *
  * // Access a specific theme definition
- * const theme: ThemeDefinition = themeMap["black-atom-jpn-koyo-yoru"]!;
+ * const theme: Theme.ThemeDefinition = themeCatalog["black-atom-jpn-koyo-dark"];
  *
  * console.log(theme.ui.bg.default); // hex color for the background
  * console.log(theme.syntax.keyword.default); // hex color for keywords
@@ -23,8 +23,4 @@
  */
 
 export * from "./types/theme.ts";
-export * from "./types/themes.ts";
-
-export { themeMap } from "./themes/map.ts";
-
-export { collectionOrder } from "./config.ts";
+export * from "./themes/catalog.ts";
