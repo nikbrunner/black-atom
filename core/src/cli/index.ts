@@ -8,7 +8,7 @@
  *
  * @example
  * ```sh
- * deno task generate
+ * deno run -A ../../core/src/cli/index.ts generate
  * deno run -A ../../core/src/cli/index.ts generate --watch
  * ```
  */

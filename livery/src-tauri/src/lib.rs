@@ -51,6 +51,13 @@ pub fn start_app() {
                 .build(),
         )
         .setup(|app| {
+            if tauri::is_dev() {
+                use tauri::Manager;
+                if let Some(window) = app.get_webview_window("main") {
+                    window.set_title("Livery Dev")?;
+                }
+            }
+
             match livery_core::themes::unpack::ensure_unpacked() {
                 Ok(report) if report.unpacked => log::info!(
                     "Unpacked {} theme files for {} adapters (stamp {})",

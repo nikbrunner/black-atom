@@ -5,10 +5,8 @@ import * as colors from "@std/fmt/colors";
  */
 export default function help(): void {
     console.log(`Usage:
-  deno task generate                                 (inside an adapter directory, or at the repo root)
-  deno run -A ../../core/src/cli/index.ts generate [--watch]
-
-  The compiled binary (${colors.dim("deno task cli:compile")}) takes the same commands.
+  deno run -A core/src/tasks/generate.ts                                 (from the repo root)
+  deno run -A ../../core/src/cli/index.ts generate [--watch] (inside an adapter directory)
 
 Commands:
   ${colors.yellow("generate")}        Generate theme files from templates

@@ -36,9 +36,13 @@ window.
 ## Development
 
 ```sh
-deno task dev:livery   # from the repo root: frontend + Tauri shell together
-cargo test              # from the repo root: livery_core and livery-cli tests
+deno task dev   # from the repo root: GUI, CLI, monitor, generation
+deno task test  # from the repo root: prepares frontend, tests Deno and Rust
 ```
+
+The GUI and `livery-dev` share the environment inherited when development starts, including existing
+home and XDG configuration paths. For GUI-only work, `cd livery && deno task dev` starts Tauri.
+`deno task airship` wraps the same GUI with the Airship development bridge.
 
 Bundle the desktop app:
 
@@ -46,8 +50,11 @@ Bundle the desktop app:
 cd livery && deno task build
 ```
 
-Never run `livery apply`, `livery setup`, or `deno task dev:livery` against your real `$HOME`. See
-the Sandbox section in the root `AGENTS.md`.
+From the root, `deno task build` builds both app and CLI; `deno task install:macos` installs both.
+The package-local `install:macos` installs only the app.
+
+Automated tests and agent-run development, setup, and apply commands use temporary fixture homes and
+XDG directories. See the Sandbox section in the root `AGENTS.md`.
 
 ## Architecture
 

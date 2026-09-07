@@ -1,4 +1,5 @@
 import styles from "./app-header.module.css";
+import { Badge } from "../primitives/badge/badge.tsx";
 
 type Props = {
     /** Product name appended to the wordmark. */
@@ -32,6 +33,7 @@ export function AppHeader({ product = "LIVERY", version, context, className }: P
                     BLACK AT<span className={styles.dot} aria-hidden="true" />M {product}
                 </span>
                 {version ? <span className={styles.version}>V{version}</span> : null}
+                {import.meta.env.DEV ? <Badge>Dev</Badge> : null}
             </div>
             {context ? <div className={styles.context}>{context}</div> : null}
         </div>

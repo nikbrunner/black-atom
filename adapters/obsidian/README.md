@@ -43,20 +43,17 @@ This adapter uses a pure CSS template approach. Black Atom's core processes Eta 
 generate per-theme CSS, and a build script assembles them into `theme.css`. You
 need [Deno](https://deno.land/) installed.
 
-Edit templates in `themes/`, then build:
+Edit templates in `themes/` or styles in `styles/`, then run `deno task dev` from the repository
+root. The shared watcher generates adapter files and assembles `theme.css`.
+
+To copy each successful rebuild into a development vault, set `OBSIDIAN_DEV_VAULT` in the environment
+or in `adapters/obsidian/.env` (see `.env.example`). Copying is opt-in and uses the theme name
+**Black Atom Development**.
+
+For a one-off generation of all adapters, including Obsidian assembly, from this directory:
 
 ```bash
-deno task build
-```
-
-For live development, set your vault path in `.env` (see `.env.example`) and run
-watch mode. This copies the theme into your vault as **Black Atom Development**
-on every rebuild:
-
-```bash
-cp .env.example .env
-# Edit .env with your vault path
-deno task dev
+deno run -A ../../core/src/tasks/generate.ts
 ```
 
 ## License

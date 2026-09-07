@@ -34,7 +34,7 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
    `black-atom-adapter.json` schema; only the ones listing this theme need the edit.
 
 6. nvim also hand-maintains a loader stub outside the generated tree, one per theme, at
-   `adapters/nvim/colors/black-atom-<collection>-<old>-<appearance>.lua`. `deno task generate`
+   `adapters/nvim/colors/black-atom-<collection>-<old>-<appearance>.lua`. `deno run -A core/src/tasks/generate.ts`
    never writes this file, so rename it explicitly:
    `git mv adapters/nvim/colors/black-atom-<collection>-<old>-<appearance>.lua
    adapters/nvim/colors/black-atom-<collection>-<new>-<appearance>.lua`, then edit the `require(...)`
@@ -51,14 +51,13 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
    This does not touch the `colors/*.lua` loader from step 6, since that filename now already
    carries the new key.
 
-9. Run `deno task generate` from the repo root to regenerate every adapter's output for the new
+9. Run `deno run -A core/src/tasks/generate.ts` from the repo root to regenerate every adapter's output for the new
    key. Confirm the new generated files exist and no `black-atom-<collection>-<old>` file remains
    under `adapters/`.
 
-10. obsidian layers its own build on top of generation (`postGenerate`, `build` in
-    `adapters/obsidian/deno.json`), which touches `adapters/obsidian/theme.css` and
-    `adapters/obsidian/styles/variants.settings.yaml`. If this theme is in the obsidian adapter,
-    rerun `cd adapters/obsidian && deno task build` and check those two files for the old key.
+10. Obsidian assembles `adapters/obsidian/theme.css` during central generation. If this theme is
+    in the Obsidian adapter, inspect that file and `adapters/obsidian/styles/variants.settings.yaml`
+    for the old key after generation.
 
 11. Run `deno task check` (type check, lint, format check) and `deno task test` (Deno tests plus
     `cargo test`) from the repo root. Both must be clean.

@@ -230,11 +230,11 @@ Theme files are generated from templates through the Black Atom core CLI. You ne
 1. Edit the template in `templates/collection.template.lua` (one template, all collections)
 2. Generate theme files:
    ```bash
-   deno task generate
+   deno run -A ../../core/src/cli/index.ts generate
    ```
 3. Or use watch mode for live regeneration:
    ```bash
-   deno task dev
+   deno run -A ../../core/src/cli/index.ts generate --watch
    ```
 
 ## License

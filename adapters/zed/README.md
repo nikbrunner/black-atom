@@ -35,7 +35,7 @@ To do it by hand instead, generate the theme files (requires [Deno](https://deno
 the `.json` files to your Zed themes directory:
 
 ```bash
-deno task generate
+deno run -A ../../core/src/cli/index.ts generate
 mkdir -p ~/.config/zed/themes
 cp themes/*/*.json ~/.config/zed/themes/
 ```
@@ -62,8 +62,8 @@ Alternatively, you can edit your Zed settings JSON file directly:
 Requirements: [Deno](https://deno.land/).
 
 ```bash
-deno task generate  # regenerate theme files
-deno task dev        # watch mode
+deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
+deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

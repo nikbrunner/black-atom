@@ -16,7 +16,7 @@ tracked in a follow-up issue, so a release today is a tag and a changelog.
 1. Regenerate every adapter and confirm nothing drifts:
 
    ```bash
-   deno task generate
+   deno run -A core/src/tasks/generate.ts
    git status
    ```
 

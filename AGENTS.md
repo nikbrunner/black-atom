@@ -18,13 +18,13 @@ second one.
 - `ui/`, `website/` — placeholders
 
 Deno workspace and Cargo workspace both at the root. Tasks live in `deno.json`; `cargo test`,
-`cargo fmt`, and `cargo clippy` run from the root. The Tauri bundle is the exception, it needs
-`cd livery && deno task build`.
+`cargo fmt`, and `cargo clippy` run from the root. `deno task build` produces the release app and CLI; package-local `livery` build produces the app.
 
 ## Sandbox
 
-Never run livery, `tauri dev`, `livery apply`, `livery setup`, or any updater against the real
-`$HOME`. An updater writes to real config files.
+Agent executions and automated tests must run livery, `tauri dev`, `livery apply`, `livery setup`, and
+updaters with a temporary fixture `$HOME` and XDG directories. Updaters write to config files.
+User-started development inherits the user's normal environment and existing configuration.
 
 ```bash
 export HOME="$(mktemp -d)"
@@ -81,7 +81,6 @@ Claude Code reads `.claude/`. Skills there, each a task worth following exactly:
 - `release` — cut a release
 - `backend-testing` — fixture-based tests for livery's Rust file operations
 
-`.claude/hooks/` runs unprompted: `no-fs-plugin` and `check-bindings` after a write, `install-cli`
-at the end of a turn to keep `~/.cargo/bin/livery` in step with the working tree.
+`.claude/hooks/` runs `no-fs-plugin` and `check-bindings` after a write.
 
-Pi reads `.pi/extensions/`, which carries its own livery-install extension.
+CLI installation is explicit through the root `deno task install:macos` task.

@@ -38,20 +38,20 @@ From the repo root:
 
 ```bash
 # Regenerate every adapter
-deno task generate
+deno run -A core/src/tasks/generate.ts
 
 # Watch core and every adapter's templates, regenerate and reapply the active theme on change
-deno task dev:adapters
+deno task dev
 ```
 
 From inside a single adapter directory (`adapters/<name>/`):
 
 ```bash
 # Regenerate this adapter only
-deno task generate
+deno run -A ../../core/src/cli/index.ts generate
 
 # Watch this adapter's templates, regenerate on change
-deno task dev
+deno run -A ../../core/src/cli/index.ts generate --watch
 ```
 
 ### Theme Adaptation
@@ -99,17 +99,13 @@ Run from `core/`:
 deno task dev
 
 # Run the monitor preview app
-deno task monitor
+(cd monitor && deno task dev)
 
 # Run tests
 deno task test
 
 # Generate the adapter JSON schema
 deno task schema
-
-# Compile and install the CLI binary
-deno task cli:compile
-deno task cli:install
 
 # Publish to JSR
 deno task publish

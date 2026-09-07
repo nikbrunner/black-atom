@@ -1,6 +1,0 @@
-{
-    "tasks": {
-        "generate": "deno run -A ../../core/src/cli/index.ts generate",
-        "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
-    }
-}

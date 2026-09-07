@@ -8,10 +8,10 @@ red() { printf '\033[31m%s\033[0m\n' "$1"; }
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
-cyan "── Deno checks ──"
+cyan "── Workspace checks ──"
 deno task check
-deno test -P
-green "✓ Deno checks passed"
+deno task test
+green "✓ Workspace checks passed"
 echo
 
 STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
@@ -22,17 +22,6 @@ if echo "$STAGED" | grep -qE '^livery/(core|cli|src-tauri)/|(^|/)Cargo\.(toml|lo
 fi
 
 if [ "$RUST_STAGED" = true ]; then
-    cyan "── Rust checks ──"
-
-    cargo fmt --all --check
-    green "✓ cargo fmt"
-
-    cargo clippy --workspace -- -D warnings
-    green "✓ cargo clippy"
-
-    cargo test --workspace
-    green "✓ cargo test"
-
     # cargo test regenerates livery/src/bindings.ts via tauri-specta; make sure
     # the regenerated file matches what's staged/committed.
     if ! git diff --quiet -- livery/src/bindings.ts; then

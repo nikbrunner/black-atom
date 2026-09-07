@@ -31,25 +31,18 @@ Create `adapters/<name>/`:
   `jpn`, `clay`, `minium`, `mono`, with 32 theme keys) and change only the `template`
   path per collection to `./themes/<collection>/collection.template.<ext>`. Keep each collection's
   `outputDir` at `./themes/<collection>`.
-- `deno.json` — copy from `adapters/ghostty/deno.json` unchanged (same `generate`/`dev` tasks in
-  every adapter):
-  ```json
-  "tasks": {
-      "generate": "deno run -A ../../core/src/cli/index.ts generate",
-      "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
-  }
-  ```
 - `README.md` — what the adapter is, install/usage for the target app.
 - `themes/<collection>/collection.template.<ext>` — one per collection, or one shared
   `themes/collection.template.<ext>` if every collection needs the same mapping (see herdr,
   waybar).
 
-Add `./adapters/<name>` to the `workspace` array in the root `deno.json`.
+Keep the adapter outside the Deno workspace. Core discovers it from its
+`black-atom-adapter.json` during central generation.
 
 ## 4. Generate and verify
 
 ```bash
-deno task generate
+deno run -A core/src/tasks/generate.ts
 grep -r "undefined" adapters/<name>/themes/ || echo clean
 ```
 

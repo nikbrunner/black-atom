@@ -11,7 +11,7 @@ always run from source, never fetched as a package.
 
 ```mermaid
 flowchart TD
-    A["Edit .template. files"] --> B["deno task generate"]
+    A["Edit .template. files"] --> B["deno run -A core/src/tasks/generate.ts"]
     B --> C["discoverAdapters():<br/>scan adapters/ for<br/>black-atom-adapter.json"]
     C --> D["Filter: enabled"]
     D --> E["For each adapter:<br/>read black-atom-adapter.json"]
@@ -44,28 +44,20 @@ flowchart TD
 
 At the repo root:
 
-| Task                     | Purpose                                                           |
-| ------------------------ | ----------------------------------------------------------------- |
-| `deno task generate`     | Regenerate every adapter once                                     |
-| `deno task dev:adapters` | Watch core and every adapter's templates, regenerate, and reapply |
+| Task                                     | Purpose                                                           |
+| ---------------------------------------- | ----------------------------------------------------------------- |
+| `deno run -A core/src/tasks/generate.ts` | Regenerate every adapter once                                     |
+| `deno task dev`                          | Watch core and every adapter's templates, regenerate, and reapply |
 
 Inside a single adapter directory (`adapters/<name>/`):
 
-```json
-{
-    "tasks": {
-        "generate": "deno run -A ../../core/src/cli/index.ts generate",
-        "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
-    }
-}
+```bash
+deno run -A ../../core/src/cli/index.ts generate
+deno run -A ../../core/src/cli/index.ts generate --watch
 ```
 
-| Task       | Purpose                                              |
-| ---------- | ---------------------------------------------------- |
-| `generate` | Regenerate this adapter only                         |
-| `dev`      | Watch this adapter's templates, regenerate on change |
-
-Both scopes share the same task names; which one runs depends on the working directory.
+The root development runner coordinates generation, CLI builds, and reapply using the invoking user's
+HOME and XDG configuration. Automated runs use temporary fixture homes and XDG directories.
 
 ## Template Processing
 
@@ -84,8 +76,8 @@ keeps adapters stable when core internals change.
 Some adapters need more than a one-to-one template render. The obsidian adapter, for example,
 assembles a single `theme.css` from generated per-theme CSS files, YAML settings, and static CSS.
 
-An adapter can declare a `postGenerate` task in its `black-atom-adapter.json`; the generator runs
-it via `deno task postGenerate` in the adapter directory after every file is written. This keeps
+An adapter can declare a `postGenerate` command in its `black-atom-adapter.json`; the generator runs
+it in the adapter directory after every file is written. This keeps
 adapter-specific assembly logic inside the adapter, not in core.
 
 ## JSR Package

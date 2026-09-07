@@ -50,7 +50,7 @@ syntax, palette, and feedback tokens.
    reference `theme.primaries.*` directly.
 5. Update `GLOSSARY.md` if the renamed token is named in a table or the example
    dialogue.
-6. From the repo root: `deno task generate`, then `deno task check`, then `deno task test`.
+6. From the repo root: `deno run -A core/src/tasks/generate.ts`, then `deno task check`, then `deno task test`.
 7. Review the generated diff: `git diff --stat adapters/`. It can be empty even for a correct
    rename — renaming `theme.palette.black` to something else changes the template expression, not
    the rendered value, since output keys (e.g. Lua's `black = "..."`) are independent of the source

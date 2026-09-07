@@ -1,344 +1,66 @@
-import { dirname, join, relative } from "@std/path";
-import { existsSync } from "@std/fs";
-import * as colors from "@std/fmt/colors";
+import { relative } from "@std/path";
 import { config } from "../../config.ts";
-import { themeKeys } from "../../themes/catalog.ts";
-import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
-import log from "../../lib/log.ts";
 import { generateAllAdapters, generateSingleAdapter } from "./generate.ts";
 import { createChangeBatcher } from "./change-batcher.ts";
-import { runCommand } from "./utils.ts";
+import { copyToVault } from "./obsidian.ts";
 
-async function reapplyActiveTheme(): Promise<void> {
-    try {
-        const output = await runCommand(
-            ["cargo", "run", "-q", "-p", "livery-cli", "--", "reapply"],
-            { cwd: join(config.dir.core, "..") },
-        );
-        if (output.trim()) log.info(output.trimEnd());
-    } catch (error) {
-        log.warn(
-            `⚠️ Active Theme reapply failed: ${
-                error instanceof Error ? error.message : String(error)
-            }`,
-        );
-    }
+export function isGenerationInput(path: string): boolean {
+    if (/(?:^|\/)(?:\.git|node_modules)\/|(?:~|\.sw[op]|\.tmp)$/.test(path)) return false;
+    if (path.startsWith(config.dir.themes + "/")) return path.endsWith(".ts");
+    const adapterPath = relative(config.dir.adapters, path);
+    if (adapterPath.startsWith("../")) return false;
+    return adapterPath.includes(".template.") ||
+        adapterPath.endsWith("/black-atom-adapter.json") ||
+        adapterPath.startsWith("obsidian/styles/");
 }
 
-/**
- * Multi-directory file watcher that handles both core theme changes and adapter template changes.
- * - Core theme changes → regenerate all adapters
- * - Adapter template changes → regenerate only that specific adapter
- */
-export async function watch() {
-    const coreThemesDir = config.dir.themes;
-    const adaptersDir = config.dir.adapters;
-
-    // Collect all directories to watch
-    const watchDirs: {
-        path: string;
-        type: "core" | "adapter";
-        adapterName?: string;
-        templatePaths?: string[];
-    }[] = [
-        { path: coreThemesDir, type: "core" },
-    ];
-
-    // Discover adapter repositories dynamically
-    const adapters = await getAdapters();
-
-    // Create schema instance for validation
-    const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
-
-    // Add adapter template directories by reading their configurations
-    for (const adapter of adapters) {
-        const adapterDir = join(adaptersDir, adapter);
-        const adapterConfigPath = join(adapterDir, config.adapterFileName);
-
-        if (existsSync(adapterConfigPath)) {
-            try {
-                const adapterConfigText = await Deno.readTextFile(adapterConfigPath);
-                const adapterConfig = adapterConfigSchema.parse(JSON.parse(adapterConfigText));
-
-                // Collect all template paths from this adapter
-                const templatePaths: string[] = [];
-                if (adapterConfig.collections) {
-                    for (const collection of Object.values(adapterConfig.collections)) {
-                        if (collection?.template) {
-                            const fullTemplatePath = join(adapterDir, collection.template);
-                            templatePaths.push(fullTemplatePath);
-                        }
-                    }
-                }
-
-                if (templatePaths.length > 0) {
-                    // Watch the entire adapter directory but track the specific template paths
-                    watchDirs.push({
-                        path: adapterDir,
-                        type: "adapter",
-                        adapterName: adapter,
-                        templatePaths,
-                    });
-                }
-            } catch (error) {
-                log.warn(`⚠️ Could not read adapter config for ${adapter}: ${error}`);
-            }
-        }
+export async function generateDevelopment(paths?: string[]): Promise<void> {
+    const all = !paths || paths.some((path) => path.startsWith(config.dir.themes + "/"));
+    const enabledAdapters = new Set(await getAdapters());
+    const adapters = new Set(
+        paths?.filter(isGenerationInput).map((path) =>
+            relative(config.dir.adapters, path).split("/")[0]
+        ).filter((adapter) => enabledAdapters.has(adapter)),
+    );
+    const results = all
+        ? await generateAllAdapters()
+        : await Promise.all([...adapters].map(generateSingleAdapter));
+    const errors = results.filter((result) => result.error);
+    if (errors.length) {
+        throw new Error(errors.map((result) => `${result.adapter}: ${result.error}`).join("\n"));
     }
+    if ((all && enabledAdapters.has("obsidian")) || adapters.has("obsidian")) await copyToVault();
+}
 
-    log.info(`👁️  Multi-adapter watching enabled:`);
-    watchDirs.forEach((dir) => {
-        const relativePath = relative(dirname(adaptersDir), dir.path);
-        if (dir.type === "core") {
-            log.info(`  ${colors.cyan("🎨 CORE")}: ${colors.dim(relativePath)}`);
-        } else {
-            const templateCount = dir.templatePaths?.length || 0;
-            const adapterLabel = colors.magenta(`🔧 ${dir.adapterName?.toUpperCase()}`);
-            log.info(
-                `  ${adapterLabel}: ${colors.dim(relativePath)} ${
-                    colors.yellow(`(${templateCount} templates)`)
-                }`,
-            );
-        }
-    });
-    log.info("Press Ctrl+C to stop watching");
-
-    // Run initial generation
-    log.hr_thick("🚀 Running initial generation...");
-    try {
-        const results = await generateAllAdapters();
-        const failedAdapters = results.filter((r) => r.error);
-
-        if (failedAdapters.length > 0) {
-            for (const failed of failedAdapters) {
-                log.error(`Error in ${failed.adapter}: ${failed.error}`);
-            }
-            log.error(`${failedAdapters.length}/${results.length} adapters failed`);
-        } else {
-            log.success("Initial generation completed successfully");
-            await reapplyActiveTheme();
-        }
-    } catch (error) {
-        log.error(
-            `Initial generation failed: ${error instanceof Error ? error.message : String(error)}`,
-        );
-        log.info("Continuing with file watching...");
-    }
-
-    log.info(`👀 Now watching for file changes...`);
-
-    // File patterns to ignore
-    const ignorePatterns = [
-        /\.DS_Store$/,
-        /~$/,
-        /\.swp$/,
-        /\.swo$/,
-        /\.tmp$/,
-        /\.git\//,
-        /node_modules\//,
-        /\.vscode\//,
-        /\.idea\//,
-        /\#.*\#$/, // Emacs temp files
-        /\.#/, // Emacs lock files
-    ];
-
-    const shouldIgnoreFile = (path: string): boolean => {
-        return ignorePatterns.some((pattern) => pattern.test(path));
-    };
-
-    const isRelevantFile = (path: string): boolean => {
-        // Core theme files (in core/src/themes/)
-        if (path.includes(coreThemesDir) && path.endsWith(".ts")) {
-            return true;
-        }
-
-        // Check if this is a template file within a known adapter directory
-        for (const watchDir of watchDirs) {
-            if (watchDir.type === "adapter") {
-                // Path must be within this adapter's directory and be a template file
-                if (path.startsWith(watchDir.path + "/") && path.includes(".template.")) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    };
-
-    const debounceMs = 300;
-
-    const processFileChange = async (changedPath: string): Promise<boolean> => {
-        const changedFile = changedPath.split("/").pop() || "unknown";
-
-        // Determine if this is a core change or adapter change
-        const isCorePath = changedPath.includes(coreThemesDir);
-
-        if (isCorePath) {
-            const coreLabel = colors.cyan("🎨 [CORE]");
-            const fileName = colors.yellow(changedFile);
-            log.info(
-                `${coreLabel} theme changed (${fileName}) → regenerating ${
-                    colors.bold("all adapters")
-                }...`,
-            );
-
-            try {
-                const results = await generateAllAdapters();
-                const errorAdapters = results.filter((r) => r.error);
-
-                if (errorAdapters.length > 0) {
-                    for (const failed of errorAdapters) {
-                        log.error(`⚠️ Error in ${failed.adapter}: ${failed.error}`);
-                    }
-                    log.warn(
-                        `⚠️ ${errorAdapters.length}/${results.length} adapters failed`,
-                    );
-                } else {
-                    log.success(`✅ ${results.length} adapters updated successfully`);
-                    return true;
-                }
-            } catch (error) {
-                log.error(
-                    `❌ Generation failed: ${
-                        error instanceof Error ? error.message : String(error)
-                    }`,
-                );
-            }
-            return false;
-        } else {
-            // Find which adapter this template belongs to
-            // Check that the changed path is within the adapter's directory
-            const adapterInfo = watchDirs.find((dir) =>
-                dir.type === "adapter" &&
-                changedPath.startsWith(dir.path + "/")
-            );
-
-            if (adapterInfo && adapterInfo.adapterName) {
-                // Get relative path from the adapter directory
-                const relativePath = relative(adapterInfo.path, changedPath);
-                const adapterLabel = colors.magenta(
-                    `🔧 [ ${adapterInfo.adapterName.toUpperCase()} ]`,
-                );
-                const fileName = colors.yellow(relativePath);
-
-                log.info(
-                    `${adapterLabel} template changed (${fileName}) → regenerating...`,
-                );
-
-                try {
-                    const result = await generateSingleAdapter(adapterInfo.adapterName);
-
-                    if (result.error) {
-                        log.error(`⚠️ Encountered error: ${result.error}`);
-                        log.warn(
-                            `⚠️ ${
-                                colors.magenta(adapterInfo.adapterName.toUpperCase())
-                            } not updated - Waiting for fix...`,
-                        );
-                    } else {
-                        log.success(
-                            `✅ ${
-                                colors.magenta(adapterInfo.adapterName.toUpperCase())
-                            } updated successfully`,
-                        );
-                        return true;
-                    }
-                } catch (error) {
-                    log.error(
-                        `❌ Generation failed: ${
-                            error instanceof Error ? error.message : String(error)
-                        }`,
-                    );
-                }
-            }
-        }
-        return false;
-    };
-
-    const processFileChanges = async (changedPaths: string[]) => {
-        const coreChange = changedPaths.find((path) => path.includes(coreThemesDir));
-        const pathsToProcess = coreChange ? [coreChange] : (() => {
-            const adapterChanges = new Map<string, string>();
-            for (const path of changedPaths) {
-                const adapter = watchDirs.find((dir) =>
-                    dir.type === "adapter" && path.startsWith(dir.path + "/")
-                );
-                if (adapter?.adapterName && !adapterChanges.has(adapter.adapterName)) {
-                    adapterChanges.set(adapter.adapterName, path);
-                }
-            }
-            return [...adapterChanges.values()];
-        })();
-
-        let shouldReapply = false;
-        for (const path of pathsToProcess) {
-            shouldReapply = await processFileChange(path) || shouldReapply;
-        }
-        if (shouldReapply) await reapplyActiveTheme();
-    };
-
-    const changeBatcher = createChangeBatcher(processFileChanges, debounceMs);
-
-    const handleFileChange = (changedPath: string) => {
-        if (shouldIgnoreFile(changedPath) || !isRelevantFile(changedPath)) return;
-        changeBatcher.schedule(changedPath);
-    };
-
-    // Set up graceful shutdown
-    const abortController = new AbortController();
-
-    Deno.addSignalListener("SIGINT", () => {
-        log.info("\n🛑 Shutting down...");
-
-        changeBatcher.cancel();
-
-        abortController.abort();
-        Deno.exit(0);
-    });
-
-    // Create watchers for all directories
-    const startWatchers = async () => {
-        const watchers = [];
-
-        for (const watchInfo of watchDirs) {
-            const watcherPromise = (async () => {
-                const watcher = Deno.watchFs(watchInfo.path, { recursive: true });
-
-                for await (const event of watcher) {
-                    if (abortController.signal.aborted) break;
-
-                    if (event.kind === "modify" || event.kind === "create") {
-                        for (const path of event.paths) {
-                            handleFileChange(path);
-                        }
-                    }
-                }
-            })();
-
-            watchers.push(watcherPromise);
-        }
-
-        await Promise.race(watchers);
-    };
-
-    // Main watch loop
-    while (!abortController.signal.aborted) {
+export async function watch(): Promise<void> {
+    const watcher = Deno.watchFs([config.dir.themes, config.dir.adapters], { recursive: true });
+    const generate = async (paths?: string[]) => {
         try {
-            await startWatchers();
-
-            if (!abortController.signal.aborted) {
-                log.warn("File watchers closed unexpectedly, restarting...");
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-            }
+            await generateDevelopment(paths);
         } catch (error) {
-            if (!abortController.signal.aborted) {
-                log.error(`Watch error: ${error instanceof Error ? error.message : String(error)}`);
-                log.info("Restarting file watchers in 2 seconds...");
-                await new Promise((resolve) => setTimeout(resolve, 2000));
+            console.error(error);
+        }
+    };
+    const batcher = createChangeBatcher(generate, 300);
+    const stop = () => {
+        batcher.cancel();
+        watcher.close();
+    };
+    Deno.addSignalListener("SIGINT", stop);
+    Deno.addSignalListener("SIGTERM", stop);
+    try {
+        await generate();
+        console.log("Watching theme sources, adapter templates, and Obsidian styles.");
+        for await (const event of watcher) {
+            if (event.kind === "access") continue;
+            for (const path of event.paths) {
+                if (isGenerationInput(path)) batcher.schedule(path);
             }
         }
+    } finally {
+        batcher.cancel();
+        Deno.removeSignalListener("SIGINT", stop);
+        Deno.removeSignalListener("SIGTERM", stop);
     }
-
-    log.info("Multi-watch process terminated.");
 }

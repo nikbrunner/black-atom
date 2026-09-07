@@ -15,11 +15,7 @@
     "tasks": {
         "test": "deno test --allow-all",
         "schema": "deno run --allow-read --allow-write src/lib/generate-schema.ts && deno fmt .",
-        "cli:compile": "deno compile --allow-read --allow-write --allow-env -o black-atom-core src/cli/index.ts",
-        "cli:install": "cp black-atom-core /usr/local/bin/",
-        "generate": "deno run -A src/tasks/generate.ts",
         "dev": "deno run -A src/tasks/dev.ts",
-        "monitor": "deno run -A src/tasks/monitor.ts",
         "publish": "deno publish --allow-slow-types",
         "test:terminal-colors": "bash scripts/test-terminal-colors.sh",
         "test:terminal-colors:dev": "deno run -A scripts/test-terminal-colors-dev.ts"
@@ -31,7 +27,11 @@
         "permissions": {
             "read": true,
             "run": true,
-            "write": true
+            "write": true,
+            "env": [
+                "OBSIDIAN_DEV_VAULT",
+                "HOME"
+            ]
         }
     },
     "imports": {
@@ -41,6 +41,7 @@
         "@std/fs": "jsr:@std/fs@^1.0.0",
         "zod": "npm:zod@^3.24.2",
         "@eta": "jsr:@eta-dev/eta@3.5.0",
-        "culori": "npm:culori@4"
+        "culori": "npm:culori@4",
+        "@std/dotenv": "jsr:@std/dotenv@0.225.6"
     }
 }

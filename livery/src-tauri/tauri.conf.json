@@ -7,8 +7,8 @@
     "build": {
         "frontendDist": "../dist",
         "devUrl": "http://localhost:1420",
-        "beforeDevCommand": "deno task vite:dev",
-        "beforeBuildCommand": "deno task vite:build"
+        "beforeDevCommand": "deno run -A npm:vite --port 1420",
+        "beforeBuildCommand": "deno run -A npm:vite build"
     },
     "app": {
         "windows": [

@@ -20,9 +20,9 @@ outline:
 
 1. Create `adapters/<name>/`
 2. Add a `black-atom-adapter.json` mapping collections to templates
-3. Add `deno.json` with `generate` and `dev` tasks
-4. Add template files under `themes/<collection>/`
-5. Add `./adapters/<name>` to the `workspace` array in the root `deno.json`
+3. Add template files under `themes/<collection>/`
+
+Core discovers adapters through their `black-atom-adapter.json` files.
 
 ### Template Creation
 
@@ -70,9 +70,8 @@ are written to instead of next to the template. Useful for a single shared templ
 (`themes/collection.template.json`) that should still emit into per-collection directories, e.g.
 `"output": "./themes/jpn"` for the `jpn` collection.
 
-An adapter can also declare a `postGenerate` task, run via `deno task postGenerate` after every
-file is written, for adapters that assemble output beyond a one-to-one template render (see
-obsidian).
+An adapter can also declare a `postGenerate` command. Core runs it after every file is written
+for adapters that assemble output beyond a one-to-one template render (see Obsidian).
 
 This collection-based approach:
 
@@ -82,7 +81,7 @@ This collection-based approach:
 
 ## Theme Adaptation Process
 
-1. Run `deno task generate` in the adapter directory (or `deno task generate` at the repo root for
+1. Run `deno run -A ../../core/src/cli/index.ts generate` in the adapter directory (or `deno run -A core/src/tasks/generate.ts` at the repo root for
    every adapter)
 2. The CLI reads the adapter's `black-atom-adapter.json`
 3. For each collection, the template is processed for each theme in the collection
@@ -164,7 +163,7 @@ After generating theme files:
 ## Development Workflow
 
 1. Update template files when changes are needed
-2. Run `deno task generate` to regenerate theme files
+2. Run `deno run -A core/src/tasks/generate.ts` to regenerate theme files
 3. Test the changes in the target application
 4. Commit both the template changes and the generated files
 

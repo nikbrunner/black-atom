@@ -94,8 +94,8 @@ ghostty +list-themes
 Requirements: [Deno](https://deno.land/).
 
 ```bash
-deno task generate  # regenerate theme files
-deno task dev        # watch mode
+deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
+deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

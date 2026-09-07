@@ -34,7 +34,7 @@ Generate the theme files (requires [Deno](https://deno.land/)) and copy the `.to
 WezTerm configuration directory:
 
 ```bash
-deno task generate
+deno run -A ../../core/src/cli/index.ts generate
 mkdir -p ~/.config/wezterm/colors
 cp themes/*/*.toml ~/.config/wezterm/colors/
 ```
@@ -98,8 +98,8 @@ For WezTerm to find themes by name, they must be placed in one of these director
 Requirements: [Deno](https://deno.land/).
 
 ```bash
-deno task generate  # regenerate theme files
-deno task dev        # watch mode
+deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
+deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

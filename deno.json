@@ -3,30 +3,19 @@
     "workspace": [
         "./core",
         "./core/monitor",
-        "./livery",
-        "./adapters/ghostty",
-        "./adapters/herdr",
-        "./adapters/lazygit",
-        "./adapters/niri",
-        "./adapters/nvim",
-        "./adapters/obsidian",
-        "./adapters/tmux",
-        "./adapters/waybar",
-        "./adapters/wezterm",
-        "./adapters/zed"
+        "./livery"
     ],
     "nodeModulesDir": "auto",
-    "unstable": ["sloppy-imports"],
+    "unstable": [
+        "sloppy-imports"
+    ],
     "tasks": {
         "dev": "deno run -A scripts/dev.ts",
-        "dev:adapters": "cd core && deno task dev",
-        "dev:monitor": "cd core && deno task monitor",
-        "dev:livery": "cd livery && deno task dev",
-        "generate": "cd core && deno task generate",
-        "check": "deno check && deno lint && deno fmt --check",
-        "cli": "cargo run -q -p livery-cli --",
-        "test": "deno test -P && cargo test",
-        "install-hooks": "git config core.hooksPath .githooks"
+        "build": "deno run -A scripts/build.ts",
+        "install:macos": "deno run -A scripts/install-macos.ts",
+        "check": "deno run -A core/src/tasks/generate.ts && deno check && deno lint && deno fmt --check && (cd livery && deno run -A npm:vite build) && cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
+        "test": "deno run -A core/src/tasks/generate.ts && deno test -P && (cd livery && deno run -A npm:vite build) && cargo test --workspace",
+        "install:hooks": "git config core.hooksPath .githooks"
     },
     "exclude": [
         ".pi/",
@@ -35,7 +24,13 @@
         "livery/docs/design-system/reference/"
     ],
     "lint": {
-        "rules": { "exclude": ["no-slow-types", "no-sloppy-imports", "jsx-no-children-prop"] },
+        "rules": {
+            "exclude": [
+                "no-slow-types",
+                "no-sloppy-imports",
+                "jsx-no-children-prop"
+            ]
+        },
         "exclude": [
             "core/monitor/src/routeTree.gen.ts",
             "livery/src/routeTree.gen.ts",
@@ -71,5 +66,13 @@
             "**/.agents/",
             "**/.impeccable/"
         ]
+    },
+    "test": {
+        "permissions": {
+            "read": true,
+            "write": true,
+            "env": true,
+            "run": true
+        }
     }
 }

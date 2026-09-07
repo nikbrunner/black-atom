@@ -343,7 +343,7 @@ Load `dev-setup-pre-commit` first and follow it (native `core.hooksPath`, Deno f
 
 - [ ] **Step 1: `.githooks/pre-commit`**
 
-Runs, from the repo root: `deno fmt --check`, `deno lint`, `deno check`, `deno test -P`, and `cargo fmt --check` + `cargo clippy -- -D warnings` + `cargo test` only when a staged path starts with `livery/src-tauri/` (or any `.rs`/`Cargo.toml`). Read `livery/.githooks/checks-frontend.ts` and `checks-backend.ts` for what livery ran (bindings freshness, etc.) and keep any check that is not already covered. Root task `"install-hooks": "git config core.hooksPath .githooks"`. Run it once in `black-atom`.
+Runs, from the repo root: `deno fmt --check`, `deno lint`, `deno check`, `deno test -P`, and `cargo fmt --check` + `cargo clippy -- -D warnings` + `cargo test` only when a staged path starts with `livery/src-tauri/` (or any `.rs`/`Cargo.toml`). Read `livery/.githooks/checks-frontend.ts` and `checks-backend.ts` for what livery ran (bindings freshness, etc.) and keep any check that is not already covered. Root task `"install:hooks": "git config core.hooksPath .githooks"`. Run it once in `black-atom`.
 
 - [ ] **Step 2: `.claude/settings.json`**
 

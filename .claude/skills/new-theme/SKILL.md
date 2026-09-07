@@ -35,7 +35,7 @@ description: Add a theme to an existing collection. Load when asked to create, d
    `nvim`, `obsidian`, `tmux`, `waybar`, `wezterm`, `zed`) declare the seven collections and
    their 32 current themes.
 
-6. Run `deno task generate` from the repo root. It regenerates every adapter that has a
+6. Run `deno run -A core/src/tasks/generate.ts` from the repo root. It regenerates every adapter that has a
    `black-atom-adapter.json` in the current tree.
 
 7. nvim only: also create `adapters/nvim/colors/black-atom-<collection>-<name>-<appearance>.lua`
@@ -45,7 +45,7 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
    require("black-atom").load(theme)
    ```
-   This file is hand-written, `deno task generate` does not create it.
+   This file is hand-written, `deno run -A core/src/tasks/generate.ts` does not create it.
 
 8. Verify one generated output file per adapter that declares the collection. Outputs live at
    `adapters/<name>/themes/<collection>/<theme-key>.<ext>`, except nvim's generated Lua modules

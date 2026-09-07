@@ -2,7 +2,8 @@
  * Discovers adapters by looking for black-atom-adapter.json files
  */
 
-import { dirname, join } from "@std/path";
+import { join } from "@std/path";
+import { config } from "../config.ts";
 import { themeKeys } from "../themes/catalog.ts";
 import { createAdapterConfigSchema } from "./validate-adapter.ts";
 
@@ -39,9 +40,9 @@ export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
                 if (config.enabled !== false) {
                     adapters.push(entry.name);
                 }
-            } catch {
-                // File doesn't exist or is invalid, skip this adapter
-                continue;
+            } catch (error) {
+                if (error instanceof Deno.errors.NotFound) continue;
+                throw new Error(`Cannot read adapter config ${adapterFilePath}: ${error}`);
             }
         }
     } catch (error) {
@@ -52,10 +53,9 @@ export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
 }
 
 /**
- * Convenience function to get adapters using the current working directory
- * Resolves the adapters directory as a sibling of core and discovers adapters
+ * Discovers adapters in the monorepo.
  */
 export async function getAdapters(): Promise<string[]> {
-    const adaptersDir = join(dirname(Deno.cwd()), "adapters");
+    const adaptersDir = config.dir.adapters;
     return await discoverAdapters(adaptersDir);
 }

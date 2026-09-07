@@ -1,13 +1,17 @@
 {
     "tasks": {
         "test": "deno test --allow-all",
-        "dev": "deno run -A npm:vite",
+        "dev": "deno run -A ../src/tasks/monitor.ts",
         "build": "deno run -A npm:vite build"
     },
     "compilerOptions": {
         "jsx": "react-jsx",
         "jsxImportSource": "react",
-        "lib": ["ES2024", "DOM", "DOM.Iterable"]
+        "lib": [
+            "ES2024",
+            "DOM",
+            "DOM.Iterable"
+        ]
     },
     "imports": {
         "react": "npm:react@^19.0.0",

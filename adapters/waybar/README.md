@@ -48,7 +48,7 @@ This adapter generates CSS files containing GTK color definitions using `@define
 Generate the theme files (requires [Deno](https://deno.land/)):
 
 ```bash
-deno task generate
+deno run -A ../../core/src/cli/index.ts generate
 ```
 
 Import a theme in your `style.css`:
@@ -92,8 +92,8 @@ window#waybar {
 ## Development
 
 ```bash
-deno task generate  # regenerate theme files
-deno task dev        # watch mode
+deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
+deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Layout

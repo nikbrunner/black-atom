@@ -22,11 +22,24 @@ and everything else you point Black Atom at.
 git clone https://github.com/nikbrunner/black-atom.git
 cd black-atom
 deno install
-deno task dev      # adapter watcher, livery, and monitor together
-deno task generate # regenerate every adapter once
-deno task check     # deno check, deno lint, deno fmt --check
-deno task test       # deno test -P and cargo test
+deno task dev           # GUI, monitor, generation watcher, development CLI
+deno task check         # Deno checks, Rust format and Clippy (all targets)
+deno task test          # Deno and Rust workspace tests
+deno task build         # release GUI bundle and CLI
+deno task install:macos # build and install app + CLI
 ```
+
+Generation runs automatically before development, checks, tests, and builds. Rust checks and tests
+build the required frontend first. `dev` and `livery-dev` use the invoking shell's home, XDG directories,
+and existing configuration. Dev links the launcher into an existing user `bin` directory in `PATH`, so a second
+terminal can run `livery-dev list`. Existing commands or another worktree's launcher cause a visible
+conflict. The launcher is ready after successful generation and compilation; shutdown removes its
+symlink. The installed `livery` command stays independent.
+
+On macOS, the root build produces the `.app` bundle and CLI.
+
+`install:macos` installs `/Applications/livery.app` and `$CARGO_HOME/bin/livery` (default
+`~/.cargo/bin/livery`). It builds the macOS app bundle without a DMG and performs no setup or apply.
 
 ## Using the themes without livery
 

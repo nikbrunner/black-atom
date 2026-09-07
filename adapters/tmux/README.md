@@ -7,7 +7,7 @@ Beautiful tmux color schemes from the Black Atom Industries theme collection.
 Generate the theme files (requires [Deno](https://deno.land/)):
 
 ```bash
-deno task generate
+deno run -A ../../core/src/cli/index.ts generate
 ```
 
 Then source your preferred theme in your `~/.tmux.conf`:
@@ -103,7 +103,7 @@ Each collection has its own styling philosophy:
 Theme files are generated from templates through the Black Atom core CLI. To modify themes:
 
 1. Edit the appropriate template file in `themes/*/collection.template.conf`
-2. Run `deno task generate` to regenerate theme files (or `deno task dev` for watch mode)
+2. Run `deno run -A ../../core/src/cli/index.ts generate` to regenerate theme files (or `deno run -A ../../core/src/cli/index.ts generate --watch` for watch mode)
 3. Test the changes in tmux
 
 ## License

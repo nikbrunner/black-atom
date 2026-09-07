@@ -459,6 +459,20 @@ fn print_verification_folders(verification: &updaters::AppPathVerification) {
     }
 }
 
+fn config_label(verification: &updaters::AppPathVerification) -> String {
+    if let Some(message) = &verification.message {
+        return format!("error ({message})");
+    }
+    if !verification.exists {
+        return "missing".to_string();
+    }
+    match verification.pattern_matches {
+        Some(true) => "ok".to_string(),
+        Some(false) => "no-match".to_string(),
+        None => "ok".to_string(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -474,19 +488,5 @@ mod tests {
             "ghostty",
             "App is disabled"
         )));
-    }
-}
-
-fn config_label(verification: &updaters::AppPathVerification) -> String {
-    if let Some(message) = &verification.message {
-        return format!("error ({message})");
-    }
-    if !verification.exists {
-        return "missing".to_string();
-    }
-    match verification.pattern_matches {
-        Some(true) => "ok".to_string(),
-        Some(false) => "no-match".to_string(),
-        None => "ok".to_string(),
     }
 }

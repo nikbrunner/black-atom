@@ -14,16 +14,13 @@
         ]
     },
     "tasks": {
-        "cache": "deno cache --reload src/",
         "dev": "deno run -A npm:@tauri-apps/cli dev",
         "airship": "deno run -A scripts/airship.ts",
-        "build": "deno run -A npm:@tauri-apps/cli build",
-        "vite:dev": "deno run -A npm:vite --port 1420",
-        "vite:build": "deno run -A npm:vite build",
+        "build": "deno run -A ../core/src/tasks/generate.ts && deno run -A npm:@tauri-apps/cli build",
         "check": "deno check src/",
         "test": "deno test -P",
         "test:perf-benchmark": "cd src-tauri && cargo run --bin perf-benchmark --release",
-        "install:macos": "deno run -A npm:@tauri-apps/cli build && rm -rf /Applications/livery.app && cp -R ../target/release/bundle/macos/livery.app /Applications/livery.app",
+        "install:macos": "deno run -A ../scripts/install-macos.ts --app-only",
         "dev:ui": "deno run -A npm:vite --port 1430 --open '/dev'"
     },
     "test": {

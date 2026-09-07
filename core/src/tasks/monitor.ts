@@ -1,38 +1,22 @@
-/**
- * Runs the monitor API server and Vite dev server concurrently.
- *
- * Usage:
- *   deno task monitor
- */
-
 import { join } from "@std/path";
 import { config } from "../config.ts";
-import { startPreviewServer } from "../monitor-server.ts";
+import { createDevProcesses } from "../../../scripts/dev-process.ts";
 
-const monitorDir = join(config.dir.core, "monitor");
-
-let viteProcess: Deno.ChildProcess | null = null;
-
-async function startVite() {
-    const vite = new Deno.Command("deno", {
-        args: ["task", "dev"],
-        cwd: monitorDir,
-        stdout: "inherit",
-        stderr: "inherit",
-    });
-    viteProcess = vite.spawn();
-    await viteProcess.status;
+const processes = createDevProcesses({ cwd: join(config.dir.core, "monitor") });
+const interrupt = () => void processes.stop(130);
+const terminate = () => void processes.stop(143);
+Deno.addSignalListener("SIGINT", interrupt);
+Deno.addSignalListener("SIGTERM", terminate);
+try {
+    processes.startService([
+        Deno.execPath(),
+        "run",
+        "-A",
+        join(config.dir.core, "src/monitor-server.ts"),
+    ]);
+    processes.startService([Deno.execPath(), "run", "-A", "npm:vite"]);
+    Deno.exitCode = await processes.finished;
+} finally {
+    Deno.removeSignalListener("SIGINT", interrupt);
+    Deno.removeSignalListener("SIGTERM", terminate);
 }
-
-function cleanup() {
-    viteProcess?.kill("SIGTERM");
-    Deno.exit(0);
-}
-
-Deno.addSignalListener("SIGINT", cleanup);
-Deno.addSignalListener("SIGTERM", cleanup);
-
-await Promise.all([
-    startPreviewServer(),
-    startVite(),
-]);

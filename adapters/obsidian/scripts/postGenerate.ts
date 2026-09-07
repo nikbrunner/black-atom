@@ -6,8 +6,7 @@
  * 2. Generated per-theme CSS files
  * 3. Static UI CSS files
  *
- * Called automatically by core's adapters:dev after generation,
- * or manually via `deno task postGenerate`.
+ * Called by Core after generation.
  */
 
 import { config } from "./config.ts";
@@ -90,4 +89,4 @@ async function postGenerate(): Promise<void> {
     console.log(`Assembly complete: ${config.paths.output}`);
 }
 
-postGenerate();
+await postGenerate();
