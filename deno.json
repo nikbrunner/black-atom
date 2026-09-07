@@ -15,7 +15,7 @@
         "install:macos": "deno run -A scripts/install-macos.ts",
         "check": "deno run -A core/src/tasks/generate.ts && deno check && deno lint && deno fmt --check && (cd livery && deno run -A npm:vite build) && cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
         "test": "deno run -A core/src/tasks/generate.ts && deno test -P && (cd livery && deno run -A npm:vite build) && cargo test --workspace",
-        "install:hooks": "git config core.hooksPath .githooks"
+        "install:hooks": "lefthook install"
     },
     "exclude": [
         ".pi/",

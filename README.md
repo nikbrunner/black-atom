@@ -41,6 +41,25 @@ On macOS, the root build produces the `.app` bundle and CLI.
 `install:macos` installs `/Applications/livery.app` and `$CARGO_HOME/bin/livery` (default
 `~/.cargo/bin/livery`). It builds the macOS app bundle without a DMG and performs no setup or apply.
 
+## Git hooks
+
+Install the standalone [Lefthook](https://lefthook.dev/installation/) binary, then enable hooks explicitly:
+
+```bash
+brew install lefthook # macOS; other platforms: see the installation link
+deno task install:hooks
+```
+
+Pre-commit checks formatting and lint on staged Deno-supported files, respecting Deno exclusions,
+plus workspace Rust formatting when Rust files are staged. Checks are read-only;
+use `deno fmt` and `cargo fmt` to format explicitly.
+
+Pre-push runs `deno task check`, then `deno task test`. Lefthook skips these jobs when its
+push-file detection returns no files. These full tasks generate files and build the frontend.
+Review generated changes. Hooks check the current checkout, not snapshots of other refs being pushed. Lefthook temporarily hides and restores unstaged portions of partially
+staged files during commit checks. This is not a full checkout snapshot: workspace Rust formatting
+also sees other unstaged files. CI runs the full check and test tasks independently.
+
 ## Using the themes without livery
 
 Each adapter ships its generated theme files in the same tree. Grab them directly, or use livery

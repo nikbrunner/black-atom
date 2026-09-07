@@ -1,0 +1,30 @@
+glob_matcher: doublestar
+assert_lefthook_installed: true
+
+pre-commit:
+    piped: true
+    jobs:
+        - name: deno-format
+          glob: "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs,json,jsonc,md,markdown,css,scss,sass,less,yml,yaml,html,ipynb}"
+          # Deno's wildcard-directory exclusions need leaf globs for explicit file arguments.
+          exclude: &deno-directory-exclusions
+              - "adapters/*/themes/**"
+              - "**/.claude/**"
+              - "**/.agents/**"
+              - "**/.impeccable/**"
+          run: deno fmt --check --permit-no-files {staged_files}
+        - name: deno-lint
+          glob: "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs}"
+          exclude: *deno-directory-exclusions
+          run: deno lint --permit-no-files {staged_files}
+        - name: rust-format
+          glob: "**/*.rs"
+          run: cargo fmt --check
+
+pre-push:
+    piped: true
+    jobs:
+        - name: workspace-check
+          run: deno task check
+        - name: workspace-test
+          run: deno task test
