@@ -201,8 +201,8 @@ Deno.test("launcher preserves unset XDG despite conflicting second-terminal vari
                     env: {
                         HOME: `${fixture}/wrong`,
                         XDG_CONFIG_HOME: `${fixture}/wrong`,
-                        XDG_DATA_HOME: "conflict",
-                        XDG_CACHE_HOME: "conflict",
+                        XDG_DATA_HOME: `${fixture}/conflict`,
+                        XDG_CACHE_HOME: `${fixture}/conflict`,
                         LIVERY_CALLER_ONLY: "conflict",
                     },
                     stdout: "piped",
